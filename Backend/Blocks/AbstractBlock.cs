@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Backend.Blocks
 {
+    /// <summary>
+    ///     Classe astratta per implementazione funzionalità di un blocco
+    /// </summary>
     internal class AbstractBlock : IBlock
     {
         public string Type { get; set; } = null!;
