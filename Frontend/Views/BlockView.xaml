@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Frontend.ViewModels"
+             x:Name="this"
+             x:Class="Frontend.Views.BlockView">
+
+    <ContentView.BindingContext>
+        <vm:BlockViewModel/>
+    </ContentView.BindingContext>
+
+
+    <Grid
+        RowDefinitions="*"
+        ColumnDefinitions="Auto, *">
+
+
+        <CollectionView 
+            ItemsSource="{Binding Blocks}"
+            BackgroundColor="LightBlue">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+
+                    <Grid RowDefinitions="Auto" ColumnDefinitions="Auto" Margin="10">
+                        <Path Data="{Binding SvgData}"
+                                  Fill="Green" 
+                                  Stroke="Black"
+                                  Aspect="Fill"
+                                  HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="FillAndExpand"/>
+
+                        <StackLayout Loaded="Draggable_StackLayout_Loaded" VerticalOptions="Start" HorizontalOptions="Center" 
+                                         Margin="10" 
+                                         Spacing="10" 
+                                         Orientation="Horizontal"/>
+
+
+                        <Grid.GestureRecognizers>
+                            <DragGestureRecognizer CanDrag="True" DragStarting="DragStarting"/>
+                        </Grid.GestureRecognizers>
+
+                    </Grid>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+
+
+        <CollectionView
+                ItemsSource="{Binding DroppedBlocks}"
+                BackgroundColor="Brown"
+                Grid.Column="1">
+
+            <CollectionView.GestureRecognizers>
+                <DropGestureRecognizer AllowDrop="True" DragOver="DragOver" Drop="Drop" />
+            </CollectionView.GestureRecognizers>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid RowDefinitions="Auto" ColumnDefinitions="Auto" Margin="10">
+                        <Path Data="{Binding SvgData}"
+                                  Fill="Green" 
+                                  Stroke="Black"
+                                  Aspect="Fill"
+                                  HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="Fill"/>
+
+                        <StackLayout Loaded="Dropped_StackLayout_Loaded" VerticalOptions="Start" HorizontalOptions="Center" 
+                                         Margin="10" 
+                                         Spacing="10" 
+                                         Orientation="Horizontal"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+    </Grid>
+
+</ContentView>
