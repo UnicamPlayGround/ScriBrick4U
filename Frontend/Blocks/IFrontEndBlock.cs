@@ -20,12 +20,12 @@ namespace Frontend.Blocks
         /// <summary>
         /// Nome del blocco
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
         
         /// <summary>
         /// Tipo del blocco
         /// </summary>
-        public string type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Metodo che permette di ottenere una nuova istanza del blocco
