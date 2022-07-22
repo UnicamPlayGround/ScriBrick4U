@@ -7,6 +7,11 @@
              x:Name="this"
              x:Class="Frontend.MainPage">
 
+    
+    <ContentPage.BindingContext>
+        <vm:MainViewModel/>
+    </ContentPage.BindingContext>
+
 
     <Grid
         x:Name="mainGrid"
