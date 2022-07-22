@@ -1,6 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:v="clr-namespace:Frontend.Views"
+             xmlns:vm="clr-namespace:Frontend.ViewModels"
+             BackgroundColor="OrangeRed"
+             x:Name="this"
              x:Class="Frontend.MainPage">
+
+
+    <Grid
+        x:Name="mainGrid"
+        RowDefinitions="*"
+        ColumnDefinitions="Auto, *" >
+
+        <v:BlockTypeView/>
+
+        <v:BlockView
+            Grid.Column="1"
+            />
+
+    </Grid>
+
+
 
 </ContentPage>
