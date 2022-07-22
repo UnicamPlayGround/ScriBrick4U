@@ -1,4 +1,5 @@
 ﻿using Frontend.Blocks;
+using Frontend.Helpers;
 using ProvaMauiDragAndDrop.Helper;
 using System.Text.Json;
 
@@ -58,6 +59,7 @@ namespace Frontend.ViewModels
         {
             InitBlocksList();
             this.DroppedBlocks = new();
+            Mediator.GetInstance().Register("updateBlocks", (x) => UpdateBlocksByType((string)x));
         }
 
         /// <summary>

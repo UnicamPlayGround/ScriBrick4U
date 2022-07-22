@@ -1,5 +1,7 @@
 ﻿
 
+using Frontend.Helpers;
+
 namespace Frontend.ViewModels
 {
     /// <summary>
@@ -39,6 +41,7 @@ namespace Frontend.ViewModels
             set
             {
                 _selectedType = value;
+                Mediator.GetInstance().Execute(this, "updateBlocks");
                 OnPropertyChanged();
             }
         }
