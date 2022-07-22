@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
+using ProvaMauiDragAndDrop.Helper;
 
 namespace Frontend.Blocks
 {
@@ -40,7 +41,7 @@ namespace Frontend.Blocks
 
         public IFrontEndBlock GetNewInstance()
         {
-            throw new NotImplementedException("Metodo non implementato.");
+            return BlockGenerator.GetBlock(this.Name);
         }
     }
 }
