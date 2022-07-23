@@ -52,4 +52,13 @@
 	  <Folder Include="Resources\Raw\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Views\BlockTypeView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\BlockView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>
