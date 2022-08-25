@@ -4,7 +4,7 @@ using Frontend.ViewModels;
 namespace Frontend.Views;
 
 /// <summary>
-/// Classe che rappresenta la <see cref="ContentView"/> dei tipi dei blocchi
+/// Classe che rappresenta il file di code-behind per BlockTypeView.xaml
 /// </summary>
 public partial class BlockTypeView : ContentView
 {
