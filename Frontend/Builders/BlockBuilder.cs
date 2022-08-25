@@ -6,8 +6,8 @@ namespace Frontend.Builders
     /// <summary>
     /// Classe che rappresenta un costruttore di blocchi
     /// </summary>
-    /// <typeparam name="T"> Parametro che estende <see cref="IFrontEndBlock"/> </typeparam>
-    public class BlockBuilder<T> where T : IFrontEndBlock, new()
+    /// <typeparam name="T"> Classe che estende <see cref="IFrontEndBlock"/> </typeparam>
+    public class BlockBuilder<T> : IBlockBuilder<T> where T : IFrontEndBlock, new()
     {
         private readonly T Block;
 
@@ -26,21 +26,13 @@ namespace Frontend.Builders
             };
         }
 
-        /// <summary>
-        /// Metodo che permette di aggiungere una casella di testo (<see cref="Editor"/>) al blocco
-        /// </summary>
-        /// <returns> l'oggetto corrente </returns>
-        public BlockBuilder<T> AddInput()
+        public IBlockBuilder<T> AddInput()
         {
             Block.Elements.Add(new Editor());
             return this;
         }
 
-        /// <summary>
-        /// Metodo che permette di aggiungere una <see cref="Label"/> al blocco, avente come testo la stringa passata come parametro
-        /// </summary>
-        /// <returns> l'oggetto corrente </returns>
-        public BlockBuilder<T> AddLabel(string s)
+        public IBlockBuilder<T> AddLabel(string s)
         {
             Label l = new()
             {
@@ -54,10 +46,6 @@ namespace Frontend.Builders
             return this;
         }
 
-        /// <summary>
-        /// Metodo che permette di costruire il blocco
-        /// </summary>
-        /// <returns> il blocco costruito </returns>
         public T Build()
         {
             return Block;
