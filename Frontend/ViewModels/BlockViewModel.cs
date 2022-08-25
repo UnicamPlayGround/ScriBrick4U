@@ -87,7 +87,7 @@ namespace Frontend.ViewModels
         /// </summary>
         /// <param name="block"> blocco <see cref="IFrontEndBlock"/> trascinato da aggiungere alla lista </param>
         /// <exception cref="NullReferenceException"> se il blocco passato è nullo </exception>
-        public void AddDroppedBlockBorder(IFrontEndBlock block, PointF dropPoint)
+        public void AddDroppedBlock(IFrontEndBlock block, PointF dropPoint)
         {
             if (block is null) throw new NullReferenceException("Border is null!");
             block.Position.UpperLeft = dropPoint;
