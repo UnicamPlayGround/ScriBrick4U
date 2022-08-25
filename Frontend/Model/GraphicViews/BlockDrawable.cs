@@ -33,7 +33,8 @@ namespace Frontend.Model.GraphicViews
             List<IFrontEndBlock> blocks = (List<IFrontEndBlock>)_mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS);
 
             foreach (var block in blocks)
-                throw new NotImplementedException();
+                block.Draw(canvas);
+                
         }
     }
 }

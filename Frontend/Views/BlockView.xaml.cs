@@ -1,4 +1,5 @@
-using Frontend.Blocks;
+using Frontend.Model.Blocks;
+using Frontend.Model.GraphicViews;
 using Frontend.ViewModels;
 
 namespace Frontend.Views;
@@ -8,9 +9,13 @@ namespace Frontend.Views;
 /// </summary>
 public partial class BlockView : ContentView
 {
+    /// <summary> variabile che rappresenta il blocco selezionato, che poi verra' trascinato </summary>
+    private IFrontEndBlock SelectedBlock;
     /// <summary>
-    /// variabile che rappresenta il Binding Context della <see cref="ContentView"/>
+    /// 
     /// </summary>
+    private Grid _grid;
+    /// <summary> variabile che rappresenta il Binding Context della <see cref="ContentView"/> </summary>
     private readonly BlockViewModel context;
 
     /// <summary>
@@ -19,62 +24,16 @@ public partial class BlockView : ContentView
     public BlockView()
     {
         InitializeComponent();
-        this.context = this.BindingContext as BlockViewModel;
+        BindingContext = context = new BlockViewModel(DroppedBlocksGraphicsView);
     }
 
     /// <summary>
-    /// Metodo che permette di gestire l'inizio del trascinamento del blocco
+    /// Metodo che permette di registrare il blocco trascinato
     /// </summary>
-    /// <param name="sender"> oggetto che ha invocato il metodo </param>
-    /// <param name="e"> argomenti di tipo <see cref="DragStartingEventArgs"/> </param>
-    private void DragStarting(object sender, DragStartingEventArgs e)
+    /// <param name="dropPoint"> punto nel quale è stato rilasciato il blocco </param>
+    private void Drop(PointF dropPoint)
     {
-        e.Data.Properties.Add("block", (((sender as Element)).BindingContext as IFrontEndBlock));
-    }
-
-    /// <summary>
-    /// Metodo che permette di gestire il momento nel quale il blocco si trova sopra l'area nella quale verrà rilasciato
-    /// </summary>
-    /// <param name="sender"> oggetto che ha invocato il metodo </param>
-    /// <param name="e"> argomenti di tipo <see cref="DragEventArgs"/> </param>
-    private void DragOver(object sender, DragEventArgs e)
-    {
-        e.AcceptedOperation = DataPackageOperation.Copy;
-    }
-
-
-    /// <summary>
-    /// Metodo che permette di gestire il rilascio del blocco
-    /// </summary>
-    /// <param name="sender"> oggetto che ha invocato il metodo </param>
-    /// <param name="e"> argomenti di tipo <see cref="DropEventArgs"/> </param>
-    private void Drop(object sender, DropEventArgs e)
-    {
-        var property = e.Data.Properties["block"];
-
-        if (property == null) return;
-
-        this.context.AddDroppedBlockBorder((IFrontEndBlock)property);
-    }
-
-    /// <summary>
-    /// Metodo invocato quando lo <see cref="StackLayout"/> della lista di tutti i blocchi viene creato
-    /// </summary>
-    /// <param name="sender"> <see cref="StackLayout"/> che è stato creato </param>
-    /// <param name="e"> argomenti di tipo <see cref="EventArgs"/> </param>
-    private void Draggable_StackLayout_Loaded(object sender, EventArgs e)
-    {
-        AddStackLayoutElements(sender, e);
-    }
-
-    /// <summary>
-    /// Metodo invocato quando lo <see cref="StackLayout"/> della lista dei blocchi trascinati viene creato
-    /// </summary>
-    /// <param name="sender"> <see cref="StackLayout"/> che è stato creato </param>
-    /// <param name="e"> argomenti di tipo <see cref="EventArgs"/> </param>
-    private void Dropped_StackLayout_Loaded(object sender, EventArgs e)
-    {
-        AddStackLayoutElements(sender, e);
+        context.AddDroppedBlockBorder(SelectedBlock, dropPoint);
     }
 
     /// <summary>
@@ -82,18 +41,64 @@ public partial class BlockView : ContentView
     /// </summary>
     /// <param name="sender"> <see cref="StackLayout"/> che è stato creato </param>
     /// <param name="e"> argomenti di tipo <see cref="EventArgs"/> </param>
-    private void AddStackLayoutElements(object sender, EventArgs e)
+    private void BlocksStackLayout_Loaded(object sender, EventArgs e)
     {
-        var s = sender as StackLayout;
-        var elements = (((s.Parent as Grid)).BindingContext as IFrontEndBlock).Elements;
+        var stack = sender as StackLayout;
+        var grid = stack.Parent as Grid;
+        var block = grid.BindingContext as IFrontEndBlock;
 
-        if (s == null || elements == null) return;
-
-        elements.ForEach((e) =>
+        block.Elements.ForEach((blockElement) =>
         {
-            if (e.Parent != null) (e.Parent as StackLayout).Children.Clear();
-            s.Children.Add(e);
+            if (blockElement.Parent != null) (blockElement.Parent as StackLayout).Children.Clear();
+            stack.Children.Add((IView)blockElement);
         });
     }
 
+
+    /// <summary>
+    /// Gestisce la selezione di un elemento della <see cref="CollectionView"/> dei blocchi
+    /// </summary>
+    /// <param name="sender"> <see cref="CollectionView"/> chiamante </param>
+    /// <param name="e"> argomenti dell'evento </param>
+    private void SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.Count > 0)
+            if (e.CurrentSelection[0] != null)
+            {
+                SelectedBlock = (e.CurrentSelection[0] as IFrontEndBlock).GetNewInstance();
+            }
+    }
+
+    /// <summary>
+    /// Gestisce il click di un elemento della <see cref="CollectionView"/> dei blocchi
+    /// </summary>
+    /// <param name="sender"> <see cref="Grid"/> chiamante </param>
+    /// <param name="e"> argomenti dell'evento </param>
+    private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+    {
+
+    }
+
+    /// <summary>
+    /// Gestisce la creazione della <see cref="GraphicsView"/> dei blocchi trascinati
+    /// </summary>
+    /// <param name="sender"> <see cref="GraphicsView"/> chiamante </param>
+    /// <param name="e"> argomenti dell'evento </param>
+    private void DroppedBlocksGraphicsView_Loaded(object sender, EventArgs e)
+    {
+        var graphicsView = sender as GraphicsView;
+        graphicsView.Drawable = new BlockDrawable(BaseViewModel.Mediator);
+        graphicsView.WidthRequest = DeviceDisplay.MainDisplayInfo.Width + 200;
+        graphicsView.HeightRequest = DeviceDisplay.MainDisplayInfo.Height + 200;
+    }
+
+    /// <summary>
+    /// Gestisce la fine dell'interazione con la <see cref="GraphicsView"/> dei blocchi trascinati
+    /// </summary>
+    /// <param name="sender"> <see cref="GraphicsView"/> chiamante </param>
+    /// <param name="e"> argomenti dell'evento </param>
+    private void DroppedBlocksGraphicsView_EndInteraction(object sender, TouchEventArgs e)
+    {
+        Drop(e.Touches.ElementAt(0));
+    }
 }

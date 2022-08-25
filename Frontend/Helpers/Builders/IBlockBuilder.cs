@@ -21,6 +21,13 @@ namespace Frontend.Builders
         public IBlockBuilder<T> AddLabel(string s);
 
         /// <summary>
+        /// Aggiunge la funzione <see cref="IFrontEndBlock.TextDropped"/> al blocco
+        /// </summary>
+        /// <param name="textDropped"></param>
+        /// <returns> l'oggetto corrente </returns>
+        public IBlockBuilder<T> AddTextDroppedFunction(Func<string> textDropped);
+
+        /// <summary>
         /// Metodo che permette di costruire il blocco
         /// </summary>
         /// <returns> il blocco costruito </returns>

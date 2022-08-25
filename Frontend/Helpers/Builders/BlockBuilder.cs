@@ -1,4 +1,5 @@
 ﻿using Frontend.Model.Blocks;
+using Frontend.Models.Blocks.Bounds;
 using Frontend.Models.Blocks.Descriptors;
 
 namespace Frontend.Builders
@@ -21,7 +22,8 @@ namespace Frontend.Builders
             Block = new()
             {
                 Descriptor = new BlockDescriptor(name, type),
-                Elements = new()
+                Elements = new(),
+                Position = new BlockBound()
             };
         }
 
@@ -44,6 +46,13 @@ namespace Frontend.Builders
             Block.Elements.Add(l);
             return this;
         }
+
+        public IBlockBuilder<T> AddTextDroppedFunction(Func<string> textDropped)
+        {
+            Block.TextDropped = textDropped;
+            return this;
+        }
+
 
         public T Build()
         {

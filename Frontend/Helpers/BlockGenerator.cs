@@ -22,12 +22,14 @@ namespace ProvaMauiDragAndDrop.Helper
                         .AddLabel("muovi di")
                         .AddInput()
                         .AddLabel("passi")
+                        .AddTextDroppedFunction(() => "muovi di TOT passi")
                         .Build();
                 case "rotate":
                     return new BlockBuilder<LabelEditor>(name, BlockType.Movimento)
                         .AddLabel("routa di ")
                         .AddInput()
                         .AddLabel("gradi")
+                        .AddTextDroppedFunction(() => "ruota di TOT gradi")
                         .Build();
                 default:
                     throw new Exception("Blocco non implementato");

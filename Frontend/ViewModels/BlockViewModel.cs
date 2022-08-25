@@ -1,6 +1,4 @@
-﻿using Frontend.Blocks;
-using Frontend.Helpers;
-using Frontend.Model.Blocks;
+﻿using Frontend.Model.Blocks;
 using ProvaMauiDragAndDrop.Helper;
 using System.Text.Json;
 
@@ -11,6 +9,11 @@ namespace Frontend.ViewModels
     /// </summary>
     public class BlockViewModel : BaseViewModel
     {
+        /// <summary>
+        /// Canvas, di tipo <see cref="GraphicsView"/>, presente nella BlockView
+        /// </summary>
+        private readonly GraphicsView _graphicsView;
+
         /// <summary>
         /// lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
         /// </summary>
@@ -49,18 +52,20 @@ namespace Frontend.ViewModels
             set
             {
                 _droppedBlocks = value;
-                OnPropertyChanged();
+                _graphicsView.Invalidate();
             }
         }
 
         /// <summary>
         /// Costruttore di default
         /// </summary>
-        public BlockViewModel()
+        /// <param name="droppedBlocksGraphicsView"> Canvas, di tipo <see cref="GraphicsView"/>, presente nella BlockView </param>
+        public BlockViewModel(GraphicsView droppedBlocksGraphicsView)
         {
             SetMediator(this);
             InitBlocksList();
-            this.DroppedBlocks = new();
+            _graphicsView = droppedBlocksGraphicsView;
+            DroppedBlocks = new();
         }
 
         /// <summary>
@@ -68,13 +73,13 @@ namespace Frontend.ViewModels
         /// </summary>
         private void InitBlocksList()
         {
-            this._allBlocks = new();
+            _allBlocks = new();
 
             // questa lista, per ora inizializzata manualmente, dovrà successivamente essere inizializzata con tutti i
             // nomi "ufficiali" dei blocchi
             List<string> nomi = new() { "move", "rotate" };
-            nomi.ForEach((nome) => this._allBlocks.Add(BlockGenerator.GetBlock(nome)));
-            this.Blocks = this._allBlocks;
+            nomi.ForEach((nome) => _allBlocks.Add(BlockGenerator.GetBlock(nome)));
+            Blocks = _allBlocks;
         }
 
         /// <summary>
@@ -82,10 +87,11 @@ namespace Frontend.ViewModels
         /// </summary>
         /// <param name="block"> blocco <see cref="IFrontEndBlock"/> trascinato da aggiungere alla lista </param>
         /// <exception cref="NullReferenceException"> se il blocco passato è nullo </exception>
-        public void AddDroppedBlockBorder(IFrontEndBlock block)
+        public void AddDroppedBlockBorder(IFrontEndBlock block, PointF dropPoint)
         {
             if (block is null) throw new NullReferenceException("Border is null!");
-            this.DroppedBlocks = new(this.DroppedBlocks) { block.GetNewInstance() };
+            block.Position.UpperLeft = dropPoint;
+            DroppedBlocks = new(DroppedBlocks) { block };
         }
 
         /// <summary>
@@ -94,7 +100,7 @@ namespace Frontend.ViewModels
         /// <param name="type"> tipo di blocco in base al quale filtrare la lista </param>
         public void UpdateBlocksByType(BlockType type)
         {
-            this.Blocks = this._allBlocks.FindAll((e) => e.Descriptor.Type.Equals(type));
+            Blocks = _allBlocks.FindAll((e) => e.Descriptor.Type.Equals(type));
         }
 
         /// <summary>

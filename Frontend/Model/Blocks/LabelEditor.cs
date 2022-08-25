@@ -1,6 +1,10 @@
-﻿using Frontend.Models.Blocks.Descriptors;
-using Microsoft.Maui.Controls.Shapes;
+﻿using Frontend.Models.Blocks.Bounds;
+using Frontend.Models.Blocks.Descriptors;
+using Frontend.Models.Blocks.Shapes;
 using ProvaMauiDragAndDrop.Helper;
+using SkiaSharp;
+using System.Numerics;
+using Font = Microsoft.Maui.Graphics.Font;
 
 namespace Frontend.Model.Blocks
 {
@@ -9,15 +13,19 @@ namespace Frontend.Model.Blocks
     /// </summary>
     public class LabelEditor : IFrontEndBlock
     {
-        /// <summary>
-        /// Stringa che rappresenta la forma del blocco
-        /// </summary>
-        private static readonly string _svgData = "m 0,4 A 4,4 0 0,1 4,0 H 12 c 2,0 3,1 4,2 l 4,4 c 1,1 2,2 4,2 h 12 c 2,0 3,-1 4,-2 l 4,-4 c 1,-1 2,-2 4,-2 H 180 a 4,4 0 0,1 4,4 v 40 a 4,4 0 0,1 -4,4 H 48 c -2,0 -3,1 -4,2 l -4,4 c -1,1 -2,2 -4,2 h -12 c -2,0 -3,-1 -4,-2 l -4,-4 c -1,-1 -2,-2 -4,-2 H 4 a 4,4 0 0,1 -4,-4 z";
-        
-        public Geometry SvgData { get; set; }
+        /// <summary> Rappresenta la larghezza del blocco </summary>
+        public float HorizontalOffset { get; set; } = 130;
+        /// <summary> Rappresenta l'altezza del blocco </summary>
+        public float Height { get; set; } = 35;
+
+        public IBlockDescriptor Descriptor { get; set; }
+        public IBlockShape Shape { get; set; }
+        public IBlockBound Position { get; set; }
+
+        public Func<string> TextDropped { get; set; }
 
         /// <summary>
-        /// Lista che conterrà effettivamente gli elementi del blocco
+        /// Lista privata che conterrà effettivamente gli elementi del blocco
         /// </summary>
         private List<IView> _elements { get; set; }
         public List<IView> Elements {
@@ -25,17 +33,43 @@ namespace Frontend.Model.Blocks
             set => _elements = value; 
         }
 
-        public IBlockDescriptor Descriptor { get; set; }
-
 
         /// <summary>
         /// Costruttore di default della classe
         /// </summary>
         public LabelEditor()
         {
-            SvgData = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(_svgData);
+            Shape = ShapeTypeMethods.GetShape(ShapeType.RECTANGLE);
+            HorizontalOffset = 130;
+            Height = 48;
         }
 
+        public void Draw(ICanvas canvas)
+        {
+            canvas.FillColor = Descriptor.BackgroundColor;
+            canvas.Font = Font.DefaultBold;
+            canvas.FontSize = (float)((Label)Elements.ElementAt(0)).FontSize;
+            canvas.FontColor = Color.FromRgb(255, 255, 255);
+
+            string text = TextDropped.Invoke();
+
+            var defaultOffset = HorizontalOffset;
+            HorizontalOffset += text.Length;
+            Shape.Path = Shape.GetSvgPath(HorizontalOffset, Height);
+
+            var pathf = ((IFrontEndBlock)this).PointsToPath(SKPath.ParseSvgPathData(Shape.Path).Points);
+            pathf.Transform(Matrix3x2.CreateTranslation(Position.UpperLeft.X, Position.UpperLeft.Y));
+            canvas.FillPath(pathf);
+            canvas.DrawPath(pathf);
+
+            Position.Width = pathf.Bounds.Width;
+            Position.Height = pathf.Bounds.Height;
+
+            //TODO da aggiustare
+            //       canvas.DrawText(MarkdownAttributedTextReader.Read(text), pathf.Bounds.Left, pathf.Bounds.Top + 15, pathf.Bounds.Width, pathf.Bounds.Height);
+            canvas.DrawString(text, pathf.Bounds.Left, pathf.Bounds.Top + 15, pathf.Bounds.Width, pathf.Bounds.Height, HorizontalAlignment.Center, VerticalAlignment.Top);
+            HorizontalOffset = defaultOffset;
+        }
 
         public IFrontEndBlock GetNewInstance()
         {
