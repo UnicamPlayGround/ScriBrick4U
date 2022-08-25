@@ -35,6 +35,7 @@
         /// </summary>
         public MainViewModel()
         {
+            SetMediator(this);
             this.NewProgram = new(ProgramNew);
             this.SaveProgram = new(ProgramSave);
             this.LoadProgram = new(ProgramLoad);

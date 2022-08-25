@@ -57,9 +57,9 @@ namespace Frontend.ViewModels
         /// </summary>
         public BlockViewModel()
         {
+            SetMediator(this);
             InitBlocksList();
             this.DroppedBlocks = new();
-            Mediator.GetInstance().Register("updateBlocks", (x) => UpdateBlocksByType((string)x));
         }
 
         /// <summary>

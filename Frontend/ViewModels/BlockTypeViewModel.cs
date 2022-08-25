@@ -1,6 +1,7 @@
 ﻿
 
 using Frontend.Helpers;
+using Frontend.Helpers.Mediators;
 
 namespace Frontend.ViewModels
 {
@@ -41,7 +42,7 @@ namespace Frontend.ViewModels
             set
             {
                 _selectedType = value;
-                Mediator.GetInstance().Execute(this, "updateBlocks");
+                Mediator.Notify(this, MediatorKey.UPDATEBLOCKSBYTYPE);
                 OnPropertyChanged();
             }
         }
@@ -52,7 +53,7 @@ namespace Frontend.ViewModels
         public BlockTypeViewModel()
         {
             InitBlocksTypeList();
-            this.SelectedType = this.BlocksType.FirstOrDefault();
+            SetMediator(this);
         }
 
         /// <summary>
