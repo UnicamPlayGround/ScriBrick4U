@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls.Shapes;
+﻿using Frontend.Model.Blocks;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Frontend.Blocks
 {
@@ -25,7 +26,12 @@ namespace Frontend.Blocks
         /// <summary>
         /// Tipo del blocco
         /// </summary>
-        public string Type { get; set; }
+        public BlockType Type { get; set; }
+
+        /// <summary>
+        /// Colore di sfondo del blocco
+        /// </summary>
+        public Color Color { get; set; }
 
         /// <summary>
         /// Metodo che permette di ottenere una nuova istanza del blocco

@@ -1,7 +1,5 @@
-﻿
-
-using Frontend.Helpers;
-using Frontend.Helpers.Mediators;
+﻿using Frontend.Helpers.Mediators;
+using Frontend.Model.Blocks;
 
 namespace Frontend.ViewModels
 {
@@ -11,19 +9,19 @@ namespace Frontend.ViewModels
     public class BlockTypeViewModel : BaseViewModel
     {
         /// <summary>
-        /// lista di tipo <see cref="List{String}"/> che contiene effettivamente tutti i tipi di blocco
+        /// lista privata di tuple contenente effettivamente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary>
-        private List<string> _blocksType;
+        private List<Tuple<BlockType, Color>> _blockTypes;
 
         /// <summary>
-        /// lista di tipo <see cref="List{String}"/> che contiene tutti i tipi di blocco
-        /// </summary>
-        public List<string> BlocksType
+        /// lista pubblica di tuple contenente tutti i tipi di blocco, con associato il rispettivo colore
+        /// </summary> 
+        public List<Tuple<BlockType, Color>> BlockTypes
         {
-            get => _blocksType;
+            get => _blockTypes;
             set
             {
-                _blocksType = value;
+                _blockTypes = value;
                 OnPropertyChanged();
             }
         }
@@ -31,12 +29,12 @@ namespace Frontend.ViewModels
         /// <summary>
         /// variabile che contiene effetivamente il tipo di blocco selezionato
         /// </summary>
-        private string _selectedType;
+        private BlockType _selectedType;
 
         /// <summary>
         /// variabile che contiene il tipo di blocco selezionato
         /// </summary>
-        public string SelectedType
+        public BlockType SelectedType
         {
             get => _selectedType;
             set
@@ -52,16 +50,11 @@ namespace Frontend.ViewModels
         /// </summary>
         public BlockTypeViewModel()
         {
-            InitBlocksTypeList();
             SetMediator(this);
-        }
+            BlockTypes = new();
 
-        /// <summary>
-        /// Metodo che inizializza la lista contenente tutti i tipi di blocco
-        /// </summary>
-        private void InitBlocksTypeList()
-        {
-            this.BlocksType = new() { "movement", "conditional" };
+            foreach (var blockType in Enum.GetValues(typeof(BlockType)).Cast<BlockType>().ToList())
+                BlockTypes.Add(new(blockType, BlockTypeMethods.GetColor(blockType)));
         }
     }
 }

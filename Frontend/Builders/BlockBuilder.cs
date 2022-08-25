@@ -1,4 +1,5 @@
 ﻿using Frontend.Blocks;
+using Frontend.Model.Blocks;
 
 namespace Frontend.Builders
 {
@@ -15,12 +16,13 @@ namespace Frontend.Builders
         /// </summary>
         /// <param name="name"> nome del blocco </param>
         /// <param name="type"> tipo del blocco </param>
-        public BlockBuilder(string name, string type)
+        public BlockBuilder(string name, BlockType type)
         {
             Block = new()
             {
                 Name = name,
-                Type = type
+                Type = type,
+                Color = BlockTypeMethods.GetColor(type)
             };
         }
 

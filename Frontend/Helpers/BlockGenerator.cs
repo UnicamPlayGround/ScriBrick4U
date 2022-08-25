@@ -1,5 +1,6 @@
 ﻿using Frontend.Blocks;
 using Frontend.Builders;
+using Frontend.Model.Blocks;
 namespace ProvaMauiDragAndDrop.Helper
 {
     /// <summary>
@@ -18,13 +19,13 @@ namespace ProvaMauiDragAndDrop.Helper
             switch (name)
             {
                 case "move":
-                    return new BlockBuilder<LabelEditor>(name, "movement")
+                    return new BlockBuilder<LabelEditor>(name, BlockType.Movimento)
                         .AddLabel("muovi di")
                         .AddInput()
                         .AddLabel("passi")
                         .Build();
                 case "rotate":
-                    return new BlockBuilder<LabelEditor>(name, "movement")
+                    return new BlockBuilder<LabelEditor>(name, BlockType.Movimento)
                         .AddLabel("routa di ")
                         .AddInput()
                         .AddLabel("gradi")

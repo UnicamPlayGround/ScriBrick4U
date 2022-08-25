@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls.Shapes;
+﻿using Frontend.Model.Blocks;
+using Microsoft.Maui.Controls.Shapes;
 using ProvaMauiDragAndDrop.Helper;
 
 namespace Frontend.Blocks
@@ -25,8 +26,8 @@ namespace Frontend.Blocks
         }
         
         public string Name { get; set; }
-        
-        public string Type { get; set; }
+        public BlockType Type { get; set; }
+        public Color Color { get; set; }
 
 
         /// <summary>

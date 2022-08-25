@@ -12,24 +12,29 @@
 
 
     <CollectionView
-                x:Name="BlocksType"
-                ItemsSource="{Binding BlocksType}"
-                SelectionMode="Single"
-                SelectionChanged="BlocksType_SelectionChanged" 
-                BackgroundColor="Purple">
+        ItemsSource="{Binding BlockTypes}"
+        SelectionMode="Single"
+        SelectionChanged="BlocksType_SelectionChanged" 
+        BackgroundColor="Purple">
 
         <CollectionView.ItemsLayout>
-            <LinearItemsLayout Orientation="Vertical" />
+            <LinearItemsLayout Orientation="Vertical"/>
         </CollectionView.ItemsLayout>
 
         <CollectionView.ItemTemplate>
             <DataTemplate>
-                <StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="10" Spacing="5">
+                    <Path VerticalOptions="Center" Fill="{Binding Item2}">
+                        <Path.Data>
+                            <EllipseGeometry RadiusX="15" RadiusY="15"/>
+                        </Path.Data>
+                    </Path>
+
                     <Label
                         x:Name="lblType"
+                        VerticalOptions="Center"
                         HorizontalOptions="End"
-                        TextColor="Red"
-                        Text="{Binding }"
+                        Text="{Binding Item1}"
                         FontAttributes="Bold"/>
                 </StackLayout>
             </DataTemplate>

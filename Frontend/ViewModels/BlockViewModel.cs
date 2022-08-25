@@ -1,5 +1,6 @@
 ﻿using Frontend.Blocks;
 using Frontend.Helpers;
+using Frontend.Model.Blocks;
 using ProvaMauiDragAndDrop.Helper;
 using System.Text.Json;
 
@@ -91,7 +92,7 @@ namespace Frontend.ViewModels
         /// Metodo che aggiorna la lista dei blocchi mostrati all'utente in base al tipo
         /// </summary>
         /// <param name="type"> tipo di blocco in base al quale filtrare la lista </param>
-        public void UpdateBlocksByType(string type)
+        public void UpdateBlocksByType(BlockType type)
         {
             this.Blocks = this._allBlocks.FindAll((e) => e.Type.Equals(type));
         }

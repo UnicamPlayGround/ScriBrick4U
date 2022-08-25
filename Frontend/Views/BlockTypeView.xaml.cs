@@ -1,3 +1,4 @@
+using Frontend.Model.Blocks;
 using Frontend.ViewModels;
 
 namespace Frontend.Views;
@@ -8,7 +9,7 @@ namespace Frontend.Views;
 public partial class BlockTypeView : ContentView
 {
     /// <summary>
-    /// variabile che rappresenta il Binding Context della <see cref="ContentView"/>
+    /// BindingContext della BlockTypeView
     /// </summary>
     private readonly BlockTypeViewModel context;
 
@@ -18,7 +19,7 @@ public partial class BlockTypeView : ContentView
     public BlockTypeView()
     {
         InitializeComponent();
-        this.context = this.BindingContext as BlockTypeViewModel;
+        context = BindingContext as BlockTypeViewModel;
     }
 
     /// <summary>
@@ -28,6 +29,7 @@ public partial class BlockTypeView : ContentView
     /// <param name="e"> argomenti di tipo <see cref="SelectionChangedEventArgs"/> </param>
     private void BlocksType_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        this.context.SelectedType = (string)e.CurrentSelection.ElementAt(0);
+        var blockType = (Tuple<BlockType, Color>)e.CurrentSelection.ElementAt(0);
+        context.SelectedType = blockType.Item1;
     }
 }
