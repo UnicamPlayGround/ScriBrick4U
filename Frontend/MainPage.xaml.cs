@@ -61,11 +61,11 @@ namespace Frontend
 
                 if (fileName != null)
                 {
+
                     _context.SaveScript(fileName);
-                    await DisplayAlert("File salvato", $"Il file {_context.FilePath}.json è stato salvato con successo.", "Ok");
+                    await DisplayAlert("File salvato", $"Il file {_context.FileName} è stato salvato con successo.", "Ok");
                 }
             }
-            catch (ArgumentNullException ex) { await DisplayAlert("Nome file", "Errore: " + ex.Message + ".", "Ok"); }
             catch (UnauthorizedAccessException ex) { await DisplayAlert("Accesso non autorizzato", $"Errore: il file {fileName}.json non è stato salvato (" + ex.Message + ").", "Ok"); }
         }
 

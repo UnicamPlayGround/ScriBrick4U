@@ -34,7 +34,7 @@ namespace Frontend.Helpers.Mediators
                 _blocksViewModel.UpdateBlocksByType(_blocksTypeViewModel.SelectedType);
 
             if (key == MediatorKey.SETDROPPEDBLOCKSFROMJSON)
-                throw new NotImplementedException();
+                _blocksViewModel.SetDroppedBlocksFromJson(File.ReadAllText(_mainViewModel.FilePath));
         }
 
         public object NotifyWithReturn(object sender, MediatorKey key)

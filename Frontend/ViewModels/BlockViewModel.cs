@@ -1,6 +1,10 @@
-﻿using Frontend.Model.Blocks;
+﻿using Frontend.Helpers.Serializers;
+using Frontend.Model.Blocks;
 using Frontend.Models.Blocks.Shapes;
 using Frontend.Views;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Frontend.Models.Blocks.Descriptors;
 
 namespace Frontend.ViewModels
 {
@@ -278,7 +282,18 @@ namespace Frontend.ViewModels
         /// <returns> una stringa in formato Json </returns>
         public string GetJsonDroppedBlocks()
         {
-            throw new NotImplementedException();
+            List<FEBlockSerializable> list = new();
+
+            foreach (var item in DroppedBlocks)
+            {
+                list.Add(new FEBlockSerializable(item));
+            }
+
+            return JsonSerializer.Serialize(list, new JsonSerializerOptions
+            {
+                NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                WriteIndented = true
+            });
         }
 
         /// <summary>
@@ -287,7 +302,22 @@ namespace Frontend.ViewModels
         /// <param name="droppedBlocks"> Stringa, in formato Json, che rappresenta i blocchi posizionati </param>
         public void SetDroppedBlocksFromJson(string droppedBlocks)
         {
-            throw new NotImplementedException();
+            List<FEBlockSerializable> serializedBlocks = JsonSerializer.Deserialize<List<FEBlockSerializable>>(droppedBlocks);
+            List<IFrontEndBlock> blocks = new();
+            foreach (var block in serializedBlocks)
+            {
+                IFrontEndBlock baseBlock = (IFrontEndBlock)Activator.CreateInstance(Type.GetType(block.BlockType));
+                IFrontEndBlock serialize = baseBlock.GetInfo();
+                serialize.Position = block.Position;
+                serialize.Descriptor = new BlockDescriptor(block.DescriptorName, block.DescriptorType);
+
+                foreach (var question in block.Questions)
+                    serialize.Questions.ElementAt(question.Item1).SetValue(question.Item2);
+                
+                blocks.Add(serialize);
+            }
+
+            DroppedBlocks = blocks;
         }
     }
 }

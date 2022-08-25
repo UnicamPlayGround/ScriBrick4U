@@ -8,6 +8,12 @@ namespace Frontend.ViewModels
     /// </summary>
     public class MainViewModel : BaseViewModel
     {
+
+        /// <summary>
+        /// Nome del file salvato o caricato dal file system
+        /// </summary>
+        public string FileName { get => Path.GetFileName(FilePath); }
+
         /// <summary>
         /// Path del file salvato o caricato dal file system
         /// </summary>
@@ -36,7 +42,7 @@ namespace Frontend.ViewModels
         /// </summary>
         public void SaveScript(string fileName)
         {
-            FilePath = fileName ?? throw new ArgumentNullException(nameof(fileName), "il nome del file non può essere nullo");
+            FilePath = (FilePath!=null) ? FilePath : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{fileName}.json";
 
             string ris = (string)Mediator.NotifyWithReturn(this, MediatorKey.GETJSONDROPPEDBLOCKS);
 
@@ -44,7 +50,7 @@ namespace Frontend.ViewModels
                 try { Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ScriBrick4U"); }
                 catch (UnauthorizedAccessException) { throw new UnauthorizedAccessException("impossibile accedere alla directory personale dei documenti."); }
 
-            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{FilePath}.json", ris);
+            File.WriteAllText(FilePath, ris);
 
         }
 
