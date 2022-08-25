@@ -38,15 +38,31 @@ namespace Frontend.Model.Blocks
         public Func<string> TextDropped { get; set; }
 
         /// <summary>
+        /// Padre del blocco
+        /// </summary>
+        public IFrontEndBlock Father { get; set; }
+
+        /// <summary>
+        /// Figli del blocco
+        /// </summary>
+        public List<IFrontEndBlock> Children { get; set; }
+
+        /// <summary>
         /// Elementi contenuti nel blocco
         /// </summary>
-        public List<IView> Elements { get; set; }
+        public List<Element> Elements { get; set; }
 
         /// <summary>
         /// Disegna il blocco nel canvas passato come parametro
         /// </summary>
         /// <param name="canvas"> canvas nel quale disegnare il blocco </param>
         public void Draw(ICanvas canvas);
+
+        /// <summary>
+        /// Restituisce una nuova istanza del blocco corrente
+        /// </summary>
+        /// <returns> una nuova istanza del blocco corrente </returns>
+        public IFrontEndBlock GetInfo();
 
         /// <summary>
         /// Restituisce, partendo da un serie di punti passati come parametro, una stringa che rappresenta la forma
@@ -72,11 +88,5 @@ namespace Frontend.Model.Blocks
 
             return path;
         }
-
-        /// <summary>
-        /// Metodo che permette di ottenere una nuova istanza del blocco
-        /// </summary>
-        /// <returns>una nuova istanza del blocco</returns>
-        public IFrontEndBlock GetNewInstance();
     }
 }
