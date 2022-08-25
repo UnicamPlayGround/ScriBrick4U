@@ -1,4 +1,7 @@
-﻿namespace Frontend.ViewModels
+﻿using Frontend.Helpers.Mediators;
+using System.Diagnostics;
+
+namespace Frontend.ViewModels
 {
     /// <summary>
     /// Classe che rappresenta un ViewModel per la MainPage
@@ -6,29 +9,9 @@
     public class MainViewModel : BaseViewModel
     {
         /// <summary>
-        /// <see cref="Command"/> per la gestione dell'apertura di una nuova finestra del programma
+        /// Path del file salvato o caricato dal file system
         /// </summary>
-        public Command NewProgram { get; set; }
-
-        /// <summary>
-        /// <see cref="Command"/> per la gestione del salvataggio dello script
-        /// </summary>
-        public Command SaveProgram { get; set; }
-
-        /// <summary>
-        /// <see cref="Command"/> per la gestione dell'apertura di uno script già esistente
-        /// </summary>
-        public Command LoadProgram { get; set; }
-
-        /// <summary>
-        /// <see cref="Command"/> per la gestione dell'esecuzione dello script
-        /// </summary>
-        public Command StartProgram { get; set; }
-
-        /// <summary>
-        /// <see cref="Command"/> per la gestione dell'uscita dal programma
-        /// </summary>
-        public Command Exit { get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// Costruttore di default
@@ -36,52 +19,58 @@
         public MainViewModel()
         {
             SetMediator(this);
-            this.NewProgram = new(ProgramNew);
-            this.SaveProgram = new(ProgramSave);
-            this.LoadProgram = new(ProgramLoad);
-            this.StartProgram = new(ProgramStart);
-            this.Exit = new(ProgramExit);
         }
 
 
         /// <summary>
-        /// metodo per la gestione dell'apertura di una nuova finestra del programma
+        /// Apre una nuova finestra del programma
         /// </summary>
-        private void ProgramNew()
+        public void NewProgram()
         {
-            throw new NotImplementedException("Voce \"File > Nuovo\" non implementata.");
+            Process.Start(Environment.ProcessPath);
         }
 
 
         /// <summary>
-        /// metodo per la gestione del salvataggio dello script
+        /// Salva lo script, sotto forma di file .Json, nella directory personale dei documenti
         /// </summary>
-        private void ProgramSave()
+        public void SaveScript(string fileName)
         {
-            throw new NotImplementedException("Voce \"File > Salva\" non implementata.");
+            FilePath = fileName ?? throw new ArgumentNullException(nameof(fileName), "il nome del file non può essere nullo");
+
+            string ris = (string)Mediator.NotifyWithReturn(this, MediatorKey.GETJSONDROPPEDBLOCKS);
+
+            if (!Directory.Exists(Environment.SpecialFolder.MyDocuments + "\\ScriBrick4U"))
+                try { Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ScriBrick4U"); }
+                catch (UnauthorizedAccessException) { throw new UnauthorizedAccessException("impossibile accedere alla directory personale dei documenti."); }
+
+            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{FilePath}.json", ris);
+
         }
 
         /// <summary>
-        /// metodo per la gestione dell'apertura di uno script già esistente
+        /// Carica uno script precedentemente salvato sotto forma di file .Json
         /// </summary>
-        private void ProgramLoad()
+        public void LoadScript(string path)
         {
-            throw new NotImplementedException("Voce \"File > Carica\" non implementata.");
+            if (path == null) return;
+
+            FilePath = path;
+            Mediator.Notify(this, MediatorKey.SETDROPPEDBLOCKSFROMJSON);
         }
 
         /// <summary>
-        /// metodo per la gestione dell'esecuzione dello script
+        /// Esegue la traduzione dello script
         /// </summary>
-        private void ProgramStart()
+        public void TranslateScript()
         {
-
             throw new NotImplementedException("Voce \"Esegui\" non implementata.");
         }
 
         /// <summary>
-        /// metodo per la gestione dell'uscita dal programma
+        /// Provoca l'uscita dal programma
         /// </summary>
-        private void ProgramExit()
+        public void ExitProgram()
         {
             Environment.Exit(0);
         }

@@ -14,16 +14,16 @@
 
 
     <!-- Riferimento menù: https://github.com/dotnet/maui/issues/5382 -->
-    <ContentPage.MenuBarItems >
-        <MenuBarItem Text="File" BindingContext="{Binding}" >
-            <MenuFlyoutItem Text="Nuovo" Command="{Binding NewProgram}"/>
-            <MenuFlyoutItem Text="Salva" Command="{Binding SaveProgram}"/>
-            <MenuFlyoutItem Text="Carica Scena" Command="{Binding LoadProgram}"/>
-            <MenuFlyoutItem Text="Exit" Command="{Binding Exit}"/>
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Nuovo" Clicked="New_Clicked"/>
+            <MenuFlyoutItem Text="Chiudi" Clicked="Close_Clicked"/>
         </MenuBarItem>
 
-        <MenuBarItem Text="Programma" BindingContext="{Binding}">
-            <MenuFlyoutItem Text="Start" Command="{Binding StartProgram}"/>
+        <MenuBarItem Text="Script">
+            <MenuFlyoutItem Text="Salva" Clicked="SaveScript_Clicked"/>
+            <MenuFlyoutItem Text="Carica" Clicked="LoadScript_Clicked"/>
+            <MenuFlyoutItem Text="Esegui" Clicked="TranslateScript_Clicked"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
