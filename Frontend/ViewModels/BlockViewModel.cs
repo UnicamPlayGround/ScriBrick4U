@@ -94,7 +94,7 @@ namespace Frontend.ViewModels
         /// <param name="type"> tipo di blocco in base al quale filtrare la lista </param>
         public void UpdateBlocksByType(BlockType type)
         {
-            this.Blocks = this._allBlocks.FindAll((e) => e.Type.Equals(type));
+            this.Blocks = this._allBlocks.FindAll((e) => e.Descriptor.Type.Equals(type));
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Frontend.Model.Blocks;
+using Frontend.Models.Blocks.Descriptors;
 using Microsoft.Maui.Controls.Shapes;
 using ProvaMauiDragAndDrop.Helper;
 
@@ -24,10 +25,8 @@ namespace Frontend.Blocks
             get => _elements;
             set => _elements = value; 
         }
-        
-        public string Name { get; set; }
-        public BlockType Type { get; set; }
-        public Color Color { get; set; }
+
+        public IBlockDescriptor Descriptor { get; set; }
 
 
         /// <summary>
@@ -42,7 +41,7 @@ namespace Frontend.Blocks
 
         public IFrontEndBlock GetNewInstance()
         {
-            return BlockGenerator.GetBlock(this.Name);
+            return BlockGenerator.GetBlock(Descriptor.Name);
         }
     }
 }

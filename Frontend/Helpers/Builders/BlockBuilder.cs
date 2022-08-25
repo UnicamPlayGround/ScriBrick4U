@@ -1,5 +1,6 @@
 ﻿using Frontend.Blocks;
 using Frontend.Model.Blocks;
+using Frontend.Models.Blocks.Descriptors;
 
 namespace Frontend.Builders
 {
@@ -20,9 +21,7 @@ namespace Frontend.Builders
         {
             Block = new()
             {
-                Name = name,
-                Type = type,
-                Color = BlockTypeMethods.GetColor(type)
+                Descriptor = new BlockDescriptor(name, type)
             };
         }
 

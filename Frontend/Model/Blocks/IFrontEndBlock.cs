@@ -1,4 +1,5 @@
 ﻿using Frontend.Model.Blocks;
+using Frontend.Models.Blocks.Descriptors;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace Frontend.Blocks
@@ -19,19 +20,9 @@ namespace Frontend.Blocks
         public List<IView> Elements { get; set; }
 
         /// <summary>
-        /// Nome del blocco
+        /// Descrittore del blocco di tipo <see cref="IBlockDescriptor"/>
         /// </summary>
-        public string Name { get; set; }
-        
-        /// <summary>
-        /// Tipo del blocco
-        /// </summary>
-        public BlockType Type { get; set; }
-
-        /// <summary>
-        /// Colore di sfondo del blocco
-        /// </summary>
-        public Color Color { get; set; }
+        public IBlockDescriptor Descriptor { get; set; }
 
         /// <summary>
         /// Metodo che permette di ottenere una nuova istanza del blocco
