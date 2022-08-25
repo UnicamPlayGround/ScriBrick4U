@@ -2,7 +2,6 @@
 using Frontend.Models.Blocks.Bounds;
 using Frontend.Models.Blocks.Descriptors;
 using Frontend.Models.Blocks.Shapes;
-using Microsoft.Maui.Controls.Shapes;
 using SkiaSharp;
 
 namespace Frontend.Model.Blocks
@@ -12,6 +11,10 @@ namespace Frontend.Model.Blocks
     /// </summary>
     public interface IFrontEndBlock
     {
+
+        public float HorizontalOffset { get; set; }
+        public float Height { get; set; }
+
         /// <summary>
         /// Descrittore del blocco di tipo <see cref="IBlockDescriptor"/>
         /// </summary>

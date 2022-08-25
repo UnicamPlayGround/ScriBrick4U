@@ -1,5 +1,7 @@
+using Frontend.EditPage;
 using Frontend.Model.Blocks;
 using Frontend.Model.GraphicViews;
+using Frontend.Models.EditPage;
 using Frontend.ViewModels;
 
 namespace Frontend.Views;
@@ -33,7 +35,17 @@ public partial class BlockView : ContentView
     /// <param name="dropPoint"> punto nel quale è stato rilasciato il blocco </param>
     private void Drop(PointF dropPoint)
     {
-        context.AddDroppedBlockBorder(SelectedBlock, dropPoint);
+        context.AddDroppedBlock(SelectedBlock, dropPoint);
+        ResetBlockSelection();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="block"></param>
+    private void Delete(IFrontEndBlock block)
+    {
+        context.DeleteDroppedBlock(block);
     }
 
     /// <summary>
@@ -65,8 +77,21 @@ public partial class BlockView : ContentView
         if (e.CurrentSelection.Count > 0)
             if (e.CurrentSelection[0] != null)
             {
-                SelectedBlock = (e.CurrentSelection[0] as IFrontEndBlock).GetNewInstance();
+                SelectedBlock = (e.CurrentSelection[0] as IFrontEndBlock).GetInfo();
             }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="block"></param>
+    /// <param name="unloadedAction"></param>
+    /// <param name="btnEliminaEnabled"></param>
+    private async void ShowEditPage(IFrontEndBlock block, Action<object, EventArgs> unloadedAction, bool btnEliminaEnabled = false)
+    {
+        BlockEditPage editPage = new(block, btnEliminaEnabled);
+        editPage.Unloaded += new EventHandler(unloadedAction);
+        await Navigation.PushAsync(editPage);
     }
 
     /// <summary>
@@ -76,7 +101,18 @@ public partial class BlockView : ContentView
     /// <param name="e"> argomenti dell'evento </param>
     private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {
+        _grid = sender as Grid;
+    }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    private void ResetBlockSelection()
+    {
+        if (_grid == null) return;
+        SelectedBlock = null;
+        VisualStateManager.GoToState(_grid, "Normal");
+        blocksCollView.SelectedItem = null;
     }
 
     /// <summary>
@@ -97,8 +133,33 @@ public partial class BlockView : ContentView
     /// </summary>
     /// <param name="sender"> <see cref="GraphicsView"/> chiamante </param>
     /// <param name="e"> argomenti dell'evento </param>
-    private void DroppedBlocksGraphicsView_EndInteraction(object sender, TouchEventArgs e)
+    private async void DroppedBlocksGraphicsView_EndInteraction(object sender, TouchEventArgs e)
     {
-        Drop(e.Touches.ElementAt(0));
+        if (SelectedBlock == null)
+        {
+            var selectedBlock = context.GetBlockFromPoint(e.Touches.ElementAt(0));
+            if (selectedBlock != null) ShowEditPage(selectedBlock, (sender, args) => {
+                if ((sender as BlockEditPage).Flag == BlockEditPageFlag.ELIMINA)
+                    Delete(selectedBlock);
+            }, true);
+        }
+        else
+        {
+            try
+            {
+                context.CanBeDropped(SelectedBlock, e.Touches.ElementAt(0));
+                if (SelectedBlock.Descriptor.Type.Equals(BlockType.Principale)) Drop(e.Touches.ElementAt(0));
+                else ShowEditPage(SelectedBlock, (sender, args) => {
+                    if ((sender as BlockEditPage).Flag == BlockEditPageFlag.CONFERMA)
+                        Drop(e.Touches.ElementAt(0));
+                    ResetBlockSelection();
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                ResetBlockSelection();
+                await Application.Current.MainPage.DisplayAlert("Posizionamento blocco", ex.Message, "Ok");
+            }
+        }
     }
 }

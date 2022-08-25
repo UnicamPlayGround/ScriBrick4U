@@ -1,4 +1,5 @@
 ﻿using Frontend.Model.Blocks;
+using Frontend.Model.QuestionItem;
 using Frontend.Models.Blocks.Bounds;
 using Frontend.Models.Blocks.Descriptors;
 
@@ -24,6 +25,8 @@ namespace Frontend.Builders
                 Descriptor = new BlockDescriptor(name, type),
                 Elements = new(),
                 Questions = new(),
+                Children = new(),
+                Father = null,
                 Position = new BlockBound()
             };
         }
@@ -34,12 +37,12 @@ namespace Frontend.Builders
             return this;
         }
 
-        public IBlockBuilder<T> AddLabel(string s)
+        public IBlockBuilder<T> AddLabel(string s, double fontSize = 12)
         {
             Label l = new()
             {
                 Text = s,
-                FontSize = 12,
+                FontSize = fontSize,
                 FontAttributes = FontAttributes.Bold,
                 VerticalOptions = LayoutOptions.Center
             };
@@ -48,12 +51,24 @@ namespace Frontend.Builders
             return this;
         }
 
+        public IBlockBuilder<T> AddQuestion(IBlockEditItem question)
+        {
+            Block.Questions.Add(question);
+            return this;
+        }
+
+        public IBlockBuilder<T> AddQuestions(List<IBlockEditItem> questions)
+        {
+            foreach (var question in questions)
+                AddQuestion(question);
+            return this;
+        }
+
         public IBlockBuilder<T> AddTextDroppedFunction(Func<string> textDropped)
         {
             Block.TextDropped = textDropped;
             return this;
         }
-
 
         public T Build()
         {
