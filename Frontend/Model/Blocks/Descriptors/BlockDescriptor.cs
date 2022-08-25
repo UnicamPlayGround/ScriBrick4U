@@ -14,10 +14,10 @@ namespace Frontend.Models.Blocks.Descriptors
         public Color BackgroundColor { get; set; }
 
         /// <summary>
-        /// Costruttore che accetta in input il nome e il tipo del blocco
+        /// Costruttore che imposta il nome e il tipo del blocco
         /// </summary>
-        /// <param name="name">Nome del blocco</param>
-        /// <param name="type">Tipo del blocco</param>
+        /// <param name="name"> Nome del blocco </param>
+        /// <param name="type"> Tipo del blocco </param>
         public BlockDescriptor(string name, BlockType type)
         {
             Name = name;

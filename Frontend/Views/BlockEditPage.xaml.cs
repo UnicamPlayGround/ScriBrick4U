@@ -6,20 +6,27 @@ using Frontend.ViewModels;
 namespace Frontend.EditPage;
 
 /// <summary>
-/// Classe che rappresenta il file di code-behind per BlockEditPage.xaml, che permette di editare un blocco
+/// Classe che rappresenta il file di code-behind per il file BlockEditPage.xaml, che permette di editare un blocco
 /// </summary>
 public partial class BlockEditPage : ContentPage
 {
+    /// <summary> Variabile che rappresenta il BindingContext </summary>
     public BlockEditPageFlag Flag;
-    private readonly ScrollView _itemsGrid;
+
+    /// <summary> <see cref="ScrollView"/> contenente il <see cref="Grid"/> dei <see cref="IBlockEditItem"/> </summary>
+    private readonly ScrollView _itemsScrollView;
+
+    /// <summary> <see cref="Grid"/> dei bottoni </summary>
     private readonly Grid _buttonsGrid;
+
+    /// <summary> <see cref="Grid"/> delle <see cref="IFrontEndBlock.Questions"/> del blocco da editare </summary>
     private readonly List<IBlockEditItem> _editItems;
 
     /// <summary>
-    /// Costruttore di default, che costruisce la pagina con le <see cref="IFrontEndBlock.Questions"/> del blocco passato come parametro
+    /// Costruttore di default, che costruisce la pagina con gli <see cref="IBlockEditItem"/> del blocco passato come parametro
     /// </summary>
-    /// <param name="block"> <see cref="IFrontEndBlock"/> da editare </param>
-    /// <param name="btnEliminaEnabled"> booleano che indica se il bottone elimina è abilitato o meno </param>
+    /// <param name="block"> blocco da editare </param>
+    /// <param name="btnEliminaEnabled"> booleano che indica se il bottone elimina debba essere abilitato o meno </param>
 	public BlockEditPage(IFrontEndBlock block, bool btnEliminaEnabled)
 	{
 		InitializeComponent();
@@ -27,7 +34,7 @@ public partial class BlockEditPage : ContentPage
         BindingContext = new BlockEditPageViewModel(block);
 
         _editItems = new(block.Questions);
-        _itemsGrid = BuildItemsGrid(block.Questions);
+        _itemsScrollView = BuildItemsGrid(block.Questions);
         _buttonsGrid = BuildButtonsGrid(btnEliminaEnabled);
 
         mainFrame.Content = InitMainGrid(block.Descriptor.Name);
@@ -47,7 +54,7 @@ public partial class BlockEditPage : ContentPage
         mainGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
         mainGrid.Add(BuildLabel("Blocco " + blockName.ToUpper(), LayoutOptions.Center, LayoutOptions.Center));
-        mainGrid.Add(_itemsGrid, 0, 1);
+        mainGrid.Add(_itemsScrollView, 0, 1);
         mainGrid.Add(_buttonsGrid, 0, 2);
 
         return mainGrid;
@@ -57,10 +64,10 @@ public partial class BlockEditPage : ContentPage
     /// Costruisce una <see cref="Label"/>
     /// </summary>
     /// <param name="text"> Testo della label </param>
-    /// <param name="horOptions"> opzione per il posizionamento orizzontale </param>
-    /// <param name="verOptions"> opzione per il posizionamento verticale </param>
-    /// <param name="fontSize"> dimensioni della label </param>
-    /// <param name="fontAttr"> attributi della label </param>
+    /// <param name="horOptions"> Opzione per il posizionamento orizzontale </param>
+    /// <param name="verOptions"> Opzione per il posizionamento verticale </param>
+    /// <param name="fontSize"> Dimensioni della label </param>
+    /// <param name="fontAttr"> Attributi della label </param>
     /// <returns> la <see cref="Label"/> costruita </returns>
     private Label BuildLabel(string text, LayoutOptions horOptions, LayoutOptions verOptions, double fontSize = 15, FontAttributes fontAttr = FontAttributes.Bold)
     {
@@ -74,10 +81,10 @@ public partial class BlockEditPage : ContentPage
     }
 
     /// <summary>
-    /// Costruisce il <see cref="Grid"/> con le <see cref="IFrontEndBlock.Questions"/> del blocco da editare
+    /// Costruisce la <see cref="ScrollView"/> con gli <see cref="IBlockEditItem"/> del blocco da editare
     /// </summary>
-    /// <param name="items"> Lista di <see cref="IFrontEndBlock.Questions"/> </param>
-    /// <returns> il <see cref="Grid"/> costruito </returns>
+    /// <param name="items"> Lista di <see cref="IBlockEditItem"/> </param>
+    /// <returns> la <see cref="ScrollView"/>, degli <see cref="IBlockEditItem"/>, costruita </returns>
     private ScrollView BuildItemsGrid(List<IBlockEditItem> items)
 	{
         ScrollView v = new();
@@ -106,9 +113,9 @@ public partial class BlockEditPage : ContentPage
     }
 
     /// <summary>
-    /// Costruisce il <see cref="Grid"/> con i bottoni per confermare/annulare l'editing e eliminare il blocco
+    /// Costruisce il <see cref="Grid"/> con i bottoni per confermare/annulare l'editing ed eliminare il blocco
     /// </summary>
-    /// <param name="btnEliminaEnabled"> booleano che indica se il bottone elimina e' abilitato o meno </param>
+    /// <param name="btnEliminaEnabled"> Booleano che indica se il bottone elimina debba essere abilitato o meno </param>
     /// <returns> il <see cref="Grid"/> dei bottoni costruito </returns>
     private Grid BuildButtonsGrid(bool btnEliminaEnabled)
     {
@@ -140,7 +147,7 @@ public partial class BlockEditPage : ContentPage
     /// Costruisce il bottone per confermare l'editing del blocco
     /// </summary>
     /// <param name="text"> Testo del bottone </param>
-    /// <returns> Il bottone, per confermare l'editing del blocco, costruito </returns>
+    /// <returns> il bottone, per confermare l'editing del blocco, costruito </returns>
 	private Button BuildConfermaButton(string text) {
         return BuildButton(text, new((sender, args) => {
             string errors = "";
@@ -156,7 +163,7 @@ public partial class BlockEditPage : ContentPage
     /// Costruisce il bottone per annullare l'editing del blocco
     /// </summary>
     /// <param name="text"> Testo del bottone </param>
-    /// <returns> Il bottone, per annullare l'editing del blocco, costruito </returns>
+    /// <returns> il bottone, per annullare l'editing del blocco, costruito </returns>
     private Button BuildAnnullaButton(string text) {
         return BuildButton(text, new((sender, args) => {
             ClosePage(BlockEditPageFlag.ANNULLA); 
@@ -167,19 +174,19 @@ public partial class BlockEditPage : ContentPage
     /// Costruisce il bottone per eliminare il blocco
     /// </summary>
     /// <param name="text"> Testo del bottone </param>
-    /// <param name="enabled"> Booleano che indica se il bottone e' abilitato o meno </param>
-    /// <returns> Il bottone, per eliminare il blocco, costruito </returns>
+    /// <param name="enabled"> Booleano che indica se il bottone debba essere abilitato o meno </param>
+    /// <returns> il bottone, per eliminare il blocco, costruito </returns>
     private Button BuildEliminaButton(string text, bool enabled) {
         return BuildButton(text, new((sender, args) => { ClosePage(BlockEditPageFlag.ELIMINA); }), enabled);
     }
 
     /// <summary>
-    /// Costruisce un bottone
+    /// Costruisce un bottone con le proprieta' specificate
     /// </summary>
     /// <param name="text"> Testo del bottone </param>
     /// <param name="clickedFunction"> Funzione che gestisce il click del bottone </param>
     /// <param name="enabled"> Booleano che indica se il bottone e' abilitato o meno </param>
-    /// <returns> Il bottone, per annullare l'editing del blocco, costruito </returns>
+    /// <returns> il bottone costruito </returns>
     private Button BuildButton(string text, EventHandler clickedFunction, bool enabled = true) {
         Button button = new() {
             Text = text,
@@ -191,13 +198,12 @@ public partial class BlockEditPage : ContentPage
     }
 
     /// <summary>
-    /// Chiude la pagina, impostando l'azione da eseguire successivamente. Quest'ultima e' indicata dal <see cref="BlockEditPageFlag"/>
-    /// passato come parametro
+    /// Chiude la pagina, impostando l'azione da eseguire successivamente. Quest'ultima e' indicata dal parametro del metodo
     /// </summary>
-    /// <param name="flag"> <see cref="BlockEditPageFlag"/> per indicare l'azione da eseguire dopo la chiusura della pagina </param>
+    /// <param name="flag"> flag per indicare l'azione da eseguire dopo la chiusura della pagina </param>
     private void ClosePage(BlockEditPageFlag flag) {
         Flag = flag;
-        (_itemsGrid?.Content as Grid).Children.Clear();
+        (_itemsScrollView?.Content as Grid).Children.Clear();
         Navigation.PopAsync();
     }
 }

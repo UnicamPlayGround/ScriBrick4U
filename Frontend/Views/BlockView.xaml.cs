@@ -7,18 +7,17 @@ using Frontend.ViewModels;
 namespace Frontend.Views;
 
 /// <summary>
-/// Classe che rappresenta il file di code-behind per BlockView.xaml
+/// Classe che rappresenta il file di code-behind per il file BlockView.xaml, cioe' per la <see cref="ContentView"/> dei blocchi
 /// </summary>
 public partial class BlockView : ContentView
 {
+    /// <summary> Variabile che rappresenta il BindingContext </summary>
+    private readonly BlockViewModel context;
+
     /// <summary> variabile che rappresenta il blocco selezionato, che poi verra' trascinato </summary>
     private IFrontEndBlock SelectedBlock;
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <summary> <see cref="Grid"/> associato al blocco selezionato </summary>
     private Grid _grid;
-    /// <summary> variabile che rappresenta il Binding Context della <see cref="ContentView"/> </summary>
-    private readonly BlockViewModel context;
 
     /// <summary>
     /// Costruttore di default
@@ -30,9 +29,9 @@ public partial class BlockView : ContentView
     }
 
     /// <summary>
-    /// Metodo che permette di registrare il blocco trascinato
+    /// Metodo che registra il blocco scelto
     /// </summary>
-    /// <param name="dropPoint"> punto nel quale è stato rilasciato il blocco </param>
+    /// <param name="dropPoint"> Punto selezionato per il posizionamento del blocco scelto </param>
     private void Drop(PointF dropPoint)
     {
         context.AddDroppedBlock(SelectedBlock, dropPoint);
@@ -40,19 +39,19 @@ public partial class BlockView : ContentView
     }
 
     /// <summary>
-    /// 
+    /// Metodo che elimina un blocco precedentemente posizionato
     /// </summary>
-    /// <param name="block"></param>
+    /// <param name="block"> Blocco da eliminare </param>
     private void Delete(IFrontEndBlock block)
     {
         context.DeleteDroppedBlock(block);
     }
 
     /// <summary>
-    /// Metodo che aggiunge gli oggetti <see cref="IView"/> del blocco <see cref="IFrontEndBlock"/> ad uno <see cref="StackLayout"/>
+    /// Metodo che gestisce la creazione dello <see cref="StackLayout"/> contenente gli <see cref="IFrontEndBlock.Elements"/> del blocco associato
     /// </summary>
-    /// <param name="sender"> <see cref="StackLayout"/> che è stato creato </param>
-    /// <param name="e"> argomenti di tipo <see cref="EventArgs"/> </param>
+    /// <param name="sender"> <see cref="StackLayout"/> creato </param>
+    /// <param name="e"> Argomenti di tipo <see cref="EventArgs"/> </param>
     private void BlocksStackLayout_Loaded(object sender, EventArgs e)
     {
         var stack = sender as StackLayout;
@@ -71,7 +70,7 @@ public partial class BlockView : ContentView
     /// Gestisce la selezione di un elemento della <see cref="CollectionView"/> dei blocchi
     /// </summary>
     /// <param name="sender"> <see cref="CollectionView"/> chiamante </param>
-    /// <param name="e"> argomenti dell'evento </param>
+    /// <param name="e"> Argomenti dell'evento </param>
     private void SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.Count > 0)
@@ -82,11 +81,11 @@ public partial class BlockView : ContentView
     }
 
     /// <summary>
-    /// 
+    /// Mostra la <see cref="BlockEditPage"/>, in base ai parametri indicati
     /// </summary>
-    /// <param name="block"></param>
-    /// <param name="unloadedAction"></param>
-    /// <param name="btnEliminaEnabled"></param>
+    /// <param name="block"> Blocco da editare </param>
+    /// <param name="unloadedAction"> Azione da eseguire alla chiusura della pagina </param>
+    /// <param name="btnEliminaEnabled"> Booleano che indica se il bottone elimina debba essere abilitato o meno </param>
     private async void ShowEditPage(IFrontEndBlock block, Action<object, EventArgs> unloadedAction, bool btnEliminaEnabled = false)
     {
         BlockEditPage editPage = new(block, btnEliminaEnabled);
@@ -98,14 +97,14 @@ public partial class BlockView : ContentView
     /// Gestisce il click di un elemento della <see cref="CollectionView"/> dei blocchi
     /// </summary>
     /// <param name="sender"> <see cref="Grid"/> chiamante </param>
-    /// <param name="e"> argomenti dell'evento </param>
+    /// <param name="e"> Argomenti dell'evento </param>
     private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {
         _grid = sender as Grid;
     }
 
     /// <summary>
-    /// 
+    /// Reimposta la selezione di un blocco
     /// </summary>
     private void ResetBlockSelection()
     {
@@ -119,7 +118,7 @@ public partial class BlockView : ContentView
     /// Gestisce la creazione della <see cref="GraphicsView"/> dei blocchi trascinati
     /// </summary>
     /// <param name="sender"> <see cref="GraphicsView"/> chiamante </param>
-    /// <param name="e"> argomenti dell'evento </param>
+    /// <param name="e"> Argomenti dell'evento </param>
     private void DroppedBlocksGraphicsView_Loaded(object sender, EventArgs e)
     {
         var graphicsView = sender as GraphicsView;
@@ -132,7 +131,7 @@ public partial class BlockView : ContentView
     /// Gestisce la fine dell'interazione con la <see cref="GraphicsView"/> dei blocchi trascinati
     /// </summary>
     /// <param name="sender"> <see cref="GraphicsView"/> chiamante </param>
-    /// <param name="e"> argomenti dell'evento </param>
+    /// <param name="e"> Asrgomenti dell'evento </param>
     private async void DroppedBlocksGraphicsView_EndInteraction(object sender, TouchEventArgs e)
     {
         if (SelectedBlock == null)

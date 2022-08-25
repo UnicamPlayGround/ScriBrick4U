@@ -10,7 +10,7 @@ namespace Frontend.Builders
     public interface IBlockBuilder<T>
     {
         /// <summary>
-        /// Metodo che permette di aggiungere una casella di testo (<see cref="Editor"/>) al blocco
+        /// Metodo che permette di aggiungere una casella di testo, di tipo <see cref="Editor"/>, al blocco
         /// </summary>
         /// <returns> l'oggetto corrente </returns>
         public IBlockBuilder<T> AddInput();
@@ -33,14 +33,15 @@ namespace Frontend.Builders
         /// <summary>
         /// Aggiunge la lista di <see cref="IBlockEditItem"/>, passata come parametro, al blocco
         /// </summary>
-        /// <param name="questions"> lista di <see cref="IBlockEditItem"/> da aggiungere </param>
+        /// <param name="questions"> Lista di <see cref="IBlockEditItem"/> da aggiungere </param>
         /// <returns> l'oggetto corrente </returns>
         public IBlockBuilder<T> AddQuestions(List<IBlockEditItem> questions);
 
         /// <summary>
-        /// Aggiunge la funzione <see cref="IFrontEndBlock.TextDropped"/> al blocco
+        /// Imposta la funzione <see cref="IFrontEndBlock.TextDropped"/>, per ottenere il testo del blocco, una volta che questo 
+        /// è stato posizionato
         /// </summary>
-        /// <param name="textDropped"></param>
+        /// <param name="textDropped"> Funzione per ottenre il testo del blocco una volta che questo è stato posizionato </param>
         /// <returns> l'oggetto corrente </returns>
         public IBlockBuilder<T> AddTextDroppedFunction(Func<string> textDropped);
 

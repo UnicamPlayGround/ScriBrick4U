@@ -30,10 +30,10 @@
         };
 
         /// <summary>
-        /// Restituisce l'<see cref="IBlockShape"/> associata alla <see cref="ShapeType"/> passata come parametro
+        /// Restituisce l'<see cref="IBlockShape"/> associata al tipo di forma passato come parametro
         /// </summary>
-        /// <param name="type"> <see cref="ShapeType"/> della quale estrarre l'<see cref="IBlockShape"/> </param>
-        /// <returns></returns>
+        /// <param name="type"> Tipo di forma del quale estrarre l'<see cref="IBlockShape"/> </param>
+        /// <returns> l'<see cref="IBlockShape"/> associata al tipo di forma passato come parametro </returns>
         public static IBlockShape GetShape(ShapeType type) {
             return _dictionary[type];
         }

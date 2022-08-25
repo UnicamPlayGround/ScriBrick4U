@@ -3,13 +3,11 @@
 namespace Frontend
 {
     /// <summary>
-    /// Classe che rappresenta il file di code-behind per MainPage.xaml
+    /// Classe che rappresenta il file di code-behind per il file MainPage.xaml, cioe' per la pagina principale
     /// </summary>
     public partial class MainPage : ContentPage
     {
-        /// <summary>
-        /// BindingContext della MainPage
-        /// </summary>
+        /// <summary> Variabile che rappresenta il BindingContext </summary>
         private readonly MainViewModel _context;
 
         /// <summary>
@@ -25,8 +23,8 @@ namespace Frontend
         /// Gestisce il click della voce del menù per aprire una nuova finestra del programma, richiamando un'apposito metodo
         /// nel <see cref="MainViewModel"/>
         /// </summary>
-        /// <param name="sender">Oggetto chiamante</param>
-        /// <param name="e">Parametri dell'evento click</param>
+        /// <param name="sender"> Oggetto chiamante </param>
+        /// <param name="e"> Parametri dell'evento click </param>
         private void New_Clicked(object sender, EventArgs e)
         {
             _context.NewProgram();
@@ -36,8 +34,8 @@ namespace Frontend
         /// Gestisce il click della voce del menù per chiudere il programma, chiedendone conferma e richiamando un'apposito metodo
         /// nel <see cref="MainViewModel"/>
         /// </summary>
-        /// <param name="sender">Oggetto chiamante</param>
-        /// <param name="e">Parametri dell'evento click</param>
+        /// <param name="sender"> Oggetto chiamante </param>
+        /// <param name="e"> Parametri dell'evento click </param>
         private async void Close_Clicked(object sender, EventArgs e)
         {
             if (await DisplayAlert("Esci", "Chiudere il programma?", "Si", "No"))
@@ -48,8 +46,8 @@ namespace Frontend
         /// Gestisce il click della voce del menù per salvare lo script, chiedendone il nome e richiamando un'apposito metodo
         /// nel <see cref="MainViewModel"/>
         /// </summary>
-        /// <param name="sender">Oggetto chiamante</param>
-        /// <param name="e">Parametri dell'evento click</param>
+        /// <param name="sender"> Oggetto chiamante </param>
+        /// <param name="e"> Parametri dell'evento click </param>
         private async void SaveScript_Clicked(object sender, EventArgs e)
         {
             string fileName = "";
@@ -75,8 +73,8 @@ namespace Frontend
         /// Gestisce il click della voce del menù per caricare uno script, chiedendone la selezione dal file system e richiamando 
         /// un'apposito metodo nel <see cref="MainViewModel"/>
         /// </summary>
-        /// <param name="sender">Oggetto chiamante</param>
-        /// <param name="e">Parametri dell'evento click</param>
+        /// <param name="sender"> Oggetto chiamante </param>
+        /// <param name="e"> Parametri dell'evento click </param>
         private async void LoadScript_Clicked(object sender, EventArgs e)
         {
             var file = await FilePicker.PickAsync();
@@ -91,8 +89,8 @@ namespace Frontend
         /// Gestisce il click della voce del menù per tradurre uno script, richiamando un'apposito metodo 
         /// nel <see cref="MainViewModel"/>
         /// </summary>
-        /// <param name="sender">Oggetto chiamante</param>
-        /// <param name="e">Parametri dell'evento click</param>
+        /// <param name="sender"> Oggetto chiamante </param>
+        /// <param name="e"> Parametri dell'evento click </param>
         private async void TranslateScript_Clicked(object sender, EventArgs e)
         {
             _context.TranslateScript();

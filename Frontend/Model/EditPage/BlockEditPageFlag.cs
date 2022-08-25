@@ -1,7 +1,9 @@
-﻿namespace Frontend.Models.EditPage
+﻿using Frontend.EditPage;
+
+namespace Frontend.Models.EditPage
 {
     /// <summary>
-    /// Enum che rappresenta le azioni che si possono compiere in un'<see cref="EditPage"/>
+    /// Enum che descrive le azioni che si possono compiere in un'<see cref="BlockEditPage"/>
     /// </summary>
     public enum BlockEditPageFlag
     {

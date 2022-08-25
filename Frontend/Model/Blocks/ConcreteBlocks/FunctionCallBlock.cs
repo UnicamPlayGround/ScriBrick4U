@@ -5,8 +5,14 @@ using Frontend.Models.Blocks.Shapes;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
-    internal class FunctionCallBlock : AbstractFrontEndBlock
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco per chiamare una funzione
+    /// </summary>
+    public class FunctionCallBlock : AbstractFrontEndBlock
     {
+        /// <summary>
+        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.HorizontalOffset"/> e l'altezza del blocco
+        /// </summary>
         public FunctionCallBlock()
         {
             Shape = ShapeTypeMethods.GetShape(ShapeType.RECTANGLE);

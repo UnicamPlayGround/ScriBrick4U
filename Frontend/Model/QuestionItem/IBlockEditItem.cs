@@ -18,9 +18,9 @@
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        /// Imposta il <see cref="Value"/> con il valore passato come parametro
+        /// Imposta il valore con quello passato come parametro
         /// </summary>
-        /// <param name="value"> nuovo valore </param>
+        /// <param name="value"> Nuovo valore </param>
         public void SetValue (string value);
 
         /// <summary>

@@ -23,10 +23,10 @@ namespace Frontend.Models.Blocks.Shapes
         public ShapeType Type { get; set; }
 
         /// <summary>
-        /// Parsa il <see cref="PathTemplate"/> con larghezza e altezza passata come parametro
+        /// Parsa il <see cref="PathTemplate"/> con la larghezza e l'altezza passate come parametro
         /// </summary>
-        /// <param name="width"> larghezza del blocco </param>
-        /// <param name="height"> altezza del blocco </param>
+        /// <param name="width"> Larghezza del blocco </param>
+        /// <param name="height"> Altezza del blocco </param>
         /// <returns> il <see cref="PathTemplate"/> parsato </returns>
         public string GetSvgPath(float width, float height);
     }

@@ -5,8 +5,14 @@ using Frontend.Models.Blocks.Shapes;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco rotazione
+    /// </summary>
     public class RotateBlock : AbstractFrontEndBlock
     {
+        /// <summary>
+        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.HorizontalOffset"/> e l'altezza del blocco
+        /// </summary>
         public RotateBlock()
         {
             Shape = ShapeTypeMethods.GetShape(ShapeType.RECTANGLE);

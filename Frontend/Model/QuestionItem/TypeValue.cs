@@ -18,11 +18,10 @@
     public static class TypeValueMethod
     {
         /// <summary>
-        /// Restituisce la funzione di validazione associata al valore, passato come parametro, 
-        /// atteso da un <see cref="IBlockEditItem"/> 
+        /// Restituisce la funzione di validazione associata al valore atteso da un <see cref="IBlockEditItem"/> 
         /// </summary>
         /// <param name="type"> Tipo di valore atteso </param>
-        /// <returns> la funzione di validazione associata al tipo di valore atteso passato come parametro </returns>
+        /// <returns> la funzione di validazione associata ad un tipo di valore atteso </returns>
         public static Func<string, bool> GetValidator(TypeValue type)
         {
             Func<string, bool> validator;

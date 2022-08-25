@@ -1,7 +1,7 @@
 ﻿namespace Frontend.Models.Blocks.Bounds
 {
     /// <summary>
-    /// Interfaccia che rappresenta le dimensioni e la posizione di un blocco
+    /// Interfaccia che rappresenta le dimensioni e le coordinate di un blocco
     /// </summary>
     public interface IBlockBound
     {
@@ -11,10 +11,10 @@
         /// <summary> Larghezza del blocco </summary>
         public float Height { get; set; }
 
-        /// <summary> Posizione del punto in alto a sinistra del blocco </summary>
+        /// <summary> Coordinate del punto in alto a sinistra del blocco </summary>
         public PointF UpperLeft { get; set; }
 
-        /// <summary> Posizione del punto in basso a destra del blocco </summary>
+        /// <summary> Coordinate del punto in basso a destra del blocco </summary>
         public PointF BottomRight { get; }
     }
 }

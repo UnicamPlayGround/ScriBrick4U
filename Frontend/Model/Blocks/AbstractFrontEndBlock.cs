@@ -10,6 +10,9 @@ using IBlockShape = Frontend.Models.Blocks.Shapes.IBlockShape;
 
 namespace Frontend.Model.Blocks
 {
+    /// <summary>
+    /// Classe astratta per tutti i blocchi lato front-end
+    /// </summary>
     public abstract class AbstractFrontEndBlock : IFrontEndBlock
     {
         public float HorizontalOffset { get; set; } = 130;
@@ -60,6 +63,10 @@ namespace Frontend.Model.Blocks
 
         public abstract IFrontEndBlock GetInfo();
 
+        /// <summary>
+        /// Restituisce una lista contenente un'istanza per ogni classe che eredita da quella corrente
+        /// </summary>
+        /// <returns> una lista contenente un'istanza per ogni classe che eredita da quella corrente </returns>
         public static IEnumerable<AbstractFrontEndBlock> GetEnumerableOfType()
         {
             List<AbstractFrontEndBlock> objects = new();

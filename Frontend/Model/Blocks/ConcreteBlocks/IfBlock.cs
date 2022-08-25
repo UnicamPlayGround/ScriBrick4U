@@ -5,8 +5,14 @@ using Frontend.Models.Blocks.Shapes;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco If
+    /// </summary>
     public class IfBlock : AbstractFrontEndBlock
     {
+        /// <summary>
+        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.HorizontalOffset"/> e l'altezza del blocco
+        /// </summary>
         public IfBlock()
         {
             Shape = ShapeTypeMethods.GetShape(ShapeType.WITH_CHILDREN);

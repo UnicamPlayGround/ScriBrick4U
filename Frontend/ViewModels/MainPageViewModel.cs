@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Frontend.ViewModels
 {
     /// <summary>
-    /// Classe che rappresenta un ViewModel per la MainPage
+    /// Classe che rappresenta un ViewModel per la <see cref="MainPage"/>
     /// </summary>
     public class MainViewModel : BaseViewModel
     {

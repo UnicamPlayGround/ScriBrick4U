@@ -16,7 +16,7 @@ namespace Frontend.Model.Blocks
         public float Height { get; set; }
 
         /// <summary>
-        /// Descrittore del blocco di tipo <see cref="IBlockDescriptor"/>
+        /// Descrittore del blocco
         /// </summary>
         public IBlockDescriptor Descriptor { get; set; }
 
@@ -26,7 +26,7 @@ namespace Frontend.Model.Blocks
         public IBlockShape Shape { get; set; }
 
         /// <summary>
-        /// Dimensioni e posizione del blocco
+        /// Dimensioni e coordinate del blocco
         /// </summary>
         public IBlockBound Position { get; set; }
 
@@ -36,7 +36,7 @@ namespace Frontend.Model.Blocks
         public List<IBlockEditItem> Questions { get; set; }
 
         /// <summary>
-        /// Funzione che restituisce il testo del blocco quando questo è stato trascinato
+        /// Funzione che restituisce il testo del blocco quando questo è stato posizionato
         /// </summary>
         public Func<string> TextDropped { get; set; }
 
@@ -51,14 +51,14 @@ namespace Frontend.Model.Blocks
         public List<IFrontEndBlock> Children { get; set; }
 
         /// <summary>
-        /// Elementi contenuti nel blocco
+        /// Elementi contenuti nel blocco (utilizzati prima che questo venga posizionato)
         /// </summary>
         public List<Element> Elements { get; set; }
 
         /// <summary>
         /// Disegna il blocco nel canvas passato come parametro
         /// </summary>
-        /// <param name="canvas"> canvas nel quale disegnare il blocco </param>
+        /// <param name="canvas"> Canvas nel quale disegnare il blocco </param>
         public void Draw(ICanvas canvas);
 
         /// <summary>
@@ -68,9 +68,10 @@ namespace Frontend.Model.Blocks
         public IFrontEndBlock GetInfo();
 
         /// <summary>
-        /// Restituisce, partendo da un serie di punti passati come parametro, una stringa che rappresenta la forma
+        /// Restituisce, partendo da un serie di punti passati come parametro, un'oggetto che rappresenta la forma
         /// </summary>
-        /// <param name="points"> punti dai quali generare la stringa che rappresenta la forma </param>
+        /// <param name="points"> Punti dai quali generare la stringa che rappresenta la forma </param>
+        /// <returns> un'oggetto che rappresenta la forma </returns>
         public virtual PathF PointsToPath(SKPoint[] points)
         {
             PointF point;

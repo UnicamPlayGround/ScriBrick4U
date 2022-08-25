@@ -6,7 +6,7 @@ using Frontend.Models.Blocks.Descriptors;
 namespace Frontend.Builders
 {
     /// <summary>
-    /// Classe che rappresenta un costruttore di blocchi
+    /// Classe che rappresenta un costruttore di blocchi di default
     /// </summary>
     /// <typeparam name="T"> Classe che estende <see cref="IFrontEndBlock"/> </typeparam>
     public class BlockBuilder<T> : IBlockBuilder<T> where T : IFrontEndBlock, new()
@@ -14,10 +14,10 @@ namespace Frontend.Builders
         private readonly T Block;
 
         /// <summary>
-        /// Costruttore che inizializza il nome e il tipo del blocco
+        /// Costruttore con, in input, il nome e il tipo del blocco
         /// </summary>
-        /// <param name="name"> nome del blocco </param>
-        /// <param name="type"> tipo del blocco </param>
+        /// <param name="name"> Nome del blocco </param>
+        /// <param name="type"> Tipo del blocco </param>
         public BlockBuilder(string name, BlockType type)
         {
             Block = new()

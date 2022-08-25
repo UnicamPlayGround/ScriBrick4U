@@ -1,20 +1,21 @@
 ﻿using Frontend.Helpers.Mediators;
 using Frontend.Model.Blocks;
+using Frontend.Views;
 
 namespace Frontend.ViewModels
 {
     /// <summary>
-    /// Classe che rappresenta un ViewModel per i tipi dei blocchi
+    /// Classe che rappresenta un ViewModel per <see cref="BlockTypeView"/>
     /// </summary>
     public class BlockTypeViewModel : BaseViewModel
     {
         /// <summary>
-        /// lista privata di tuple contenente effettivamente tutti i tipi di blocco, con associato il rispettivo colore
+        /// Lista privata di tuple contenente effettivamente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary>
         private List<Tuple<BlockType, Color>> _blockTypes;
 
         /// <summary>
-        /// lista pubblica di tuple contenente tutti i tipi di blocco, con associato il rispettivo colore
+        /// Lista pubblica di tuple contenente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary> 
         public List<Tuple<BlockType, Color>> BlockTypes
         {
@@ -27,12 +28,12 @@ namespace Frontend.ViewModels
         }
 
         /// <summary>
-        /// variabile che contiene effetivamente il tipo di blocco selezionato
+        /// Variabile che contiene effetivamente il tipo di blocco selezionato
         /// </summary>
         private BlockType _selectedType;
 
         /// <summary>
-        /// variabile che contiene il tipo di blocco selezionato
+        /// Variabile che contiene il tipo di blocco selezionato
         /// </summary>
         public BlockType SelectedType
         {

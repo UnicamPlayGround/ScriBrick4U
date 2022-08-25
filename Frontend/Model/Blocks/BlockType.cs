@@ -28,7 +28,7 @@
     }
 
     /// <summary>
-    /// Classe che rappresenta una serie di operazioni eseguibili sui tipi di blocchi
+    /// Classe che rappresenta una serie di operazioni eseguibili sui tipi di blocco
     /// </summary>
     static class BlockTypeMethods
     {
@@ -46,10 +46,10 @@
         };
 
         /// <summary>
-        /// Restituisce il colore associato al <see cref="BlockType"/> passato come parametro
+        /// Restituisce il colore associato al tipo di blocco passato come parametro
         /// </summary>
-        /// <param name="type"> <see cref="BlockType"/> del quale estrarre il colore </param>
-        /// <returns></returns>
+        /// <param name="type"> Tipo di blocco del quale estrarre il colore </param>
+        /// <returns> il colore associato al tipo di blocco passato come parametro </returns>
         public static Color GetColor(BlockType type)
         {
             return _dictionary[type];

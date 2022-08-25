@@ -1,7 +1,7 @@
 ﻿namespace Frontend.Model.QuestionItem;
 
 /// <summary>
-/// Classe astratta che rappresenta una coppia <see cref="Label"/> / Element per editare un valore di un blocco di default
+/// Classe astratta, di default, che rappresenta una coppia <see cref="Label"/> / Element per editare un valore di un blocco
 /// </summary>
 public abstract class EditItem : IBlockEditItem
 {

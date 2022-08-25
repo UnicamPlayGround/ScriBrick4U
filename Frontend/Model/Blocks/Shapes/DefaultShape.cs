@@ -16,11 +16,11 @@ namespace Frontend.Models.Blocks.Shapes
         /// <summary>
         /// Costruttore che inizializza la classe
         /// </summary>
-        /// <param name="path"> template della stringa che rappresenta la forma </param>
-        /// <param name="type"> tipo della forma </param>
+        /// <param name="path"> Template della stringa che rappresenta la forma </param>
+        /// <param name="type"> Tipo della forma </param>
         /// <param name="blockOffset">  </param>
-        /// <param name="width"> larghezza del blocco </param>
-        /// <param name="height"> altezza del blocco </param>
+        /// <param name="width"> Larghezza del blocco </param>
+        /// <param name="height"> Altezza del blocco </param>
         public DefaultShape(string path, ShapeType type, PointF blockOffset, float width, float height)
         {
             PathTemplate = path;
