@@ -23,6 +23,7 @@ namespace Frontend.Builders
             {
                 Descriptor = new BlockDescriptor(name, type),
                 Elements = new(),
+                Questions = new(),
                 Position = new BlockBound()
             };
         }

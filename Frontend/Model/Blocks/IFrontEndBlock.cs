@@ -1,4 +1,5 @@
-﻿using Frontend.Models.Blocks.Bounds;
+﻿using Frontend.Model.QuestionItem;
+using Frontend.Models.Blocks.Bounds;
 using Frontend.Models.Blocks.Descriptors;
 using Frontend.Models.Blocks.Shapes;
 using Microsoft.Maui.Controls.Shapes;
@@ -25,6 +26,11 @@ namespace Frontend.Model.Blocks
         /// Dimensioni e posizione del blocco
         /// </summary>
         public IBlockBound Position { get; set; }
+
+        /// <summary>
+        /// Lista di <see cref="IBlockEditItem"/>
+        /// </summary>
+        public List<IBlockEditItem> Questions { get; set; }
 
         /// <summary>
         /// Funzione che restituisce il testo del blocco quando questo è stato trascinato

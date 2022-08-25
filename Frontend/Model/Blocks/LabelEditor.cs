@@ -1,4 +1,5 @@
-﻿using Frontend.Models.Blocks.Bounds;
+﻿using Frontend.Model.QuestionItem;
+using Frontend.Models.Blocks.Bounds;
 using Frontend.Models.Blocks.Descriptors;
 using Frontend.Models.Blocks.Shapes;
 using ProvaMauiDragAndDrop.Helper;
@@ -22,6 +23,7 @@ namespace Frontend.Model.Blocks
         public IBlockShape Shape { get; set; }
         public IBlockBound Position { get; set; }
 
+        public List<IBlockEditItem> Questions { get; set; }
         public Func<string> TextDropped { get; set; }
 
         /// <summary>
