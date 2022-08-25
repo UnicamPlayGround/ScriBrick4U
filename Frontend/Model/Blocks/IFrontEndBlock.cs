@@ -1,8 +1,7 @@
-﻿using Frontend.Model.Blocks;
-using Frontend.Models.Blocks.Descriptors;
+﻿using Frontend.Models.Blocks.Descriptors;
 using Microsoft.Maui.Controls.Shapes;
 
-namespace Frontend.Blocks
+namespace Frontend.Model.Blocks
 {
     /// <summary>
     /// Interfaccia di base per i blocchi lato front-end

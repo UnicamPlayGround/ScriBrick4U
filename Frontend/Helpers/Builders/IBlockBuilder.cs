@@ -1,4 +1,4 @@
-﻿using Frontend.Blocks;
+﻿using Frontend.Model.Blocks;
 
 namespace Frontend.Builders
 {

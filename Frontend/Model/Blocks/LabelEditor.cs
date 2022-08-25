@@ -1,9 +1,8 @@
-﻿using Frontend.Model.Blocks;
-using Frontend.Models.Blocks.Descriptors;
+﻿using Frontend.Models.Blocks.Descriptors;
 using Microsoft.Maui.Controls.Shapes;
 using ProvaMauiDragAndDrop.Helper;
 
-namespace Frontend.Blocks
+namespace Frontend.Model.Blocks
 {
     /// <summary>
     /// Classe che rappresenta un blocco con <c>Label</c> e <c>caselle di testo</c>
@@ -34,7 +33,6 @@ namespace Frontend.Blocks
         /// </summary>
         public LabelEditor()
         {
-            this.Elements = new();
             SvgData = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(_svgData);
         }
 

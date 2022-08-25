@@ -1,5 +1,4 @@
-﻿using Frontend.Blocks;
-using Frontend.Model.Blocks;
+﻿using Frontend.Model.Blocks;
 using Frontend.Models.Blocks.Descriptors;
 
 namespace Frontend.Builders
@@ -21,7 +20,8 @@ namespace Frontend.Builders
         {
             Block = new()
             {
-                Descriptor = new BlockDescriptor(name, type)
+                Descriptor = new BlockDescriptor(name, type),
+                Elements = new()
             };
         }
 
