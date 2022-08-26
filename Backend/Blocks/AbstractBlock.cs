@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Backend.Blocks;
 
-namespace Backend.Blocks
+public abstract class AbstractBlock : IBlock
 {
-    /// <summary>
-    ///     Classe astratta per implementazione funzionalità di un blocco
-    /// </summary>
-    internal class AbstractBlock : IBlock
+    protected AbstractBlock(
+        string type,
+        string name
+        )
     {
-        public string Type { get; set; } = null!;
-        public string Name { get; set; } = null!;
-        public List<IBlock>? Children { get; set; }
-        public IBlock? Next { get; set; }
-        public IBlock? Prev { get; set; }
+        Type = type;
+        Name = name;
+        Children = new List<IBlock>();
     }
+
+    public string Type { get; set; }
+    public string Name { get; set; }
+    public IEnumerable<IBlock> Children { get; set; } = Enumerable.Empty<IBlock>();
+    public abstract string GetCode();
+    public abstract Dictionary<string, string> GetVariables();
 }
