@@ -3,8 +3,14 @@ using System.Numerics;
 
 namespace Backend.Blocks.Movement
 {
+    /// <summary>
+    /// Definisce il blocco per il movimento
+    /// </summary>
     public class ForwardBlock : AbstractBlock
     {
+        /// <summary>
+        /// Blocco contente il valore
+        /// </summary>
         public IBlock Block { get; set; }
         public ForwardBlock(string name, IBlock block) : base("Movement", name)
         {

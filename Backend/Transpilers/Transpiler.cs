@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Backend.Transpilers
 {
-    public class Transpiler
+    public class Transpiler : ITranspiler
     {
-        public static string ConvertToCode(string className, IQueryable<IBlock> blocks)
+        public string ConvertToCode(string className, IQueryable<IBlock> blocks)
         {
             string code = "";
             code += DefineBaseImport();

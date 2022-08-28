@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Backend.Blocks.Starts
 {
+    /// <summary>
+    /// Definisce il blocco per la generazione del metodo <c>Start</c> all'interno dello script Unity
+    /// </summary>
     public class StartBlock : AbstractBlock
     {
         public StartBlock() : base("Start", "Start")
