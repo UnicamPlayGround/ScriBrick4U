@@ -14,12 +14,14 @@ namespace BackendTest.Transpilers
     [TestClass]
     public class TranspilerTest
     {
+        [TestMethod]
         public void CorrectClassName()
         {
             var transpiler = new Transpiler();
             string code = transpiler.ConvertToCode("test", new List<IBlock>().AsQueryable());
             Assert.IsTrue(code.Contains("public class test"));
         }
+        [TestMethod]
         public void GeneratedCodeTest()
         {
             IBlock forwardBlock = new ForwardBlock("Forward_1", new VariableBlock("Variable_1", 3));
