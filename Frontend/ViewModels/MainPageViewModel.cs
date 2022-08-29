@@ -1,4 +1,7 @@
-﻿using Frontend.Helpers.Mediators;
+﻿using Backend.Transpilers;
+using Frontend.Helpers.Mediators;
+using Frontend.Model.Blocks;
+using Frontend.Translators;
 using System.Diagnostics;
 
 namespace Frontend.ViewModels
@@ -70,7 +73,11 @@ namespace Frontend.ViewModels
         /// </summary>
         public void TranslateScript()
         {
-            throw new NotImplementedException("Voce \"Esegui\" non implementata.");
+            ITranslator t = new Translator();
+            var tradotti = t.Translate((List<IFrontEndBlock>)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS));
+            ITranspiler transpiler = new Transpiler();
+            string code = transpiler.ConvertToCode("test", tradotti.AsQueryable());
+            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\test.cs", code);
         }
 
         /// <summary>
