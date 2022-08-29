@@ -7,13 +7,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8216A127-843
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6BF736C8-6B48-4E52-AA75-31FA537B7473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{39D7E285-3560-4EE8-BC49-386E274A04FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.csproj", "{39D7E285-3560-4EE8-BC49-386E274A04FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "Frontend\Frontend.csproj", "{7A16406D-C0C4-4E41-BCC4-762BBC92FCFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "Frontend\Frontend.csproj", "{7A16406D-C0C4-4E41-BCC4-762BBC92FCFD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{39D7E285-3560-4EE8-BC49-386E274A04FE} = {39D7E285-3560-4EE8-BC49-386E274A04FE}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendTest", "BackendTest\BackendTest.csproj", "{3CEBC2A5-0856-41E7-B53D-F26EA1FF582E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTest", "BackendTest\BackendTest.csproj", "{3CEBC2A5-0856-41E7-B53D-F26EA1FF582E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontendTest", "FrontendTest\FrontendTest.csproj", "{37E8E3FD-612B-4FAC-89E2-35AFF607CC9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontendTest", "FrontendTest\FrontendTest.csproj", "{37E8E3FD-612B-4FAC-89E2-35AFF607CC9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

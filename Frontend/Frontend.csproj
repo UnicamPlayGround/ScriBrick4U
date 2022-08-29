@@ -57,6 +57,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Backend\Backend.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\BlockTypeView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
