@@ -15,7 +15,7 @@ namespace Frontend.Translators
         private IDictionary<string, List<IBlock>> functions = new Dictionary<string, List<IBlock>>();
         private List<IFrontEndBlock> frontEndFunctions = new ();
 
-        public List<IBlock> Translate(IEnumerable<IFrontEndBlock> frontEndBlocks)
+        public IEnumerable<IBlock> Translate(IEnumerable<IFrontEndBlock> frontEndBlocks)
         {
             frontEndFunctions.AddRange(frontEndBlocks.Where(x => x.Descriptor.Type.Equals(BlockType.DefinizioneFunzione)));
             TranslateAllFunctions();

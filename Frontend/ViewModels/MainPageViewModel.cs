@@ -1,4 +1,5 @@
-﻿using Backend.Transpilers;
+﻿using Backend.Blocks;
+using Backend.Transpilers;
 using Frontend.Helpers.Mediators;
 using Frontend.Model.Blocks;
 using Frontend.Translators;
@@ -74,7 +75,7 @@ namespace Frontend.ViewModels
         public void TranslateScript()
         {
             ITranslator t = new Translator();
-            var tradotti = t.Translate((List<IFrontEndBlock>)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS));
+            IEnumerable<IBlock> tradotti = t.Translate((List<IFrontEndBlock>)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS));
             ITranspiler transpiler = new Transpiler();
             string code = transpiler.ConvertToCode("test", tradotti.AsQueryable());
             File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\test.cs", code);
