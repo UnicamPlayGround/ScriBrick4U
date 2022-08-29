@@ -22,7 +22,7 @@ namespace Backend.Blocks.Starts
             code += "private void Start(){\n";
             foreach(var children in Children)
             {
-                code += $"{children.GetCode()};\n";
+                code += $"{children.GetCode()}";
             }
             code += "}\n";
             return code;
