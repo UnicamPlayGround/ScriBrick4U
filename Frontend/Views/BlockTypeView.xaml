@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Frontend.ViewModels"
+             x:Name="this"
+             x:Class="Frontend.Views.BlockTypeView">
+
+
+    <ContentView.BindingContext>
+        <vm:BlockTypeViewModel/>
+    </ContentView.BindingContext>
+
+
+    <CollectionView
+        ItemsSource="{Binding BlockTypes}"
+        SelectionMode="Single"
+        SelectionChanged="BlocksType_SelectionChanged" 
+        BackgroundColor="Purple">
+
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Vertical"/>
+        </CollectionView.ItemsLayout>
+
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <StackLayout Orientation="Horizontal" Margin="10" Spacing="5">
+                    <Path VerticalOptions="Center" Fill="{Binding Item2}">
+                        <Path.Data>
+                            <EllipseGeometry RadiusX="15" RadiusY="15"/>
+                        </Path.Data>
+                    </Path>
+
+                    <Label
+                        x:Name="lblType"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        Text="{Binding Item1}"
+                        FontAttributes="Bold"/>
+                </StackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+
+    </CollectionView>
+
+
+</ContentView>

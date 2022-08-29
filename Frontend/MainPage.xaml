@@ -1,6 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:v="clr-namespace:Frontend.Views"
+             xmlns:vm="clr-namespace:Frontend.ViewModels"
+             BackgroundColor="OrangeRed"
+             x:Name="this"
              x:Class="Frontend.MainPage">
+
+    
+    <ContentPage.BindingContext>
+        <vm:MainViewModel/>
+    </ContentPage.BindingContext>
+
+
+    <!-- Riferimento menù: https://github.com/dotnet/maui/issues/5382 -->
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Nuovo" Clicked="New_Clicked"/>
+            <MenuFlyoutItem Text="Chiudi" Clicked="Close_Clicked"/>
+        </MenuBarItem>
+
+        <MenuBarItem Text="Script">
+            <MenuFlyoutItem Text="Salva" Clicked="SaveScript_Clicked"/>
+            <MenuFlyoutItem Text="Carica" Clicked="LoadScript_Clicked"/>
+            <MenuFlyoutItem Text="Esegui" Clicked="TranslateScript_Clicked"/>
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+
+
+    <Grid
+        x:Name="mainGrid"
+        RowDefinitions="*"
+        ColumnDefinitions="Auto, *" >
+
+        <v:BlockTypeView/>
+
+        <v:BlockView
+            Grid.Column="1"
+            />
+
+    </Grid>
+
+
 
 </ContentPage>
