@@ -180,6 +180,7 @@ namespace Frontend.ViewModels
         /// <param name="deletedBlock"> Blocco da eliminare </param>
         public void DeleteDroppedBlock(IFrontEndBlock deletedBlock)
         {
+            deletedBlock.Father.Children.Remove(deletedBlock);
             deletedBlock.Children.ForEach(child => DroppedBlocks.Remove(child));
             ShiftBlocksWhenDelete(deletedBlock);
             DroppedBlocks = DroppedBlocks.Where(x => !x.Equals(deletedBlock)).ToList();
