@@ -33,7 +33,7 @@ namespace Backend.Blocks.Conditional
         public override string GetCode()
         {
             string code = "";
-            code += $"if( ({First.GetCode()}) {Condition} ({Second.GetCode()} ){{\n";
+            code += $"if( ( {First.GetCode()} ) {Condition} ( {Second.GetCode()} ) ){{\n";
             foreach(var child in Children)
             {
                 code += child.GetCode();
