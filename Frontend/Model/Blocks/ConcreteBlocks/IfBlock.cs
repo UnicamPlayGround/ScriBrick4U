@@ -11,12 +11,12 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
     public class IfBlock : AbstractFrontEndBlock
     {
         /// <summary>
-        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.HorizontalOffset"/> e l'altezza del blocco
+        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.Width"/> e l'altezza del blocco
         /// </summary>
         public IfBlock()
         {
             Shape = ShapeTypeMethods.GetShape(ShapeType.WITH_CHILDREN);
-            HorizontalOffset = 158;
+            Width = 158;
             Height = 32;
         }
 

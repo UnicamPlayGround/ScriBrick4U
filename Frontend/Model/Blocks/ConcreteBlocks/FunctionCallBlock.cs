@@ -11,12 +11,12 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
     public class FunctionCallBlock : AbstractFrontEndBlock
     {
         /// <summary>
-        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.HorizontalOffset"/> e l'altezza del blocco
+        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.Width"/> e l'altezza del blocco
         /// </summary>
         public FunctionCallBlock()
         {
             Shape = ShapeTypeMethods.GetShape(ShapeType.RECTANGLE);
-            HorizontalOffset = 130;
+            Width = 130;
             Height = 48;
         }
         
