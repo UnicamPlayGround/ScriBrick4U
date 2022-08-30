@@ -1,6 +1,7 @@
 ﻿using Frontend.Model.QuestionItem;
 using Frontend.Models.Blocks.Bounds;
 using Frontend.Models.Blocks.Descriptors;
+using Frontend.Models.Blocks.Shapes;
 using SkiaSharp;
 using System.Numerics;
 using System.Reflection;
@@ -15,8 +16,8 @@ namespace Frontend.Model.Blocks
     /// </summary>
     public abstract class AbstractFrontEndBlock : IFrontEndBlock
     {
-        public float HorizontalOffset { get; set; } = 130;
-        public float Height { get; set; } = 35;
+        public float Width { get; set; }
+        public float Height { get; set; }
 
         public IBlockDescriptor Descriptor { get; set; }
         public IBlockShape Shape { get; set; }
@@ -35,6 +36,11 @@ namespace Frontend.Model.Blocks
             get => _elements;
             set => _elements = value;
         }
+        public IFrontEndBlock Next { get; set; }
+
+        public bool CanContainChildren => Shape.Type.Equals(ShapeType.WITH_CHILDREN);
+
+        public bool IsStart => Descriptor.Type.Equals(BlockType.Principale) || Descriptor.Type.Equals(BlockType.DefinizioneFunzione);
 
         public void Draw(ICanvas canvas)
         {
@@ -45,9 +51,9 @@ namespace Frontend.Model.Blocks
 
             string text = TextDropped.Invoke();
 
-            var defaultOffset = HorizontalOffset;
-            HorizontalOffset += text.Length;
-            Shape.Path = Shape.GetSvgPath(HorizontalOffset, Height);
+            var defaultOffset = Width;
+            Width += text.Length;
+            Shape.Path = Shape.GetSvgPath(Width, Height);
 
             var pathf = ((IFrontEndBlock)this).PointsToPath(SKPath.ParseSvgPathData(Shape.Path).Points);
             pathf.Transform(Matrix3x2.CreateTranslation(Position.UpperLeft.X, Position.UpperLeft.Y));
@@ -58,7 +64,7 @@ namespace Frontend.Model.Blocks
             Position.Height = pathf.Bounds.Height;
 
             canvas.DrawString(text, pathf.Bounds.Left, pathf.Bounds.Top + 15, pathf.Bounds.Width, pathf.Bounds.Height, HorizontalAlignment.Center, VerticalAlignment.Top);
-            HorizontalOffset = defaultOffset;
+            Width = defaultOffset;
         }
 
         public abstract IFrontEndBlock GetInfo();

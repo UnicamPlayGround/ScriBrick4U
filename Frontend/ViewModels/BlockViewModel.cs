@@ -115,12 +115,10 @@ namespace Frontend.ViewModels
         /// <param name="droppedBlock"> Blocco <see cref="IFrontEndBlock"/> trascinato da aggiungere alla lista </param>
         public void AddDroppedBlock(IFrontEndBlock droppedBlock, PointF dropPoint)
         {
-            var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).FirstOrDefault();
-            SetUpperLeft(new(dropPoint.X, dropPoint.Y), droppedBlock, underBlock);
-
+            var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
+            
             if (droppedBlock.Descriptor.Type == BlockType.DefinizioneFunzione) _functionNames.Add(droppedBlock.Descriptor.Name);
-            if (droppedBlock.Descriptor.Type != BlockType.Principale && droppedBlock.Descriptor.Type != BlockType.DefinizioneFunzione)
-                ShiftBlocksWhenDropped(droppedBlock, underBlock);
+            ShiftBlocksWhenDropped(droppedBlock, SetUpperLeft(new(dropPoint.X, dropPoint.Y), droppedBlock, underBlock));
             DroppedBlocks = DroppedBlocks.Append(droppedBlock).ToList();
         }
 
@@ -131,17 +129,18 @@ namespace Frontend.ViewModels
         /// <param name="originalPosition"> Posizione di rilascio del blocco </param>
         /// <param name="dropped"> Blocco trascinato </param>
         /// <param name="under"> Eventuale blocco contenente il punto di rilascio </param>
-        private void SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
+        /// <returns> Il blocco dal quale shiftare </returns>
+        private IFrontEndBlock SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
         {
-            if (!dropped.Descriptor.Type.Equals(BlockType.Principale) && !dropped.Descriptor.Type.Equals(BlockType.DefinizioneFunzione))
+            IFrontEndBlock returnBlock = null;
+
+            if (dropped.Descriptor.Type != BlockType.Principale)
             {
                 PointF upperCorner = new(under.Position.UpperLeft.X, under.Position.UpperLeft.Y + 40);
                 PointF bottomCorner = new(under.Position.BottomRight.X, under.Position.BottomRight.Y - 40);
-                if (under.Shape.Type.Equals(ShapeType.WITH_CHILDREN) && Contains(upperCorner, bottomCorner, originalPosition))
+                if (under.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
                 {
-                    var lastChildren = DroppedBlocks
-                                            .Where(block => !block.Equals(under) && Contains(under, block.Position.UpperLeft))
-                                            .LastOrDefault();
+                    var lastChildren = under.Children.LastOrDefault();
                     if (lastChildren == null)
                     {
                         //16 è un numero (giusto) tirato a caso sarebbe da sistemare
@@ -153,15 +152,27 @@ namespace Frontend.ViewModels
                         originalPosition.X = lastChildren.Position.UpperLeft.X;
                         originalPosition.Y = lastChildren.Position.UpperLeft.Y + lastChildren.Shape.BlockOffset.Y;
                     }
-                    under.Height += dropped.Height;
+
+                    var current = under;
+                    while(current?.Shape.Type == ShapeType.WITH_CHILDREN)
+                    {
+                        current.Height += dropped.Shape.BlockOffset.Y;
+                        current = current.Father;
+                    }
+
+                    under.Shape.BlockOffset = new(under.Shape.BlockOffset.X, under.Shape.BlockOffset.Y + dropped.Shape.BlockOffset.Y);
                     under.Children.Add(dropped);
                     dropped.Father = under;
+                    returnBlock = under.Next;
                 }
                 else
                 {
                     originalPosition.X = under.Position.UpperLeft.X;
                     originalPosition.Y = under.Position.UpperLeft.Y + under.Shape.BlockOffset.Y;
                     dropped.Father = under.Father ?? under;
+                    dropped.Next = under.Next;
+                    under.Next = dropped;
+                    returnBlock = dropped.Next;
                     dropped.Father.Children.Add(dropped);
                 }
             }
@@ -172,6 +183,7 @@ namespace Frontend.ViewModels
                     originalPosition.X += (bl.Position.BottomRight.X - originalPosition.X) + 20;
             }
             dropped.Position.UpperLeft = originalPosition;
+            return returnBlock;
         }
 
         /// <summary>
@@ -180,9 +192,13 @@ namespace Frontend.ViewModels
         /// <param name="deletedBlock"> Blocco da eliminare </param>
         public void DeleteDroppedBlock(IFrontEndBlock deletedBlock)
         {
-            deletedBlock.Father.Children.Remove(deletedBlock);
-            deletedBlock.Children.ForEach(child => DroppedBlocks.Remove(child));
+            deletedBlock.Children.ForEach(child => { DroppedBlocks.Remove(child); });
+
+            if (deletedBlock.Father != null) deletedBlock.Father.Next = deletedBlock.Next;
+            if (deletedBlock.Father?.Shape.Type == ShapeType.WITH_CHILDREN) deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
+            
             ShiftBlocksWhenDelete(deletedBlock);
+            deletedBlock.Father?.Children.Remove(deletedBlock);
             DroppedBlocks = DroppedBlocks.Where(x => !x.Equals(deletedBlock)).ToList();
         }
 
@@ -214,12 +230,15 @@ namespace Frontend.ViewModels
         private void Shift(IFrontEndBlock currentBlock, float offset, Func<IFrontEndBlock, IFrontEndBlock, bool> findNextFunction, Func<float, float, float> YSetterFunction)
         {
             var current = currentBlock;
-            IFrontEndBlock next = DroppedBlocks.Find(b => findNextFunction.Invoke(b, current));
+            IFrontEndBlock next = current;//DroppedBlocks.Find(b => findNextFunction.Invoke(b, current));
 
             while (next != null)
             {
+                foreach (var child in next.Children)
+                    child.Position.UpperLeft = new(child.Position.UpperLeft.X, YSetterFunction.Invoke(child.Position.UpperLeft.Y, offset));
+
                 current = next;
-                next = DroppedBlocks.Find(b => findNextFunction.Invoke(b, current));
+                next = current.Next;//DroppedBlocks.Find(b => findNextFunction.Invoke(b, current));
                 current.Position.UpperLeft = new(current.Position.UpperLeft.X, YSetterFunction.Invoke(current.Position.UpperLeft.Y, offset));
             }
         }
@@ -241,7 +260,7 @@ namespace Frontend.ViewModels
         /// <returns> un blocco contenente il punto passato come parametro, o null se questo non esiste </returns>
         public IFrontEndBlock GetBlockFromPoint(PointF pointF)
         {
-            return DroppedBlocks.Where(block => Contains(block, pointF)).FirstOrDefault();
+            return DroppedBlocks.Where(block => Contains(block, pointF)).LastOrDefault();
         }
 
         /// <summary>

@@ -11,8 +11,14 @@ namespace Frontend.Model.Blocks
     /// </summary>
     public interface IFrontEndBlock
     {
+        /// <summary>
+        /// Larghezza iniziale del blocco
+        /// </summary>
+        public float Width { get; set; }
 
-        public float HorizontalOffset { get; set; }
+        /// <summary>
+        /// Altezza iniziale del blocco
+        /// </summary>
         public float Height { get; set; }
 
         /// <summary>
@@ -46,6 +52,11 @@ namespace Frontend.Model.Blocks
         public IFrontEndBlock Father { get; set; }
 
         /// <summary>
+        /// Blocco successivo
+        /// </summary>
+        public IFrontEndBlock Next { get; set; }
+
+        /// <summary>
         /// Figli del blocco
         /// </summary>
         public List<IFrontEndBlock> Children { get; set; }
@@ -54,6 +65,8 @@ namespace Frontend.Model.Blocks
         /// Elementi contenuti nel blocco (utilizzati prima che questo venga posizionato)
         /// </summary>
         public List<Element> Elements { get; set; }
+        public bool CanContainChildren { get; }
+        public bool IsStart { get; }
 
         /// <summary>
         /// Disegna il blocco nel canvas passato come parametro
