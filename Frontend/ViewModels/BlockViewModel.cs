@@ -157,12 +157,14 @@ namespace Frontend.ViewModels
                     while(current?.Shape.Type == ShapeType.WITH_CHILDREN)
                     {
                         current.Height += dropped.Shape.BlockOffset.Y;
+                        if (current.Father.Shape.Type != ShapeType.WITH_CHILDREN)
+                            break;
                         current = current.Father;
                     }
 
                     under.Shape.BlockOffset = new(under.Shape.BlockOffset.X, under.Shape.BlockOffset.Y + dropped.Shape.BlockOffset.Y);
                     under.Children.Add(dropped);
-                    dropped.Father = under;
+                    dropped.Father = under = current;
                     returnBlock = under.Next;
                 }
                 else
