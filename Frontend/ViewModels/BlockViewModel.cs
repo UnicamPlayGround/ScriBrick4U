@@ -134,7 +134,7 @@ namespace Frontend.ViewModels
         {
             IFrontEndBlock returnBlock = null;
 
-            if (dropped.Descriptor.Type != BlockType.Principale)
+            if (dropped.Descriptor.Type != BlockType.Principale && dropped.Descriptor.Type != BlockType.DefinizioneFunzione)
             {
                 PointF upperCorner = new(under.Position.UpperLeft.X, under.Position.UpperLeft.Y + 40);
                 PointF bottomCorner = new(under.Position.BottomRight.X, under.Position.BottomRight.Y - 40);
