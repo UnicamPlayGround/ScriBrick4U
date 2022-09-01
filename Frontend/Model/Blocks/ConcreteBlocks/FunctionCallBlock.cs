@@ -2,6 +2,7 @@
 using Frontend.Model.Blocks;
 using Frontend.Model.QuestionItem;
 using Frontend.Models.Blocks.Shapes;
+using Frontend.ViewModels;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
@@ -22,10 +23,11 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
         
         public override IFrontEndBlock GetInfo()
         {
-            IBlockEditItem editItem = new EntryEditItem(
+            IBlockEditItem editItem = new PickerEditItem(
                 "Scrivi il nome della funzione da richiamare: ",
                 TypeValue.STRING,
-                "Devi scrivere il nome della funzione da richiamare."
+                "Devi scrivere il nome della funzione da richiamare.",
+                BlockViewModel.FunctionNames
             );
 
             return new BlockBuilder<FunctionCallBlock>("Chiama Funzione", BlockType.ChiamaFunzione)

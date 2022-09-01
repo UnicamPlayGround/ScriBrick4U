@@ -21,7 +21,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Lista contenente i nomi dei blocchi che chiamano funzioni
         /// </summary>
-        private readonly List<string> _functionNames;
+        public static List<string> FunctionNames = new();
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
@@ -74,7 +74,6 @@ namespace Frontend.ViewModels
             SetMediator(this);
             InitBlocksList();
             _graphicsView = droppedBlocksGraphicsView;
-            _functionNames = new();
             DroppedBlocks = new();
         }
 
@@ -117,7 +116,7 @@ namespace Frontend.ViewModels
         {
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
             
-            if (droppedBlock.Descriptor.Type == BlockType.DefinizioneFunzione) _functionNames.Add(droppedBlock.Descriptor.Name);
+            if (droppedBlock.Descriptor.Type == BlockType.DefinizioneFunzione) FunctionNames.Add(droppedBlock.Questions.ElementAt(0).Value);
             ShiftBlocksWhenDropped(droppedBlock, SetUpperLeft(new(dropPoint.X, dropPoint.Y), droppedBlock, underBlock));
             DroppedBlocks = DroppedBlocks.Append(droppedBlock).ToList();
         }
