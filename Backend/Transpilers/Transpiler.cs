@@ -33,7 +33,7 @@ namespace Backend.Transpilers
             Dictionary<string, string> variables = new Dictionary<string, string>();
             foreach (var child in children)
             {
-                if(child.Children.Count() > 0)
+                if(child.Children.Any())
                 {
                     variables = GetBlockVariables(child.Children);
                 }
