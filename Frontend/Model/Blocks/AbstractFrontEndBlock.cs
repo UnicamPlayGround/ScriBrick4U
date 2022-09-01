@@ -51,8 +51,9 @@ namespace Frontend.Model.Blocks
 
             string text = TextDropped.Invoke();
 
-            var defaultOffset = Width;
-            Width += text.Length;
+            var defaultWidth = Width;
+            var defaultHeight = Height;
+            Width += text.Length + 25;
             Shape.Path = Shape.GetSvgPath(Width, Height);
 
             var pathf = ((IFrontEndBlock)this).PointsToPath(SKPath.ParseSvgPathData(Shape.Path).Points);
@@ -64,7 +65,8 @@ namespace Frontend.Model.Blocks
             Position.Height = pathf.Bounds.Height;
 
             canvas.DrawString(text, pathf.Bounds.Left, pathf.Bounds.Top + 15, pathf.Bounds.Width, pathf.Bounds.Height, HorizontalAlignment.Center, VerticalAlignment.Top);
-            Width = defaultOffset;
+            Width = defaultWidth;
+            Height = defaultHeight;
         }
 
         public abstract IFrontEndBlock GetInfo();

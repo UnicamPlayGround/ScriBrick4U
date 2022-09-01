@@ -24,9 +24,9 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
         public override IFrontEndBlock GetInfo()
         {
             IBlockEditItem editItem = new PickerEditItem(
-                "Scrivi il nome della funzione da richiamare: ",
+                "Seleziona il nome della funzione da richiamare: ",
                 TypeValue.STRING,
-                "Devi scrivere il nome della funzione da richiamare.",
+                "Devi selezionare il nome della funzione da richiamare.",
                 BlockViewModel.FunctionNames
             );
 

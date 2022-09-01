@@ -16,7 +16,10 @@
         /// <param name="errorMessage"> Messaggio di errore se il valore digitato/selezionato non e' valido </param>
         public EntryEditItem(string questionText, TypeValue type, string errorMessage) : base(questionText, type, errorMessage)
         {
-            Element = _entry = new Entry();
+            Element = _entry = new Entry()
+            {
+                MaxLength = 30
+            };
         }
 
 

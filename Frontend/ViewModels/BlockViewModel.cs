@@ -19,9 +19,9 @@ namespace Frontend.ViewModels
         private readonly GraphicsView _graphicsView;
 
         /// <summary>
-        /// Lista contenente i nomi dei blocchi che chiamano funzioni
+        /// Lista contenente i nomi delle funzioni definite
         /// </summary>
-        public static readonly List<string> FunctionNames = new();
+        public static List<string> FunctionNames { get; set; } = new();
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
@@ -102,8 +102,10 @@ namespace Frontend.ViewModels
         {
             if (droppedBlock.Descriptor.Type.Equals(BlockType.Principale) && DroppedBlocks.Exists(block => droppedBlock.Descriptor.Name.Equals(block.Descriptor.Name)))
                 throw new InvalidOperationException("Un blocco '" + droppedBlock.Descriptor.Name.ToUpper() + "' è già stato posizionato.");
-            if (GetBlockFromPoint(dropPoint) == null && !droppedBlock.Descriptor.Type.Equals(BlockType.DefinizioneFunzione) && !droppedBlock.Descriptor.Type.Equals(BlockType.Principale))
+            if (GetBlockFromPoint(dropPoint) == null && !droppedBlock.Shape.Type.Equals(ShapeType.UPPER))
                 throw new InvalidOperationException("Il blocco '" + droppedBlock.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente sotto ad una altro blocco");
+            if (droppedBlock.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && FunctionNames.Count == 0)
+                throw new InvalidOperationException("Il blocco '" + droppedBlock.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente dopo aver DEFINITO almeno 1 funzione.");
 
             return true;
         }
@@ -116,7 +118,7 @@ namespace Frontend.ViewModels
         {
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
             
-            if (droppedBlock.Descriptor.Type == BlockType.DefinizioneFunzione) FunctionNames.Add(droppedBlock.Questions.ElementAt(0).Value);
+            if (droppedBlock.Descriptor.Type.Equals(BlockType.DefinizioneFunzione)) FunctionNames.Add(droppedBlock.Questions.ElementAt(0).Value);
             ShiftBlocksWhenDropped(droppedBlock, SetUpperLeft(new(dropPoint.X, dropPoint.Y), droppedBlock, underBlock));
             DroppedBlocks = DroppedBlocks.Append(droppedBlock).ToList();
         }
@@ -193,13 +195,29 @@ namespace Frontend.ViewModels
         /// <param name="deletedBlock"> Blocco da eliminare </param>
         public void DeleteDroppedBlock(IFrontEndBlock deletedBlock)
         {
-            deletedBlock.Children.ForEach(child => { DroppedBlocks.Remove(child); });
+            List<IFrontEndBlock> toBeRemoved =  new(deletedBlock.Children);
 
-            if (deletedBlock.Father != null) deletedBlock.Father.Next = deletedBlock.Next;
-            if (deletedBlock.Father?.Shape.Type == ShapeType.WITH_CHILDREN) deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
-            
-            ShiftBlocksWhenDelete(deletedBlock);
-            deletedBlock.Father?.Children.Remove(deletedBlock);
+            if(deletedBlock.Father != null)
+                if (deletedBlock.Father.Next == deletedBlock) deletedBlock.Father.Next = deletedBlock.Next;
+                else deletedBlock.Father.Children.Where(child => child.Next==deletedBlock).FirstOrDefault().Next = deletedBlock.Next;
+
+            if (deletedBlock.Father?.Shape.Type == ShapeType.WITH_CHILDREN) 
+                deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
+
+            if (deletedBlock.Descriptor.Type.Equals(BlockType.DefinizioneFunzione)) {
+                var functionName = deletedBlock.Questions.ElementAt(0).Value;
+                FunctionNames.Remove(functionName);
+                foreach (var callBlock in DroppedBlocks.Where(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName)).ToList())
+                    callBlock.Father?.Children.Remove(callBlock);
+            }
+
+            toBeRemoved.Add(deletedBlock);
+            toBeRemoved.ForEach(block =>
+            {
+                deletedBlock.Father?.Children.Remove(deletedBlock);
+                ShiftBlocksWhenDelete(block);
+                DroppedBlocks.Remove(block);
+            });
             DroppedBlocks = DroppedBlocks.Where(x => !x.Equals(deletedBlock)).ToList();
         }
 
