@@ -4,22 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backend.Blocks.Starts
+namespace Backend.Blocks.Events
 {
     /// <summary>
-    /// Definisce il blocco per la generazione del metodo <c>Start</c> all'interno dello script Unity
+    /// Blocco per definire un evento da tastiera
     /// </summary>
-    public class StartBlock : AbstractBlock
+    public class KeyboardEvent : AbstractBlock
     {
-        public StartBlock() : base("Start")
+        /// <summary>
+        /// Tasto premuto
+        /// </summary>
+        public string Key { get; set; }
+        public KeyboardEvent(string name, string key) : base(name)
         {
-
+            Key = key;
         }
 
         public override string GetCode()
         {
             string code = "";
-            code += "private void Start(){\n";
+            code += $"if(Input.GetKey(\"{Key}\")){{\n";
             foreach(var children in Children)
             {
                 code += children.GetCode();

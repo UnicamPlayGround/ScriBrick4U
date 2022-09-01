@@ -6,10 +6,6 @@ namespace Backend.Blocks;
 public interface IBlock
 {
     /// <summary>
-    /// Tipologia blocco
-    /// </summary>
-    public string Type { get; set; }
-    /// <summary>
     /// Nome del blocco. Il nome viene utilizzato per generare nomi all'interno dello script C# per unity, e quindi deve essere unico
     /// </summary>
     public string Name { get; set; }

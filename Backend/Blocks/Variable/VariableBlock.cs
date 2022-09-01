@@ -15,7 +15,7 @@ namespace Backend.Blocks.Variable
         /// Valore del blocco
         /// </summary>
         public int Value { set; get; }
-        public VariableBlock(string name, int value) : base("Variable", name)
+        public VariableBlock(string name, int value) : base(name)
         {
             Value = value;
         }

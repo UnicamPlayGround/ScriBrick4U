@@ -1,5 +1,6 @@
 ﻿using Backend.Blocks;
 using Backend.Blocks.Conditional;
+using Backend.Blocks.Events;
 using Backend.Blocks.Movement;
 using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
@@ -85,6 +86,9 @@ namespace Frontend.Translators
                         case "Start":
                             block = new StartBlock();
                             break;
+                        case "Update":
+                            block = new UpdateBlock();
+                            break;
                     }
                     break;
                 case BlockType.Movimento:
@@ -120,6 +124,16 @@ namespace Frontend.Translators
                                 getVariableBlock(frontEndBlock.Questions[0].Value),
                                 frontEndBlock.Questions[1].Value,
                                 getVariableBlock(frontEndBlock.Questions[2].Value));
+                            break;
+                    }
+                    break;
+                case BlockType.Evento:
+                    switch (frontEndBlock.Descriptor.Name) {
+                        case "KeyboardEvent":
+                            block = new KeyboardEvent(
+                                $"Event{Counter++}",
+                                frontEndBlock.Questions[0].Value
+                            );
                             break;
                     }
                     break;

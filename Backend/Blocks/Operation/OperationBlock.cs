@@ -23,7 +23,7 @@ namespace Backend.Blocks.Operation
         /// Operatore da utilizzare
         /// </summary>
         private string Operator { get; set; }
-        public OperationBlock(string name, IBlock value1, string operation, IBlock value2) : base("Operation", name)
+        public OperationBlock(string name, IBlock value1, string operation, IBlock value2) : base(name)
         {
             Value1 = value1;
             Value2 = value2;

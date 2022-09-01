@@ -17,14 +17,7 @@ namespace Backend.Transpilers
             Dictionary<string, string> variables = new();
             foreach (IBlock block in blocks)
             {
-                foreach(var children in block.Children)
-                {
-                    foreach (var variable in children.GetVariables().ToList())
-                    {
-                        if (variables.ContainsKey(variable.Key)) continue;
-                        variables.Add(variable.Key, variable.Value);
-                    }
-                }
+                variables = GetBlockVariables(block.Children);
             }
             code += DefineGlobalVariables(variables);
             foreach (IBlock block in blocks)
@@ -33,6 +26,24 @@ namespace Backend.Transpilers
             }
             code += "}";
             return code;
+        }
+
+        private Dictionary<string, string> GetBlockVariables(IEnumerable<IBlock> children)
+        {
+            Dictionary<string, string> variables = new Dictionary<string, string>();
+            foreach (var child in children)
+            {
+                if(child.Children.Count() > 0)
+                {
+                    variables = GetBlockVariables(child.Children);
+                }
+                foreach (var variable in child.GetVariables().ToList())
+                {
+                    if (variables.ContainsKey(variable.Key)) continue;
+                    variables.Add(variable.Key, variable.Value);
+                }
+            }
+            return variables;
         }
 
         private static string DefineGlobalVariables(Dictionary<string, string> variablesTable)

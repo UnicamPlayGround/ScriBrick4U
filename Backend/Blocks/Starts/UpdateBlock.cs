@@ -6,20 +6,16 @@ using System.Threading.Tasks;
 
 namespace Backend.Blocks.Starts
 {
-    /// <summary>
-    /// Definisce il blocco per la generazione del metodo <c>Start</c> all'interno dello script Unity
-    /// </summary>
-    public class StartBlock : AbstractBlock
+    public class UpdateBlock : AbstractBlock
     {
-        public StartBlock() : base("Start")
+        public UpdateBlock() : base("Update")
         {
-
         }
 
         public override string GetCode()
         {
             string code = "";
-            code += "private void Start(){\n";
+            code += "private void Update(){\n";
             foreach(var children in Children)
             {
                 code += children.GetCode();

@@ -23,7 +23,7 @@ namespace Backend.Blocks.Conditional
         /// Definisce l'operatore da applicare 
         /// </summary>
         public string Condition { get; set; }
-        public IfBlock(string name, IBlock first, string condition, IBlock second) : base("Conditional", name)
+        public IfBlock(string name, IBlock first, string condition, IBlock second) : base(name)
         {
             First = first;
             Second = second;
