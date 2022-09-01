@@ -21,7 +21,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Lista contenente i nomi dei blocchi che chiamano funzioni
         /// </summary>
-        public static List<string> FunctionNames = new();
+        public static readonly List<string> FunctionNames = new();
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
