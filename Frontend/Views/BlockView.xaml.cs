@@ -68,7 +68,7 @@ public partial class BlockView : ContentView
     private void SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.Count > 0 && e.CurrentSelection[0] != null)
-            selected = ((e.CurrentSelection[0] as IFrontEndBlock).GetInfo(), null);
+                selected = ((e.CurrentSelection[0] as IFrontEndBlock).GetInfo(), null);
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public partial class BlockView : ContentView
     /// </summary>
     /// <param name="dropPoint"> Punto nel quale posizionare il blocco selezionato </param>
     private void Drop(PointF dropPoint) {
-        if (selected.Item1.Descriptor.Type is not BlockType.Principale)
+        if (selected.Item1.Descriptor.Type != BlockType.Principale)
             ShowEditPage(selected.Item1, (sender, args) =>
             {
                 if ((sender as BlockEditPage).Flag == BlockEditPageFlag.CONFERMA) context.AddDroppedBlock(selected.Item1, dropPoint);
@@ -151,7 +151,8 @@ public partial class BlockView : ContentView
     {
         if (selected.Item2 == null) return;
         VisualStateManager.GoToState(selected.Item2, "Normal");
-        selected.Item1 = null; selected.Item2 = null;
+        selected = (null, null);
+        blocksCollView.SelectedItem = null;
     }
 
     /// <summary>
