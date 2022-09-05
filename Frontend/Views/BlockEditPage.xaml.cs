@@ -1,4 +1,4 @@
-using Frontend.Models.EditPage;
+using Frontend.Model.EditPage;
 using Frontend.Model.QuestionItem;
 using Frontend.Model.Blocks;
 using Frontend.ViewModels;

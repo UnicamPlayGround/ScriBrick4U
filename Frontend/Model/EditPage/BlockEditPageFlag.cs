@@ -1,6 +1,6 @@
 ﻿using Frontend.EditPage;
 
-namespace Frontend.Models.EditPage
+namespace Frontend.Model.EditPage
 {
     /// <summary>
     /// Enum che descrive le azioni che si possono compiere in un'<see cref="BlockEditPage"/>

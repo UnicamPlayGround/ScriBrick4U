@@ -1,7 +1,7 @@
 ﻿using Frontend.Model.Blocks;
 using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Bounds;
-using Frontend.Models.Blocks.Descriptors;
+using Frontend.Model.Blocks.Bounds;
+using Frontend.Model.Blocks.Descriptors;
 
 namespace Frontend.Builders
 {

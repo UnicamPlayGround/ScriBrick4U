@@ -1,4 +1,4 @@
-﻿namespace Frontend.Models.Blocks.Bounds
+﻿namespace Frontend.Model.Blocks.Bounds
 {
     /// <summary>
     /// Interfaccia che rappresenta le dimensioni e le coordinate di un blocco

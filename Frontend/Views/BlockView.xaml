@@ -49,7 +49,7 @@
                               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
                         <StackLayout Loaded="BlocksStackLayout_Loaded" VerticalOptions="Start" HorizontalOptions="Center"
-                                     Margin="8, 15, 8, 0" Orientation="Horizontal"/>
+                                     Margin="8, 14, 8, 0" Orientation="Horizontal"/>
 
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>

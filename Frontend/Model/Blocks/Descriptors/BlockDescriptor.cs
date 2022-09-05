@@ -1,6 +1,6 @@
 ﻿using Frontend.Model.Blocks;
 
-namespace Frontend.Models.Blocks.Descriptors
+namespace Frontend.Model.Blocks.Descriptors
 {
     /// <summary>
     /// Classe concreta che rappresenta un descrittore di blocchi di default

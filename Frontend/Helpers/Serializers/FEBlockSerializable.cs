@@ -1,6 +1,6 @@
 ﻿using Frontend.Model.Blocks;
 using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Bounds;
+using Frontend.Model.Blocks.Bounds;
 
 namespace Frontend.Helpers.Serializers
 {
