@@ -17,7 +17,7 @@ public partial class BlockTypeView : ContentView
     public BlockTypeView()
     {
         InitializeComponent();
-        context = BindingContext as BlockTypeViewModel;
+        BindingContext = context = new BlockTypeViewModel();
     }
 
     /// <summary>

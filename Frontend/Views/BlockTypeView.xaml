@@ -5,12 +5,6 @@
              x:Name="this"
              x:Class="Frontend.Views.BlockTypeView">
 
-
-    <ContentView.BindingContext>
-        <vm:BlockTypeViewModel/>
-    </ContentView.BindingContext>
-
-
     <CollectionView
         ItemsSource="{Binding BlockTypes}"
         SelectionMode="Single"
