@@ -63,8 +63,6 @@ namespace Frontend.ViewModels
         /// </summary>
         public void LoadScript(string path)
         {
-            if (path == null) return;
-
             FilePath = path;
             Mediator.Notify(this, MediatorKey.SETDROPPEDBLOCKSFROMJSON);
         }
@@ -74,10 +72,8 @@ namespace Frontend.ViewModels
         /// </summary>
         public void TranslateScript()
         {
-            ITranslator t = new Translator();
-            IEnumerable<IBlock> tradotti = t.Translate((List<IFrontEndBlock>)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS));
-            ITranspiler transpiler = new Transpiler();
-            string code = transpiler.ConvertToCode("test", tradotti.AsQueryable());
+            IEnumerable<IBlock> tradotti = (new Translator()).Translate((List<IFrontEndBlock>)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS));
+            string code = (new Transpiler()).ConvertToCode((FileName==null) ? "script" : FileName, tradotti.AsQueryable());
             File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\test.cs", code);
         }
 

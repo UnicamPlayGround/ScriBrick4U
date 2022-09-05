@@ -1,10 +1,10 @@
 ﻿using Frontend.Helpers.Serializers;
 using Frontend.Model.Blocks;
-using Frontend.Models.Blocks.Shapes;
 using Frontend.Views;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using Frontend.Models.Blocks.Descriptors;
+using Frontend.Model.Blocks.Descriptors;
+using Frontend.Model.Blocks.Shapes;
 
 namespace Frontend.ViewModels
 {
@@ -28,6 +28,7 @@ namespace Frontend.ViewModels
         /// </summary>
         private List<IFrontEndBlock> _allBlocks;
 
+
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene effettivamente i blocchi mostrati all'utente, 
         /// che possono essere trascinati
@@ -47,6 +48,7 @@ namespace Frontend.ViewModels
             }
         }
 
+
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene effettivamente i blocchi trascinati dall'utente
         /// </summary>
@@ -64,6 +66,7 @@ namespace Frontend.ViewModels
                 _graphicsView.Invalidate();
             }
         }
+
 
         /// <summary>
         /// Costruttore di default
@@ -84,10 +87,7 @@ namespace Frontend.ViewModels
         {
             _allBlocks = new();
             foreach (var block in AbstractFrontEndBlock.GetEnumerableOfType())
-            {
                 _allBlocks.Add(block.GetInfo());
-            }
-
             Blocks = _allBlocks;
         }
 
@@ -118,7 +118,7 @@ namespace Frontend.ViewModels
         {
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
             
-            if (droppedBlock.Descriptor.Type.Equals(BlockType.DefinizioneFunzione)) FunctionNames.Add(droppedBlock.Questions.ElementAt(0).Value);
+            if (droppedBlock.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(droppedBlock.Questions.ElementAt(0).Value);
             ShiftBlocksWhenDropped(droppedBlock, SetUpperLeft(new(dropPoint.X, dropPoint.Y), droppedBlock, underBlock));
             DroppedBlocks = DroppedBlocks.Append(droppedBlock).ToList();
         }

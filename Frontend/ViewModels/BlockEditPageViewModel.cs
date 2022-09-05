@@ -24,8 +24,8 @@ namespace Frontend.ViewModels
         /// Costruttore di defualt
         /// </summary>
         /// <param name="block"> Blocco da editare </param>
-        public BlockEditPageViewModel(IFrontEndBlock block)
-        {
+        public BlockEditPageViewModel(IFrontEndBlock block) {
+            SetMediator(this);
             Block = block;
         }
     }

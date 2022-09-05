@@ -28,12 +28,12 @@ namespace Frontend.ViewModels
         }
 
         /// <summary>
-        /// Variabile che contiene effetivamente il tipo di blocco selezionato
+        /// Variabile che contiene effettivamente il tipo di blocco selezionato
         /// </summary>
         private BlockType _selectedType;
 
         /// <summary>
-        /// Variabile che contiene il tipo di blocco selezionato
+        /// Variabile pubblica che contiene il tipo di blocco selezionato
         /// </summary>
         public BlockType SelectedType
         {
