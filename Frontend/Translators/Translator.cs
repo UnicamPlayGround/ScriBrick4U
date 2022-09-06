@@ -113,7 +113,7 @@ namespace Frontend.Translators
                             break;
                     }
                     break;
-                /*case BlockType.Condizionale:
+                case BlockType.Condizionale:
                     switch (frontEndBlock.Descriptor.Name)
                     {
                         case "If":
@@ -124,7 +124,7 @@ namespace Frontend.Translators
                                 getVariableBlock(frontEndBlock.Questions[2].Value));
                             break;
                     }
-                    break;*/
+                    break;
                 case BlockType.Evento:
                     switch (frontEndBlock.Descriptor.Name)
                     {
