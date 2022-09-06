@@ -137,6 +137,17 @@ namespace Frontend.Translators
                             break;
                     }
                     break;
+                case BlockType.Variable:
+                    switch (frontEndBlock.Descriptor.Name)
+                    {
+                        case "NewVariableBlock":
+                            block = new VariableBlock($"Variable{Counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
+                            break;
+                        case "SetVariableBlock":
+                            block = new SetVariableBlock($"SetVariable{Counter++}", frontEndBlock.Questions[0].Value, Creator(frontEndBlock.Children[0]));
+                            break;
+                    }
+                    break;
             }
             if(block == null)
             {
