@@ -21,12 +21,12 @@ namespace Backend.Blocks.Variable
 
         public override string GetCode()
         {
-            return $"{NameVariable} {Operation} {Value}";
+            return $"{NameVariable} {Operation} {Value};\n";
         }
 
         public override Dictionary<string, string> GetVariables()
         {
-            throw new NotImplementedException();
+            return new();
         }
     }
 }

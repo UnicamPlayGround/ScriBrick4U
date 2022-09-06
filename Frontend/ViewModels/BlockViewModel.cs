@@ -92,7 +92,7 @@ namespace Frontend.ViewModels
             _allBlocks = new();
             foreach (var block in AbstractFrontEndBlock.GetEnumerableOfType())
                 _allBlocks.Add(block.GetInfo());
-            Blocks = _allBlocks;
+            Blocks = _allBlocks.OrderBy(block => block.Descriptor.Category).ToList();
         }
 
         /// <summary>
@@ -106,14 +106,14 @@ namespace Frontend.ViewModels
         {
             var under = GetBlockFromPoint(dropPoint);
 
-            //    if (dropped.CanContainChildren && under!=null && under.CanContainChildren)
-            //        throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' non puo' essere posizionato.");
             if (dropped.Descriptor.Type is BlockType.Principale && DroppedBlocks.Exists(bl => dropped.Descriptor.Name.Equals(bl.Descriptor.Name)))
                 throw new InvalidOperationException("Un blocco '" + dropped.Descriptor.Name.ToUpper() + "' è già stato posizionato.");
             if (under is null && dropped.Shape.Type is not ShapeType.UPPER)
                 throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente sotto ad una altro blocco");
             if (dropped.Descriptor.Type is BlockType.ChiamaFunzione && !FunctionNames.Any())
                 throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente dopo aver DEFINITO almeno 1 funzione.");
+            if (dropped.Descriptor.Type is BlockType.ModificaVariabile && !VariableNames.Any())
+                throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente dopo aver DEFINITO almeno 1 variabile.");
 
             return true;
         }
@@ -127,6 +127,7 @@ namespace Frontend.ViewModels
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
 
             if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(0).Value);
+            if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(1).Value);
             if (dropped.Shape.Type is ShapeType.UPPER)
             {
                 dropped.Position.UpperLeft = GetStartPosition(dropped, dropPoint);

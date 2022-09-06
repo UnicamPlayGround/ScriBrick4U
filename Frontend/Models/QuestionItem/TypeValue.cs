@@ -1,4 +1,6 @@
-﻿namespace Frontend.Models.QuestionItem
+﻿using System.Text.RegularExpressions;
+
+namespace Frontend.Models.QuestionItem
 {
     /// <summary>
     /// Enum che descrive il tipo di valore atteso da un <see cref="IBlockEditItem"/>
@@ -9,7 +11,11 @@
         NUMBER,
 
         /// <summary> E' attesa una stringa </summary>
-        STRING
+        STRING,
+        /// <summary>
+        /// E' atteso un nome di variabile
+        /// </summary>
+        VARIABLE
     }
 
     /// <summary>
@@ -32,6 +38,11 @@
                     break;
                 case TypeValue.STRING:
                     validator = (v) => { return !string.IsNullOrEmpty(v); };
+                    break;
+                case TypeValue.VARIABLE:
+                    //regex per validare il nome della variabile:
+                    Regex rgx = new("^[a-zA-Z_][a-zA-Z_$0-9]");
+                    validator = (v) => { return rgx.IsMatch(v); };
                     break;
                 default:
                     validator = (v) => true;

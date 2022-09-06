@@ -4,7 +4,6 @@ using Backend.Blocks.Events;
 using Backend.Blocks.Movement;
 using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
-using Backend.Blocks.Value;
 using Backend.Blocks.Variable;
 using Frontend.Models.Blocks;
 
@@ -14,7 +13,7 @@ namespace Frontend.Translators
     {
         private int Counter = 0;
         private IDictionary<string, List<IBlock>> functions = new Dictionary<string, List<IBlock>>();
-        private List<IFrontEndBlock> frontEndFunctions = new ();
+        private List<IFrontEndBlock> frontEndFunctions = new();
 
         public IEnumerable<IBlock> Translate(IEnumerable<IFrontEndBlock> frontEndBlocks)
         {
@@ -114,7 +113,7 @@ namespace Frontend.Translators
                             break;
                     }
                     break;
-                case BlockType.Condizionale:
+                /*case BlockType.Condizionale:
                     switch (frontEndBlock.Descriptor.Name)
                     {
                         case "If":
@@ -125,9 +124,10 @@ namespace Frontend.Translators
                                 getVariableBlock(frontEndBlock.Questions[2].Value));
                             break;
                     }
-                    break;
+                    break;*/
                 case BlockType.Evento:
-                    switch (frontEndBlock.Descriptor.Name) {
+                    switch (frontEndBlock.Descriptor.Name)
+                    {
                         case "KeyboardEvent":
                             block = new KeyboardEvent(
                                 $"Event{Counter++}",
@@ -136,23 +136,18 @@ namespace Frontend.Translators
                             break;
                     }
                     break;
-                case BlockType.Variable:
-                    switch (frontEndBlock.Descriptor.Name)
-                    {
-                        case "NewVariableBlock":
-                            block = new VariableBlock($"Variable{Counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
-                            break;
-                        case "SetVariableBlock":
-                            block = new SetVariableBlock(
-                                $"SetVariable{Counter++}", 
-                                frontEndBlock.Questions[0].Value, 
-                                frontEndBlock.Questions[1].Value, 
-                                frontEndBlock.Questions[3].Value);
-                            break;
-                    }
+                case BlockType.DefinizioneVariabile:
+                    block = new VariableBlock($"Variable{Counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
+                    break;
+                case BlockType.ModificaVariabile:
+                    block = new SetVariableBlock(
+                               $"SetVariable{Counter++}",
+                               frontEndBlock.Questions[0].Value,
+                               frontEndBlock.Questions[1].Value,
+                               frontEndBlock.Questions[2].Value);
                     break;
             }
-            if(block == null)
+            if (block == null)
             {
                 throw new NotImplementedException(frontEndBlock.Descriptor.Name);
             }
