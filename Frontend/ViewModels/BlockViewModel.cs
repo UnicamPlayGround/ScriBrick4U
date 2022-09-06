@@ -3,8 +3,8 @@ using Frontend.Model.Blocks;
 using Frontend.Views;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using Frontend.Model.Blocks.Descriptors;
 using Frontend.Model.Blocks.Shapes;
+using Frontend.Model.Blocks.Descriptors;
 
 namespace Frontend.ViewModels
 {
@@ -150,7 +150,11 @@ namespace Frontend.ViewModels
                 IFrontEndBlock? start = under.CanContainChildren ? under : under.Father;
                 PointF upperCorner = (start is null) ? new() : new(start.Position.UpperLeft.X, start.Position.UpperLeft.Y + 40);
                 PointF bottomCorner = (start is null) ? new() : new(start.Position.BottomRight.X, start.Position.BottomRight.Y - 40);
-                
+
+                if (!under.CanContainChildren)
+                {
+
+                }
                 if (start != null && start.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
                 {
                     var lastChildren = under.Children.LastOrDefault();

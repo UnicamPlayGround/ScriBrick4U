@@ -1,9 +1,9 @@
 ﻿using Frontend.Model.Blocks;
 using Frontend.Model.QuestionItem;
-using Frontend.Model.Blocks.Bounds;
-using Frontend.Model.Blocks.Descriptors;
+using Frontend.Models.Blocks.Bounds;
+using Frontend.Models.Blocks.Descriptors;
 
-namespace Frontend.Builders
+namespace Frontend.Helpers.Builders
 {
     /// <summary>
     /// Classe che rappresenta un costruttore di blocchi di default

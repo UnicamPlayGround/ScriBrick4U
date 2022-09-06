@@ -1,7 +1,7 @@
-using Frontend.Model.EditPage;
 using Frontend.Model.QuestionItem;
 using Frontend.Model.Blocks;
 using Frontend.ViewModels;
+using Frontend.Model.EditPage;
 
 namespace Frontend.EditPage;
 
@@ -10,7 +10,7 @@ namespace Frontend.EditPage;
 /// </summary>
 public partial class BlockEditPage : ContentPage
 {
-    /// <summary> Variabile che rappresenta il flag di tipo <see cref="BlockEditPageFlag"/> </summary>
+    /// <summary> Variabile che rappresenta il BindingContext </summary>
     public BlockEditPageFlag Flag;
 
     /// <summary> <see cref="ScrollView"/> contenente il <see cref="Grid"/> dei <see cref="IBlockEditItem"/> </summary>
@@ -30,7 +30,6 @@ public partial class BlockEditPage : ContentPage
 	public BlockEditPage(IFrontEndBlock block, bool btnEliminaEnabled)
 	{
 		InitializeComponent();
-        Flag = BlockEditPageFlag.ANNULLA;
 		BackgroundColor = Color.FromRgb(240, 120, 105);
         BindingContext = new BlockEditPageViewModel(block);
 
