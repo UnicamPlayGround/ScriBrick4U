@@ -1,7 +1,7 @@
-﻿using Frontend.Model.Blocks;
-using Frontend.Model.QuestionItem;
+﻿using Frontend.Models.Blocks;
+using Frontend.Models.QuestionItem;
 
-namespace Frontend.Builders
+namespace Frontend.Helpers.Builders
 {
     /// <summary>
     /// Interfaccia che rappresenta un costruttore di blocchi

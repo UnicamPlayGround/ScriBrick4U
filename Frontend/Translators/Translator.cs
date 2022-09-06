@@ -4,8 +4,9 @@ using Backend.Blocks.Events;
 using Backend.Blocks.Movement;
 using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
+using Backend.Blocks.Value;
 using Backend.Blocks.Variable;
-using Frontend.Model.Blocks;
+using Frontend.Models.Blocks;
 
 namespace Frontend.Translators
 {
@@ -76,7 +77,7 @@ namespace Frontend.Translators
 
         private IBlock Creator(IFrontEndBlock frontEndBlock)
         {
-            IBlock block = null;
+            IBlock? block = null;
             switch (frontEndBlock.Descriptor.Type)
             {
                 case BlockType.Principale:
@@ -94,10 +95,10 @@ namespace Frontend.Translators
                     switch (frontEndBlock.Descriptor.Name)
                     {
                         case "Movimento":
-                            block = new ForwardBlock($"Forward{Counter++}", new VariableBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
+                            block = new ForwardBlock($"Forward{Counter++}", new ValueBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
                             break;
                         case "Rotazione":
-                            block = new RotationBlock($"Forward{Counter++}", new VariableBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
+                            block = new RotationBlock($"Forward{Counter++}", new ValueBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
                             break;
                     }
                     break;
@@ -107,9 +108,9 @@ namespace Frontend.Translators
                         case "Operazione":
                             block = new OperationBlock(
                                 $"Addition{Counter++}",
-                                getVariableBlock(frontEndBlock.Questions[0].Value),
+                                getValueBlock(frontEndBlock.Questions[0].Value),
                                 frontEndBlock.Questions[1].Value,
-                                getVariableBlock(frontEndBlock.Questions[2].Value)
+                                getValueBlock(frontEndBlock.Questions[2].Value)
                                 );
                             break;
                     }
@@ -145,9 +146,9 @@ namespace Frontend.Translators
         }
 
 
-        private VariableBlock getVariableBlock(string value)
+        private ValueBlock getValueBlock(string value)
         {
-            return new VariableBlock($"Variable{Counter++}", int.Parse(value));
+            return new ValueBlock($"Value{Counter++}", int.Parse(value));
         }
     }
 }
