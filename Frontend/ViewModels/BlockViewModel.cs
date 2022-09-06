@@ -1,4 +1,4 @@
-﻿using Frontend.Helpers.Serializers;
+using Frontend.Helpers.Serializers;
 using Frontend.Model.Blocks;
 using Frontend.Views;
 using System.Text.Json.Serialization;
@@ -131,45 +131,39 @@ namespace Frontend.ViewModels
         /// <param name="dropped"> Blocco trascinato </param>
         /// <param name="under"> Eventuale blocco contenente il punto di rilascio </param>
         /// <returns> Il blocco dal quale shiftare </returns>
-        private IFrontEndBlock SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
+        private IFrontEndBlock? SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
         {
-            IFrontEndBlock returnBlock = null;
+            IFrontEndBlock? returnBlock = null;
 
-            if (dropped.Descriptor.Type != BlockType.Principale && dropped.Descriptor.Type != BlockType.DefinizioneFunzione)
+            if (dropped.Shape.Type is ShapeType.UPPER)
             {
-                PointF upperCorner = new(under.Position.UpperLeft.X, under.Position.UpperLeft.Y + 40);
-                PointF bottomCorner = new(under.Position.BottomRight.X, under.Position.BottomRight.Y - 40);
-                if (under.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
+                IFrontEndBlock bl;
+                while ((bl = GetBlockFromPoint(originalPosition)) != null)
+                    originalPosition.X += (bl.Position.BottomRight.X - originalPosition.X) + 20;
+            }
+            else
+            {
+                IFrontEndBlock? start = under.CanContainChildren ? under : under.Father;
+                PointF upperCorner = (start is null) ? new() : new(start.Position.UpperLeft.X, start.Position.UpperLeft.Y + 40);
+                PointF bottomCorner = (start is null) ? new() : new(start.Position.BottomRight.X, start.Position.BottomRight.Y - 40);
+                
+                if (start != null && start.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
                 {
                     var lastChildren = under.Children.LastOrDefault();
-                    if (lastChildren == null)
+                    originalPosition = GetChildPosition(lastChildren, upperCorner, originalPosition);
+                    returnBlock = ResizeParent(under, dropped.Shape.BlockOffset.Y);
+                    dropped.Father = under;
+                    if(lastChildren != null)
                     {
-                        //16 è un numero (giusto) tirato a caso sarebbe da sistemare
-                        upperCorner.X += 16;
-                        originalPosition = upperCorner;
+                        lastChildren.Next = dropped;
                     }
-                    else
-                    {
-                        originalPosition.X = lastChildren.Position.UpperLeft.X;
-                        originalPosition.Y = lastChildren.Position.UpperLeft.Y + lastChildren.Shape.BlockOffset.Y;
-                    }
-
-                    var current = under;
-                    while(current?.Shape.Type == ShapeType.WITH_CHILDREN)
-                    {
-                        current.Height += dropped.Shape.BlockOffset.Y;
-                        if (current.Father.Shape.Type != ShapeType.WITH_CHILDREN)
-                            break;
-                        current = current.Father;
-                    }
-
-                    under.Shape.BlockOffset = new(under.Shape.BlockOffset.X, under.Shape.BlockOffset.Y + dropped.Shape.BlockOffset.Y);
+                    
                     under.Children.Add(dropped);
-                    dropped.Father = under = current;
-                    returnBlock = under.Next;
                 }
                 else
                 {
+                    ResizeParent(under.Father, dropped.Shape.BlockOffset.Y);
+                    returnBlock = under.Next;
                     originalPosition.X = under.Position.UpperLeft.X;
                     originalPosition.Y = under.Position.UpperLeft.Y + under.Shape.BlockOffset.Y;
                     dropped.Father = under.Father ?? under;
@@ -179,14 +173,37 @@ namespace Frontend.ViewModels
                     dropped.Father.Children.Add(dropped);
                 }
             }
+            
+            dropped.Position.UpperLeft = originalPosition;
+            return returnBlock ?? dropped.Next;
+        }
+
+        private IFrontEndBlock? ResizeParent(IFrontEndBlock? current, float offset)
+        {
+            while (current?.Shape.Type is ShapeType.WITH_CHILDREN)
+            {
+                current.Height += offset;
+                current.Shape.BlockOffset = new(current.Shape.BlockOffset.X, current.Shape.BlockOffset.Y + offset);
+                if (current.Father == null || current.Father.Shape.Type != ShapeType.WITH_CHILDREN) break;
+                current = current.Father;
+            }
+
+            return current?.Next;
+        }
+        private PointF GetChildPosition(IFrontEndBlock? lastChildren, PointF upperCorner, PointF originalPosition)
+        {
+            if (lastChildren == null)
+            {
+                //16 è un numero (giusto) tirato a caso sarebbe da sistemare
+                upperCorner.X += 16;
+                originalPosition = upperCorner;
+            }
             else
             {
-                IFrontEndBlock bl;
-                while ((bl = GetBlockFromPoint(originalPosition)) != null)
-                    originalPosition.X += (bl.Position.BottomRight.X - originalPosition.X) + 20;
+                originalPosition.X = lastChildren.Position.UpperLeft.X;
+                originalPosition.Y = lastChildren.Position.UpperLeft.Y + lastChildren.Shape.BlockOffset.Y;
             }
-            dropped.Position.UpperLeft = originalPosition;
-            return returnBlock;
+            return originalPosition;
         }
 
         /// <summary>
@@ -197,14 +214,15 @@ namespace Frontend.ViewModels
         {
             List<IFrontEndBlock> toBeRemoved =  new(deletedBlock.Children);
 
+            if ((bool)deletedBlock.Father?.CanContainChildren) return;
             if(deletedBlock.Father != null)
                 if (deletedBlock.Father.Next == deletedBlock) deletedBlock.Father.Next = deletedBlock.Next;
-                else deletedBlock.Father.Children.Where(child => child.Next==deletedBlock).FirstOrDefault().Next = deletedBlock.Next;
+            //    else deletedBlock.Father.Children.Where(child => child.Next==deletedBlock).FirstOrDefault().Next = deletedBlock.Next;
 
-            if (deletedBlock.Father?.Shape.Type == ShapeType.WITH_CHILDREN) 
+            if ((bool)deletedBlock.Father?.CanContainChildren) 
                 deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
 
-            if (deletedBlock.Descriptor.Type.Equals(BlockType.DefinizioneFunzione)) {
+            if (deletedBlock.Descriptor.Type is BlockType.DefinizioneFunzione) {
                 var functionName = deletedBlock.Questions.ElementAt(0).Value;
                 FunctionNames.Remove(functionName);
                 foreach (var callBlock in DroppedBlocks.Where(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName)).ToList())
