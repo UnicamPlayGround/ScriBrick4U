@@ -102,8 +102,8 @@ namespace Frontend.ViewModels
         {
             var under = GetBlockFromPoint(dropPoint);
 
-        //    if (dropped.CanContainChildren && under!=null && under.CanContainChildren)
-        //        throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' non puo' essere posizionato.");
+            //    if (dropped.CanContainChildren && under!=null && under.CanContainChildren)
+            //        throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' non puo' essere posizionato.");
             if (dropped.Descriptor.Type is BlockType.Principale && DroppedBlocks.Exists(bl => dropped.Descriptor.Name.Equals(bl.Descriptor.Name)))
                 throw new InvalidOperationException("Un blocco '" + dropped.Descriptor.Name.ToUpper() + "' è già stato posizionato.");
             if (under is null && dropped.Shape.Type is not ShapeType.UPPER)
@@ -121,9 +121,9 @@ namespace Frontend.ViewModels
         public void AddDroppedBlock(IFrontEndBlock dropped, PointF dropPoint)
         {
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
-            
+
             if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(0).Value);
-            if(dropped.Shape.Type is ShapeType.UPPER)
+            if (dropped.Shape.Type is ShapeType.UPPER)
             {
                 dropped.Position.UpperLeft = GetStartPosition(dropped, dropPoint);
             }
@@ -165,11 +165,11 @@ namespace Frontend.ViewModels
                 originalPosition = GetChildPosition(lastChildren, upperCorner, originalPosition);
                 returnBlock = ResizeParent(under, dropped.Shape.BlockOffset.Y);
                 dropped.Father = under;
-                if(lastChildren != null)
+                if (lastChildren != null)
                 {
                     lastChildren.Next = dropped;
                 }
-                    
+
                 under.Children.Add(dropped);
             }
             else
@@ -183,7 +183,7 @@ namespace Frontend.ViewModels
                 under.Next = dropped;
                 dropped.Father.Children.Add(dropped);
             }
-            
+
             dropped.Position.UpperLeft = originalPosition;
             return returnBlock ?? dropped.Next;
         }
@@ -222,29 +222,41 @@ namespace Frontend.ViewModels
         /// <param name="deletedBlock"> Blocco da eliminare </param>
         public void DeleteDroppedBlock(IFrontEndBlock deletedBlock)
         {
-            List<IFrontEndBlock> toBeRemoved =  new(deletedBlock.Children);
+            List<IFrontEndBlock> toBeRemoved = new(deletedBlock.Children);
 
             if (deletedBlock.Father != null)
             {
                 if (deletedBlock.Father.Next == deletedBlock) deletedBlock.Father.Next = deletedBlock.Next;
-                deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
+                if (deletedBlock.Father.CanContainChildren)
+                {
+                    deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
+                }
+                deletedBlock.Father.Children.Remove(deletedBlock);
             }
-                
-            if (deletedBlock.Descriptor.Type is BlockType.DefinizioneFunzione) {
+
+            if (deletedBlock.Descriptor.Type is BlockType.DefinizioneFunzione)
+            {
                 var functionName = deletedBlock.Questions.ElementAt(0).Value;
-                FunctionNames.Remove(functionName);
-                foreach (var callBlock in DroppedBlocks.Where(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName)).ToList())
-                    callBlock.Father?.Children.Remove(callBlock);
+                RemoveFunctionUse(functionName);
             }
 
             toBeRemoved.Add(deletedBlock);
             toBeRemoved.ForEach(block =>
             {
-                deletedBlock.Father?.Children.Remove(deletedBlock);
                 ShiftBlocksWhenDelete(block);
                 DroppedBlocks.Remove(block);
             });
             DroppedBlocks = DroppedBlocks.Where(x => !x.Equals(deletedBlock)).ToList();
+        }
+
+        private void RemoveFunctionUse(string functionName)
+        {
+            FunctionNames.Remove(functionName);
+            IEnumerable<IFrontEndBlock> toRemove = DroppedBlocks.Where(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName));
+            foreach (var callBlock in toRemove)
+            {
+                callBlock.Father?.Children.Remove(callBlock);
+            }
         }
 
         /// <summary>
@@ -252,7 +264,8 @@ namespace Frontend.ViewModels
         /// </summary>
         /// <param name="droppedBlock"> Blocco rilasciato </param>
         /// <param name="underBlock"> Blocco contenente il punto di rilascio </param>
-        private void ShiftBlocksWhenDropped(IFrontEndBlock droppedBlock, IFrontEndBlock? underBlock) {
+        private void ShiftBlocksWhenDropped(IFrontEndBlock droppedBlock, IFrontEndBlock? underBlock)
+        {
             if (droppedBlock.Descriptor.Type != BlockType.Principale && droppedBlock.Descriptor.Type != BlockType.DefinizioneFunzione)
                 Shift(underBlock, droppedBlock.Shape.BlockOffset.Y, GetCurrent, (x, y) => x + y);
         }
@@ -260,7 +273,8 @@ namespace Frontend.ViewModels
         /// Sposta i blocchi quando un blocco, precedentemente rilasciato, viene eliminato
         /// </summary>
         /// <param name="deletedBlock"> Blocco eliminato </param>
-        private void ShiftBlocksWhenDelete(IFrontEndBlock deletedBlock) {
+        private void ShiftBlocksWhenDelete(IFrontEndBlock deletedBlock)
+        {
             Shift(deletedBlock, deletedBlock.Shape.BlockOffset.Y, GetCurrent, (x, y) => x - y);
         }
         /// <summary>
@@ -366,7 +380,8 @@ namespace Frontend.ViewModels
             List<IFrontEndBlock> deserializedBlocks = new();
             List<FEBlockSerializable> serializedBlocks = JsonSerializer.Deserialize<List<FEBlockSerializable>>(serializedDroppedBlocks) ?? new();
 
-            foreach (var serialized in serializedBlocks) {
+            foreach (var serialized in serializedBlocks)
+            {
                 Type? blockType = Type.GetType(serialized.BlockType ?? "");
                 if (blockType != null)
                 {
