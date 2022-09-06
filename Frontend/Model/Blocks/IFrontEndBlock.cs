@@ -1,7 +1,7 @@
-﻿using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Bounds;
-using Frontend.Models.Blocks.Descriptors;
-using Frontend.Models.Blocks.Shapes;
+﻿using Frontend.Model.Blocks.Bounds;
+using Frontend.Model.Blocks.Descriptors;
+using Frontend.Model.Blocks.Shapes;
+using Frontend.Model.QuestionItem;
 using SkiaSharp;
 
 namespace Frontend.Model.Blocks
@@ -49,12 +49,12 @@ namespace Frontend.Model.Blocks
         /// <summary>
         /// Padre del blocco
         /// </summary>
-        public IFrontEndBlock Father { get; set; }
+        public IFrontEndBlock? Father { get; set; }
 
         /// <summary>
         /// Blocco successivo
         /// </summary>
-        public IFrontEndBlock Next { get; set; }
+        public IFrontEndBlock? Next { get; set; }
 
         /// <summary>
         /// Figli del blocco

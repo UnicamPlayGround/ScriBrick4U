@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
 
-namespace Frontend.Models.Blocks.Shapes
+namespace Frontend.Model.Blocks.Shapes
 {
     /// <summary>
     /// Classe che rappresenta la forma di un blocco di default
@@ -12,6 +12,7 @@ namespace Frontend.Models.Blocks.Shapes
         public Geometry SvgData { get; set; }
         public PointF BlockOffset { get; set; }
         public ShapeType Type { get; set; }
+        public Thickness Margin { get; set; }
 
         /// <summary>
         /// Costruttore che inizializza la classe
@@ -27,6 +28,7 @@ namespace Frontend.Models.Blocks.Shapes
             Path = GetSvgPath(width, height);
             SvgData = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(Path);
             BlockOffset = blockOffset;
+            Margin = !type.Equals(ShapeType.UPPER) ? new(8, 14, 8, 0) : new(8, 30, 8, 0);
             Type = type;
         }
         public string GetSvgPath(float width, float height)

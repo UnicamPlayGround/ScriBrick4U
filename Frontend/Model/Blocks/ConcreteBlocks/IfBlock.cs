@@ -1,28 +1,19 @@
 ﻿using Frontend.Builders;
 using Frontend.Model.Blocks;
+using Frontend.Model.Blocks.AbstractTypeBlocks;
+using Frontend.Model.Blocks.Shapes;
 using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Shapes;
 
-namespace Frontend.Models.Blocks.ConcreteBlocks
+namespace Frontend.Model.Blocks.ConcreteBlocks
 {
     /// <summary>
     /// Classe concreta che rappresenta un blocco If
     /// </summary>
-    public class IfBlock : AbstractFrontEndBlock
+    public class IfBlock : WithChildrenForntEndBlock
     {
-        /// <summary>
-        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.Width"/> e l'altezza del blocco
-        /// </summary>
-        public IfBlock()
-        {
-            Shape = ShapeTypeMethods.GetShape(ShapeType.WITH_CHILDREN);
-            Width = 158;
-            Height = 32;
-        }
-
         public override IFrontEndBlock GetInfo()
         {
-            List<string> pickerOptions = new() { "<", ">", "=", "<=", ">=" };
+            List<string> pickerOptions = new() { "<", ">", "==", "<=", ">=" };
             List<IBlockEditItem> editItems = new()
             {
                 new EntryEditItem(

@@ -1,10 +1,10 @@
 ﻿using Frontend.Builders;
 using Frontend.Model.Blocks;
+using Frontend.Model.Blocks.Shapes;
 using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Shapes;
 using Frontend.ViewModels;
 
-namespace Frontend.Models.Blocks.ConcreteBlocks
+namespace Frontend.Model.Blocks.ConcreteBlocks
 {
     /// <summary>
     /// Classe concreta che rappresenta un blocco per chiamare una funzione
@@ -20,7 +20,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
             Width = 130;
             Height = 48;
         }
-        
+
         public override IFrontEndBlock GetInfo()
         {
             IBlockEditItem editItem = new PickerEditItem(

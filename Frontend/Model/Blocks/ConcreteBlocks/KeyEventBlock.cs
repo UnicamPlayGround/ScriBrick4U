@@ -1,22 +1,14 @@
 ﻿using Frontend.Builders;
+using Frontend.Model.Blocks.AbstractTypeBlocks;
 using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Frontend.Model.Blocks.ConcreteBlocks
 {
-    public class KeyEventBlock : AbstractFrontEndBlock
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco Evento Tastiera
+    /// </summary>
+    public class KeyEventBlock : WithChildrenForntEndBlock
     {
-        public KeyEventBlock()
-        {
-            Shape = ShapeTypeMethods.GetShape(ShapeType.WITH_CHILDREN);
-            Width = 158;
-            Height = 32;
-        }
         public override IFrontEndBlock GetInfo()
         {
             List<string> pickerOptions = new() { "left", "right",};

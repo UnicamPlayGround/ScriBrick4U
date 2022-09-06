@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
 
-namespace Frontend.Models.Blocks.Shapes
+namespace Frontend.Model.Blocks.Shapes
 {
     /// <summary>
     /// Interfaccia che rappresenta la forma di un blocco
@@ -21,6 +21,9 @@ namespace Frontend.Models.Blocks.Shapes
 
         /// <summary> Tipo di forma </summary>
         public ShapeType Type { get; set; }
+
+        /// <summary> Margini del contenuto del blocco </summary>
+        public Thickness Margin { get; set; }
 
         /// <summary>
         /// Parsa il <see cref="PathTemplate"/> con la larghezza e l'altezza passate come parametro

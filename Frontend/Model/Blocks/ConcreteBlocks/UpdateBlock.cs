@@ -1,21 +1,13 @@
 ﻿using Frontend.Builders;
-using Frontend.Models.Blocks.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Frontend.Model.Blocks.AbstractTypeBlocks;
 
 namespace Frontend.Model.Blocks.ConcreteBlocks
 {
-    public class UpdateBlock : AbstractFrontEndBlock
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco Update
+    /// </summary>
+    public class UpdateBlock : UpperFrontEndBlock
     {
-        public UpdateBlock()
-        {
-            Shape = ShapeTypeMethods.GetShape(ShapeType.UPPER);
-            Width = 130;
-            Height = 48;
-        }
 
         public override IFrontEndBlock GetInfo()
         {

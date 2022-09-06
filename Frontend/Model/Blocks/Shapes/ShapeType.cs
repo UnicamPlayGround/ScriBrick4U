@@ -1,4 +1,4 @@
-﻿namespace Frontend.Models.Blocks.Shapes
+﻿namespace Frontend.Model.Blocks.Shapes
 {
     /// <summary>
     /// Enum che descrive la forma di un blocco
@@ -35,7 +35,8 @@
         /// </summary>
         /// <param name="type"> Tipo di forma del quale estrarre l'<see cref="IBlockShape"/> </param>
         /// <returns> l'<see cref="IBlockShape"/> associata al tipo di forma passato come parametro </returns>
-        public static IBlockShape GetShape(ShapeType type) {
+        public static IBlockShape GetShape(ShapeType type)
+        {
             return _dictionary[type].Invoke();
         }
     }

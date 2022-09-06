@@ -1,13 +1,13 @@
-﻿using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Bounds;
-using Frontend.Models.Blocks.Descriptors;
-using Frontend.Models.Blocks.Shapes;
+﻿using Frontend.Model.Blocks.Bounds;
+using Frontend.Model.Blocks.Descriptors;
+using Frontend.Model.Blocks.Shapes;
+using Frontend.Model.QuestionItem;
 using SkiaSharp;
 using System.Numerics;
 using System.Reflection;
 using Color = Microsoft.Maui.Graphics.Color;
 using Font = Microsoft.Maui.Graphics.Font;
-using IBlockShape = Frontend.Models.Blocks.Shapes.IBlockShape;
+using IBlockShape = Frontend.Model.Blocks.Shapes.IBlockShape;
 
 namespace Frontend.Model.Blocks
 {
@@ -64,7 +64,7 @@ namespace Frontend.Model.Blocks
             Position.Width = pathf.Bounds.Width;
             Position.Height = pathf.Bounds.Height;
 
-            canvas.DrawString(text, pathf.Bounds.Left, pathf.Bounds.Top + 15, pathf.Bounds.Width, pathf.Bounds.Height, HorizontalAlignment.Center, VerticalAlignment.Top);
+            canvas.DrawString(text, pathf.Bounds.Left, (float)(pathf.Bounds.Top + Shape.Margin.Top), pathf.Bounds.Width, pathf.Bounds.Height, HorizontalAlignment.Center, VerticalAlignment.Top);
             Width = defaultWidth;
             Height = defaultHeight;
         }

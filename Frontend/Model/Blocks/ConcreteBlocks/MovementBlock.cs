@@ -1,25 +1,15 @@
 ﻿using Frontend.Builders;
-using Frontend.Model.Blocks;
+using Frontend.Model.Blocks.AbstractTypeBlocks;
 using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Shapes;
+using Frontend.Model.Blocks.Shapes;
 
-namespace Frontend.Models.Blocks.ConcreteBlocks
+namespace Frontend.Model.Blocks.ConcreteBlocks
 {
     /// <summary>
     /// Classe concreta che rappresenta un blocco movimento
     /// </summary>
-    public class MovementBlock : AbstractFrontEndBlock
+    public class MovementBlock : RectangleFrontEndBlock
     {
-        /// <summary>
-        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.Width"/> e l'altezza del blocco
-        /// </summary>
-        public MovementBlock()
-        {
-            Shape = ShapeTypeMethods.GetShape(ShapeType.RECTANGLE);
-            Width = 130;
-            Height = 48;
-        }
-
         public override IFrontEndBlock GetInfo()
         {
             IBlockEditItem editItem = new EntryEditItem(

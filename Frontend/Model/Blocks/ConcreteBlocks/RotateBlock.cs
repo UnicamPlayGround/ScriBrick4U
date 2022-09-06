@@ -1,25 +1,15 @@
 ﻿using Frontend.Builders;
 using Frontend.Model.Blocks;
+using Frontend.Model.Blocks.AbstractTypeBlocks;
 using Frontend.Model.QuestionItem;
-using Frontend.Models.Blocks.Shapes;
 
-namespace Frontend.Models.Blocks.ConcreteBlocks
+namespace Frontend.Model.Blocks.ConcreteBlocks
 {
     /// <summary>
     /// Classe concreta che rappresenta un blocco rotazione
     /// </summary>
-    public class RotateBlock : AbstractFrontEndBlock
+    public class RotateBlock : RectangleFrontEndBlock
     {
-        /// <summary>
-        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.Width"/> e l'altezza del blocco
-        /// </summary>
-        public RotateBlock()
-        {
-            Shape = ShapeTypeMethods.GetShape(ShapeType.RECTANGLE);
-            Width = 130;
-            Height = 48;
-        }
-
         public override IFrontEndBlock GetInfo()
         {
             IBlockEditItem editItem = new EntryEditItem(
