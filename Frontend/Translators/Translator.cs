@@ -95,10 +95,10 @@ namespace Frontend.Translators
                     switch (frontEndBlock.Descriptor.Name)
                     {
                         case "Movimento":
-                            block = new ForwardBlock($"Forward{Counter++}", new ValueBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
+                            block = new ForwardBlock($"Forward{Counter++}", frontEndBlock.Questions[0].Value);
                             break;
                         case "Rotazione":
-                            block = new RotationBlock($"Forward{Counter++}", new ValueBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
+                            block = new RotationBlock($"Forward{Counter++}", frontEndBlock.Questions[0].Value);
                             break;
                     }
                     break;
@@ -108,10 +108,9 @@ namespace Frontend.Translators
                         case "Operazione":
                             block = new OperationBlock(
                                 $"Addition{Counter++}",
-                                getValueBlock(frontEndBlock.Questions[0].Value),
+                                frontEndBlock.Questions[0].Value,
                                 frontEndBlock.Questions[1].Value,
-                                getValueBlock(frontEndBlock.Questions[2].Value)
-                                );
+                                frontEndBlock.Questions[2].Value);
                             break;
                     }
                     break;
@@ -144,7 +143,11 @@ namespace Frontend.Translators
                             block = new VariableBlock($"Variable{Counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
                             break;
                         case "SetVariableBlock":
-                            block = new SetVariableBlock($"SetVariable{Counter++}", frontEndBlock.Questions[0].Value, Creator(frontEndBlock.Children[0]));
+                            block = new SetVariableBlock(
+                                $"SetVariable{Counter++}", 
+                                frontEndBlock.Questions[0].Value, 
+                                frontEndBlock.Questions[1].Value, 
+                                frontEndBlock.Questions[3].Value);
                             break;
                     }
                     break;
@@ -154,12 +157,6 @@ namespace Frontend.Translators
                 throw new NotImplementedException(frontEndBlock.Descriptor.Name);
             }
             return block;
-        }
-
-
-        private ValueBlock getValueBlock(string value)
-        {
-            return new ValueBlock($"Value{Counter++}", int.Parse(value));
         }
     }
 }

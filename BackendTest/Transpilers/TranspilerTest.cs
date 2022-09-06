@@ -24,7 +24,7 @@ namespace BackendTest.Transpilers
         [TestMethod]
         public void GeneratedCodeTest()
         {
-            IBlock forwardBlock = new ForwardBlock("Forward_1", new VariableBlock("Variable_1", 3));
+            IBlock forwardBlock = new ForwardBlock("Forward_1", "3");
             IBlock startBlock = new StartBlock();
             startBlock.Children = new List<IBlock>() { forwardBlock };
 

@@ -11,10 +11,10 @@ namespace Backend.Blocks.Movement
         /// <summary>
         /// Blocco contente il valore
         /// </summary>
-        public IBlock Block { get; set; }
-        public ForwardBlock(string name, IBlock block) : base(name)
+        public string Value { get; set; }
+        public ForwardBlock(string name, string value) : base(name)
         {
-            Block = block;
+            Value = value;
         }
 
         public override string GetCode()
@@ -24,7 +24,7 @@ namespace Backend.Blocks.Movement
             code += "if(gameObject.GetComponent<CharacterController>() == null){\n";
             code += "movementController = gameObject.AddComponent<CharacterController>();\n";
             code += "}\n";
-            code += $"movementController.Move({Block.GetCode()} * {Name});\n";
+            code += $"movementController.Move({Value} * {Name});\n";
             return code;
         }
         public override Dictionary<string, string> GetVariables()

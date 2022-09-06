@@ -8,17 +8,20 @@ namespace Backend.Blocks.Variable
 {
     public class SetVariableBlock : AbstractBlock
     {
-        public IBlock Value { get; set; }
+        public string Value { get; set; }
         public string NameVariable { get; set; }
-        public SetVariableBlock(string name, string nameVariable, IBlock value) : base(name)
+
+        public string Operation { get; set; }
+        public SetVariableBlock(string name, string nameVariable, string operation, string value) : base(name)
         {
             Value = value;
             NameVariable = nameVariable;
+            Operation = operation;
         }
 
         public override string GetCode()
         {
-            return $"{NameVariable} = {Value.GetCode()}";
+            return $"{NameVariable} {Operation} {Value}";
         }
 
         public override Dictionary<string, string> GetVariables()
