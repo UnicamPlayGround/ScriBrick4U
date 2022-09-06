@@ -1,7 +1,7 @@
-using Frontend.Model.QuestionItem;
-using Frontend.Model.Blocks;
 using Frontend.ViewModels;
-using Frontend.Model.EditPage;
+using Frontend.Models.QuestionItem;
+using Frontend.Models.EditPage;
+using Frontend.Models.Blocks;
 
 namespace Frontend.EditPage;
 

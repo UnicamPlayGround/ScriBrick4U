@@ -5,7 +5,7 @@ using Backend.Blocks.Movement;
 using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
 using Backend.Blocks.Variable;
-using Frontend.Model.Blocks;
+using Frontend.Models.Blocks;
 
 namespace Frontend.Translators
 {

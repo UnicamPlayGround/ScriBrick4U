@@ -1,7 +1,7 @@
 using Frontend.EditPage;
-using Frontend.Model.Blocks;
-using Frontend.Model.EditPage;
-using Frontend.Model.GraphicViews;
+using Frontend.Models.Blocks;
+using Frontend.Models.EditPage;
+using Frontend.Models.GraphicViews;
 using Frontend.ViewModels;
 
 namespace Frontend.Views;

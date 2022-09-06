@@ -1,5 +1,5 @@
 ﻿using Frontend.Helpers.Mediators;
-using Frontend.Model.Blocks;
+using Frontend.Models.Blocks;
 using Frontend.Views;
 
 namespace Frontend.ViewModels

@@ -1,10 +1,10 @@
 using Frontend.Helpers.Serializers;
-using Frontend.Model.Blocks;
 using Frontend.Views;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using Frontend.Model.Blocks.Shapes;
-using Frontend.Model.Blocks.Descriptors;
+using Frontend.Models.Blocks;
+using Frontend.Models.Blocks.Shapes;
+using Frontend.Models.Blocks.Descriptors;
 
 namespace Frontend.ViewModels
 {

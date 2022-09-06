@@ -1,5 +1,5 @@
-﻿using Frontend.Model.Blocks;
-using Frontend.Model.QuestionItem;
+﻿using Frontend.Models.Blocks;
+using Frontend.Models.QuestionItem;
 
 namespace Frontend.Helpers.Builders
 {
