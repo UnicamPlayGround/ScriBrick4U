@@ -30,8 +30,13 @@
         }
         public override bool ValidateResult()
         {
-            Value = (Element as Entry).Text;
-            return ValidationFunc.Invoke(Value);
+            var element = Element as Entry;
+            if(element != null)
+            {
+                Value = element.Text;
+                return ValidationFunc.Invoke(Value);
+            }
+            return false;
         }
     }
 }

@@ -19,24 +19,24 @@ namespace Frontend.Models.Blocks
         public float Width { get; set; }
         public float Height { get; set; }
 
-        public IBlockDescriptor Descriptor { get; set; }
-        public IBlockShape Shape { get; set; }
-        public IBlockBound Position { get; set; }
+        public IBlockDescriptor Descriptor { get; set; } = null!;
+        public IBlockShape Shape { get; set; } = null!;
+        public IBlockBound Position { get; set; } = null!;
 
-        public List<IBlockEditItem> Questions { get; set; }
-        public Func<string> TextDropped { get; set; }
+        public List<IBlockEditItem> Questions { get; set; } = null!;
+        public Func<string> TextDropped { get; set; } = null!;
 
-        public IFrontEndBlock Father { get; set; }
-        public List<IFrontEndBlock> Children { get; set; }
+        public IFrontEndBlock? Father { get; set; }
+        public List<IFrontEndBlock> Children { get; set; } = new();
 
         /// <summary> Lista privata che rappresenta gli elementi contenuti nel blocco </summary>
-        private List<Element> _elements;
+        private List<Element> _elements = new();
         public List<Element> Elements
         {
             get => _elements;
             set => _elements = value;
         }
-        public IFrontEndBlock Next { get; set; }
+        public IFrontEndBlock? Next { get; set; }
 
         public bool CanContainChildren => Shape.Type.Equals(ShapeType.WITH_CHILDREN);
 
@@ -78,11 +78,18 @@ namespace Frontend.Models.Blocks
         public static IEnumerable<AbstractFrontEndBlock> GetEnumerableOfType()
         {
             List<AbstractFrontEndBlock> objects = new();
-            foreach (Type type in
-                Assembly.GetAssembly(typeof(AbstractFrontEndBlock)).GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(AbstractFrontEndBlock))))
+            Assembly? assembly = Assembly.GetAssembly(typeof(AbstractFrontEndBlock));
+            if(assembly != null)
             {
-                objects.Add((AbstractFrontEndBlock)Activator.CreateInstance(type));
+                foreach (Type type in
+                assembly.GetTypes().Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(AbstractFrontEndBlock))))
+                {
+                    AbstractFrontEndBlock? block = Activator.CreateInstance(type) as AbstractFrontEndBlock;
+                    if(block != null)
+                    {
+                        objects.Add(block);
+                    }
+                }
             }
             return objects;
         }

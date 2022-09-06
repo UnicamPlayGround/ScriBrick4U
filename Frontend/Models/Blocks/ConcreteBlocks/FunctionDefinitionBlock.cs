@@ -20,7 +20,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
             return new BlockBuilder<FunctionDefinitionBlock>("Definizione Funzione", BlockType.DefinizioneFunzione)
                 .AddLabel("funzione NOME")
                 .AddQuestion(editItem)
-                .AddTextDroppedFunction(() => { return "funzione " + editItem.ToString().ToUpper(); })
+                .AddTextDroppedFunction(() => { return "funzione " + editItem.ToString()?.ToUpper(); })
                 .Build();
         }
     }

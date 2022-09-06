@@ -8,7 +8,7 @@ namespace Frontend.ViewModels
     public class BlockEditPageViewModel : BaseViewModel
     {
         /// <summary> Variabile privata che rappresenta il blocco da editare </summary>
-        private IFrontEndBlock _block;
+        private IFrontEndBlock _block = null!;
         /// <summary> Variabile pubblica che rappresenta il blocco da editare </summary>
         public IFrontEndBlock Block
         {

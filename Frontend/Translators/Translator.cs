@@ -76,7 +76,7 @@ namespace Frontend.Translators
 
         private IBlock Creator(IFrontEndBlock frontEndBlock)
         {
-            IBlock block = null;
+            IBlock? block = null;
             switch (frontEndBlock.Descriptor.Type)
             {
                 case BlockType.Principale:

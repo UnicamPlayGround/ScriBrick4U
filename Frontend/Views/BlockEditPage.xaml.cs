@@ -105,7 +105,7 @@ public partial class BlockEditPage : ContentPage
         foreach (var item in items) {
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
             grid.Add(item.Question, 0, i);
-            grid.Add((IView)item.Element, 1, i++);
+            grid.Add((IView?)item.Element, 1, i++);
         }
 
         v.Content = grid;

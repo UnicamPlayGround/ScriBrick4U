@@ -12,7 +12,7 @@
         public Label Question { get; set; }
 
         /// <summary> Elemento attraverso cui editare il blocco </summary>
-        public Element Element { get; set; }
+        public Element? Element { get; set; }
 
         /// <summary> Messaggio di errore se il valore digitato/selezionato non e' valido </summary>
         public string ErrorMessage { get; set; }

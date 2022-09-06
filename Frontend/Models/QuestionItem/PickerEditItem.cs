@@ -33,8 +33,13 @@
 
         public override bool ValidateResult()
         {
-            Value = (string)(Element as Picker).SelectedItem;
-            return ValidationFunc.Invoke(Value);
+            var element = Element as Picker;
+            if (element != null)
+            {
+                Value = (string)element.SelectedItem;
+                return ValidationFunc.Invoke(Value);
+            }
+            return false;
         }
     }
 }

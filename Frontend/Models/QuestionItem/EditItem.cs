@@ -6,11 +6,11 @@
 public abstract class EditItem : IBlockEditItem
 {
     public Label Question { get; set; }
-    public Element Element { get; set; }
+    public Element? Element { get; set; }
     public string ErrorMessage { get; set; }
 
     /// <summary> Variabile privata che rappresenta il valore digitato/selezionato </summary>
-    private string _value;
+    private string _value = "";
     public string Value
     {
         get => _value;

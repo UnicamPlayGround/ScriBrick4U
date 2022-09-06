@@ -31,11 +31,12 @@ namespace Frontend.Models.GraphicViews
         /// <param name="dirtyRect"> Informazioni del canvas </param>
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            List<IFrontEndBlock> blocks = (List<IFrontEndBlock>)_mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS);
-
-            foreach (var block in blocks)
-                block.Draw(canvas);
-
+            List<IFrontEndBlock>? blocks = (List<IFrontEndBlock>?)_mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS);
+            if(blocks != null)
+            {
+                foreach (var block in blocks)
+                    block.Draw(canvas);
+            }
         }
     }
 }

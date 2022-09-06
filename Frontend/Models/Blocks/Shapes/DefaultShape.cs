@@ -7,9 +7,9 @@ namespace Frontend.Models.Blocks.Shapes
     /// </summary>
     public class DefaultShape : IBlockShape
     {
-        public string Path { get; set; }
-        public string PathTemplate { get; }
-        public Geometry SvgData { get; set; }
+        public string Path { get; set; } = "";
+        public string PathTemplate { get; } = "";
+        public Geometry? SvgData { get; set; }
         public PointF BlockOffset { get; set; }
         public ShapeType Type { get; set; }
         public Thickness Margin { get; set; }
@@ -26,7 +26,7 @@ namespace Frontend.Models.Blocks.Shapes
         {
             PathTemplate = path;
             Path = GetSvgPath(width, height);
-            SvgData = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(Path);
+            SvgData = new PathGeometryConverter().ConvertFromInvariantString(Path) as Geometry;
             BlockOffset = blockOffset;
             Margin = !type.Equals(ShapeType.UPPER) ? new(8, 14, 8, 0) : new(8, 30, 8, 0);
             Type = type;

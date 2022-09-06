@@ -14,7 +14,7 @@ namespace Frontend.Models.Blocks.Shapes
         public string PathTemplate { get; }
 
         /// <summary> Oggetto che rappresenta la forma dopo il parsing del <see cref="Path"/> </summary>
-        public Geometry SvgData { get; set; }
+        public Geometry? SvgData { get; set; }
 
         /// <summary>   </summary>
         public PointF BlockOffset { get; set; }

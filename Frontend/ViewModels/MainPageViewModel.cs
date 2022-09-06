@@ -21,7 +21,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Path del file salvato o caricato dal file system
         /// </summary>
-        public string FilePath { get; set; }
+        public string FilePath { get; set; } = "";
 
         /// <summary>
         /// Costruttore di default
@@ -37,7 +37,10 @@ namespace Frontend.ViewModels
         /// </summary>
         public void NewProgram()
         {
-            Process.Start(Environment.ProcessPath);
+            if(Environment.ProcessPath != null)
+            {
+                Process.Start(Environment.ProcessPath);
+            }
         }
 
 
@@ -48,7 +51,7 @@ namespace Frontend.ViewModels
         {
             FilePath = (FilePath!=null) ? FilePath : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{fileName}.json";
 
-            string ris = (string)Mediator.NotifyWithReturn(this, MediatorKey.GETJSONDROPPEDBLOCKS);
+            string? ris = (string?)Mediator.NotifyWithReturn(this, MediatorKey.GETJSONDROPPEDBLOCKS);
 
             if (!Directory.Exists(Environment.SpecialFolder.MyDocuments + "\\ScriBrick4U"))
                 try { Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ScriBrick4U"); }
@@ -72,9 +75,13 @@ namespace Frontend.ViewModels
         /// </summary>
         public void TranslateScript()
         {
-            IEnumerable<IBlock> tradotti = (new Translator()).Translate((List<IFrontEndBlock>)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS));
-            string code = (new Transpiler()).ConvertToCode((FileName==null) ? "script" : FileName, tradotti.AsQueryable());
-            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\test.cs", code);
+            List<IFrontEndBlock>? blocks = (List<IFrontEndBlock>?)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS);
+            if(blocks != null)
+            {
+                IEnumerable<IBlock> tradotti = (new Translator()).Translate(blocks);
+                string code = (new Transpiler()).ConvertToCode((FileName == null) ? "script" : FileName, tradotti.AsQueryable());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\test.cs", code);
+            }
         }
 
         /// <summary>

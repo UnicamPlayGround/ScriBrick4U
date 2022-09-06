@@ -12,7 +12,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Lista privata di tuple contenente effettivamente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary>
-        private List<Tuple<BlockType, Color>> _blockTypes;
+        private List<Tuple<BlockType, Color>> _blockTypes = new();
 
         /// <summary>
         /// Lista pubblica di tuple contenente tutti i tipi di blocco, con associato il rispettivo colore
