@@ -1,4 +1,4 @@
-﻿using Backend.Blocks;
+using Backend.Blocks;
 using Backend.Blocks.Conditional;
 using Backend.Blocks.Events;
 using Backend.Blocks.Movement;
@@ -120,9 +120,9 @@ namespace Frontend.Translators
                         case "If":
                             block = new IfBlock(
                                 $"If{Counter++}",
-                                getVariableBlock(frontEndBlock.Questions[0].Value),
+                                frontEndBlock.Questions[0].Value,
                                 frontEndBlock.Questions[1].Value,
-                                getVariableBlock(frontEndBlock.Questions[2].Value));
+                                frontEndBlock.Questions[2].Value);
                             break;
                     }
                     break;
