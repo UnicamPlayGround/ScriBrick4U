@@ -31,7 +31,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                 )
             };
 
-            return new BlockBuilder<IfBlock>("If", BlockType.Condizionale)
+            return new BlockBuilder<IfBlock>("If", BlockType.Condizionale, BlockCategory.Controllo)
                 .AddLabel("If VALORE1 CONDIZIONE VALORE2")
                 .AddQuestions(editItems)
                 .AddTextDroppedFunction(() => { return "If " + string.Join(" ", editItems); })

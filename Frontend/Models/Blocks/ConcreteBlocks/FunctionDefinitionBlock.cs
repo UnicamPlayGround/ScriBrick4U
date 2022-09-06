@@ -17,7 +17,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                 TypeValue.STRING,
                 "Devi scrivere il nome della funzione."
             );
-            return new BlockBuilder<FunctionDefinitionBlock>("Definizione Funzione", BlockType.DefinizioneFunzione)
+            return new BlockBuilder<FunctionDefinitionBlock>("Definizione Funzione", BlockType.DefinizioneFunzione, BlockCategory.Funzione)
                 .AddLabel("funzione NOME")
                 .AddQuestion(editItem)
                 .AddTextDroppedFunction(() => { return "funzione " + editItem.ToString()?.ToUpper(); })

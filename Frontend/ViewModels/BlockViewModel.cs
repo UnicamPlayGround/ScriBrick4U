@@ -22,6 +22,10 @@ namespace Frontend.ViewModels
         /// Lista contenente i nomi delle funzioni definite
         /// </summary>
         public static List<string> FunctionNames { get; set; } = new();
+        /// <summary>
+        /// Lista contenente i nomi delle variabili definite
+        /// </summary>
+        public static List<string> VariableNames { get; set; } = new();
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
@@ -154,11 +158,10 @@ namespace Frontend.ViewModels
         /// <returns> Il blocco dal quale shiftare </returns>
         private IFrontEndBlock? SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
         {
-            IFrontEndBlock? returnBlock = null;
+            IFrontEndBlock? returnBlock;
             IFrontEndBlock? start = under.CanContainChildren ? under : under.Father;
             PointF upperCorner = (start is null) ? new() : new(start.Position.UpperLeft.X, start.Position.UpperLeft.Y + 40);
             PointF bottomCorner = (start is null) ? new() : new(start.Position.BottomRight.X, start.Position.BottomRight.Y - 40);
-
             if (start != null && start.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
             {
                 var lastChildren = under.Children.LastOrDefault();
@@ -348,9 +351,9 @@ namespace Frontend.ViewModels
         /// Metodo che aggiorna la lista dei blocchi mostrati all'utente in base al tipo
         /// </summary>
         /// <param name="type"> Tipo di blocco in base al quale filtrare la lista </param>
-        public void UpdateBlocksByType(BlockType type)
+        public void UpdateBlocksByCategory(BlockCategory category)
         {
-            Blocks = _allBlocks.FindAll((e) => e.Descriptor.Type.Equals(type));
+            Blocks = _allBlocks.FindAll((e) => e.Descriptor.Category.Equals(category));
         }
 
         /// <summary>
@@ -391,7 +394,7 @@ namespace Frontend.ViewModels
                     {
                         IFrontEndBlock deSerialized = baseBlock.GetInfo();
                         deSerialized.Position = serialized.Position;
-                        deSerialized.Descriptor = new BlockDescriptor(serialized.DescriptorName, serialized.DescriptorType);
+                        deSerialized.Descriptor = new BlockDescriptor(serialized.DescriptorName, serialized.DescriptorType, serialized.DescriptorCategory);
                         serialized.Questions.ForEach(question => deSerialized.Questions.ElementAt(question.Item1).SetValue(question.Item2));
                         deserializedBlocks.Add(deSerialized);
                     }
