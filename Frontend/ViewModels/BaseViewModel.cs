@@ -12,12 +12,12 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Istanza di <see cref="IMediator"/> per mediare tra i ViewModel che ereditano da questa classe
         /// </summary>
-        public static IMediator Mediator { get; set; }
+        public static IMediator Mediator { get; set; } = null!;
 
         /// <summary>
         /// Evento che rappresenta il cambiamento di una proprietà del ViewModel
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         
         /// <summary>
         /// Metodo che imposta l'istanza di <see cref="IMediator"/>, registrando il ViewModel passato come parametro

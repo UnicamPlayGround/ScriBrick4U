@@ -1,5 +1,5 @@
 ﻿using Backend.Blocks;
-using Frontend.Model.Blocks;
+using Frontend.Models.Blocks;
 
 namespace Frontend.Translators
 {

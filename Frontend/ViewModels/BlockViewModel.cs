@@ -1,10 +1,10 @@
-﻿using Frontend.Helpers.Serializers;
-using Frontend.Model.Blocks;
+using Frontend.Helpers.Serializers;
 using Frontend.Views;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using Frontend.Model.Blocks.Descriptors;
-using Frontend.Model.Blocks.Shapes;
+using Frontend.Models.Blocks;
+using Frontend.Models.Blocks.Shapes;
+using Frontend.Models.Blocks.Descriptors;
 
 namespace Frontend.ViewModels
 {
@@ -26,14 +26,14 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
         /// </summary>
-        private List<IFrontEndBlock> _allBlocks;
+        private List<IFrontEndBlock> _allBlocks = new();
 
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene effettivamente i blocchi mostrati all'utente, 
         /// che possono essere trascinati
         /// </summary>
-        private List<IFrontEndBlock> _blocks;
+        private List<IFrontEndBlock> _blocks = new();
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
@@ -52,7 +52,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene effettivamente i blocchi trascinati dall'utente
         /// </summary>
-        private List<IFrontEndBlock> _droppedBlocks;
+        private List<IFrontEndBlock> _droppedBlocks = new();
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene i blocchi trascinati dall'utente
@@ -94,18 +94,22 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Verifica se un blocco può essere rilasciato nel punto passato come parametro
         /// </summary>
-        /// <param name="droppedBlock"> Blocco selezionato </param>
+        /// <param name="dropped"> Blocco selezionato </param>
         /// <param name="dropPoint"> Punto di rilascio del blocco </param>
         /// <returns> true se il blocco puo' essere posizionato nel punto indicato </returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public bool CanBeDropped(IFrontEndBlock droppedBlock, PointF dropPoint)
+        public bool CanBeDropped(IFrontEndBlock dropped, PointF dropPoint)
         {
-            if (droppedBlock.Descriptor.Type.Equals(BlockType.Principale) && DroppedBlocks.Exists(block => droppedBlock.Descriptor.Name.Equals(block.Descriptor.Name)))
-                throw new InvalidOperationException("Un blocco '" + droppedBlock.Descriptor.Name.ToUpper() + "' è già stato posizionato.");
-            if (GetBlockFromPoint(dropPoint) == null && !droppedBlock.Shape.Type.Equals(ShapeType.UPPER))
-                throw new InvalidOperationException("Il blocco '" + droppedBlock.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente sotto ad una altro blocco");
-            if (droppedBlock.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && FunctionNames.Count == 0)
-                throw new InvalidOperationException("Il blocco '" + droppedBlock.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente dopo aver DEFINITO almeno 1 funzione.");
+            var under = GetBlockFromPoint(dropPoint);
+
+            //    if (dropped.CanContainChildren && under!=null && under.CanContainChildren)
+            //        throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' non puo' essere posizionato.");
+            if (dropped.Descriptor.Type is BlockType.Principale && DroppedBlocks.Exists(bl => dropped.Descriptor.Name.Equals(bl.Descriptor.Name)))
+                throw new InvalidOperationException("Un blocco '" + dropped.Descriptor.Name.ToUpper() + "' è già stato posizionato.");
+            if (under is null && dropped.Shape.Type is not ShapeType.UPPER)
+                throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente sotto ad una altro blocco");
+            if (dropped.Descriptor.Type is BlockType.ChiamaFunzione && !FunctionNames.Any())
+                throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente dopo aver DEFINITO almeno 1 funzione.");
 
             return true;
         }
@@ -113,14 +117,31 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Metodo che permette di aggiungere, alla lista dei blocchi trascinati, un nuovo blocco <see cref="IFrontEndBlock"/>
         /// </summary>
-        /// <param name="droppedBlock"> Blocco <see cref="IFrontEndBlock"/> trascinato da aggiungere alla lista </param>
-        public void AddDroppedBlock(IFrontEndBlock droppedBlock, PointF dropPoint)
+        /// <param name="dropped"> Blocco selezionato da aggiungere alla lista </param>
+        public void AddDroppedBlock(IFrontEndBlock dropped, PointF dropPoint)
         {
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
-            
-            if (droppedBlock.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(droppedBlock.Questions.ElementAt(0).Value);
-            ShiftBlocksWhenDropped(droppedBlock, SetUpperLeft(new(dropPoint.X, dropPoint.Y), droppedBlock, underBlock));
-            DroppedBlocks = DroppedBlocks.Append(droppedBlock).ToList();
+
+            if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(0).Value);
+            if (dropped.Shape.Type is ShapeType.UPPER)
+            {
+                dropped.Position.UpperLeft = GetStartPosition(dropped, dropPoint);
+            }
+            else
+            {
+                if (underBlock == null) return;
+                ShiftBlocksWhenDropped(dropped, SetUpperLeft(new(dropPoint.X, dropPoint.Y), dropped, underBlock));
+            }
+            DroppedBlocks = DroppedBlocks.Append(dropped).ToList();
+        }
+
+        private PointF GetStartPosition(IFrontEndBlock dropped, PointF originalPosition)
+        {
+            IFrontEndBlock? bl;
+            while ((bl = GetBlockFromPoint(originalPosition)) != null)
+                originalPosition.X += (bl.Position.BottomRight.X - originalPosition.X) + 20;
+
+            return originalPosition;
         }
 
         /// <summary>
@@ -131,62 +152,68 @@ namespace Frontend.ViewModels
         /// <param name="dropped"> Blocco trascinato </param>
         /// <param name="under"> Eventuale blocco contenente il punto di rilascio </param>
         /// <returns> Il blocco dal quale shiftare </returns>
-        private IFrontEndBlock SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
+        private IFrontEndBlock? SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
         {
-            IFrontEndBlock returnBlock = null;
+            IFrontEndBlock? returnBlock = null;
+            IFrontEndBlock? start = under.CanContainChildren ? under : under.Father;
+            PointF upperCorner = (start is null) ? new() : new(start.Position.UpperLeft.X, start.Position.UpperLeft.Y + 40);
+            PointF bottomCorner = (start is null) ? new() : new(start.Position.BottomRight.X, start.Position.BottomRight.Y - 40);
 
-            if (dropped.Descriptor.Type != BlockType.Principale && dropped.Descriptor.Type != BlockType.DefinizioneFunzione)
+            if (start != null && start.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
             {
-                PointF upperCorner = new(under.Position.UpperLeft.X, under.Position.UpperLeft.Y + 40);
-                PointF bottomCorner = new(under.Position.BottomRight.X, under.Position.BottomRight.Y - 40);
-                if (under.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
+                var lastChildren = under.Children.LastOrDefault();
+                originalPosition = GetChildPosition(lastChildren, upperCorner, originalPosition);
+                returnBlock = ResizeParent(under, dropped.Shape.BlockOffset.Y);
+                dropped.Father = under;
+                if (lastChildren != null)
                 {
-                    var lastChildren = under.Children.LastOrDefault();
-                    if (lastChildren == null)
-                    {
-                        //16 è un numero (giusto) tirato a caso sarebbe da sistemare
-                        upperCorner.X += 16;
-                        originalPosition = upperCorner;
-                    }
-                    else
-                    {
-                        originalPosition.X = lastChildren.Position.UpperLeft.X;
-                        originalPosition.Y = lastChildren.Position.UpperLeft.Y + lastChildren.Shape.BlockOffset.Y;
-                    }
-
-                    var current = under;
-                    while(current?.Shape.Type == ShapeType.WITH_CHILDREN)
-                    {
-                        current.Height += dropped.Shape.BlockOffset.Y;
-                        if (current.Father.Shape.Type != ShapeType.WITH_CHILDREN)
-                            break;
-                        current = current.Father;
-                    }
-
-                    under.Shape.BlockOffset = new(under.Shape.BlockOffset.X, under.Shape.BlockOffset.Y + dropped.Shape.BlockOffset.Y);
-                    under.Children.Add(dropped);
-                    dropped.Father = under = current;
-                    returnBlock = under.Next;
+                    lastChildren.Next = dropped;
                 }
-                else
-                {
-                    originalPosition.X = under.Position.UpperLeft.X;
-                    originalPosition.Y = under.Position.UpperLeft.Y + under.Shape.BlockOffset.Y;
-                    dropped.Father = under.Father ?? under;
-                    dropped.Next = under.Next;
-                    under.Next = dropped;
-                    returnBlock = dropped.Next;
-                    dropped.Father.Children.Add(dropped);
-                }
+
+                under.Children.Add(dropped);
             }
             else
             {
-                IFrontEndBlock bl;
-                while ((bl = GetBlockFromPoint(originalPosition)) != null)
-                    originalPosition.X += (bl.Position.BottomRight.X - originalPosition.X) + 20;
+                ResizeParent(under.Father, dropped.Shape.BlockOffset.Y);
+                returnBlock = under.Next;
+                originalPosition.X = under.Position.UpperLeft.X;
+                originalPosition.Y = under.Position.UpperLeft.Y + under.Shape.BlockOffset.Y;
+                dropped.Father = under.Father ?? under;
+                dropped.Next = under.Next;
+                under.Next = dropped;
+                dropped.Father.Children.Add(dropped);
             }
+
             dropped.Position.UpperLeft = originalPosition;
-            return returnBlock;
+            return returnBlock ?? dropped.Next;
+        }
+
+        private IFrontEndBlock? ResizeParent(IFrontEndBlock? current, float offset)
+        {
+            while (current?.Shape.Type is ShapeType.WITH_CHILDREN)
+            {
+                current.Height += offset;
+                current.Shape.BlockOffset = new(current.Shape.BlockOffset.X, current.Shape.BlockOffset.Y + offset);
+                if (current.Father == null || current.Father.Shape.Type != ShapeType.WITH_CHILDREN) break;
+                current = current.Father;
+            }
+
+            return current?.Next;
+        }
+        private PointF GetChildPosition(IFrontEndBlock? lastChildren, PointF upperCorner, PointF originalPosition)
+        {
+            if (lastChildren == null)
+            {
+                //16 è un numero (giusto) tirato a caso sarebbe da sistemare
+                upperCorner.X += 16;
+                originalPosition = upperCorner;
+            }
+            else
+            {
+                originalPosition.X = lastChildren.Position.UpperLeft.X;
+                originalPosition.Y = lastChildren.Position.UpperLeft.Y + lastChildren.Shape.BlockOffset.Y;
+            }
+            return originalPosition;
         }
 
         /// <summary>
@@ -195,30 +222,41 @@ namespace Frontend.ViewModels
         /// <param name="deletedBlock"> Blocco da eliminare </param>
         public void DeleteDroppedBlock(IFrontEndBlock deletedBlock)
         {
-            List<IFrontEndBlock> toBeRemoved =  new(deletedBlock.Children);
+            List<IFrontEndBlock> toBeRemoved = new(deletedBlock.Children);
 
-            if(deletedBlock.Father != null)
+            if (deletedBlock.Father != null)
+            {
                 if (deletedBlock.Father.Next == deletedBlock) deletedBlock.Father.Next = deletedBlock.Next;
-                else deletedBlock.Father.Children.Where(child => child.Next==deletedBlock).FirstOrDefault().Next = deletedBlock.Next;
+                if (deletedBlock.Father.CanContainChildren)
+                {
+                    deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
+                }
+                deletedBlock.Father.Children.Remove(deletedBlock);
+            }
 
-            if (deletedBlock.Father?.Shape.Type == ShapeType.WITH_CHILDREN) 
-                deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
-
-            if (deletedBlock.Descriptor.Type.Equals(BlockType.DefinizioneFunzione)) {
+            if (deletedBlock.Descriptor.Type is BlockType.DefinizioneFunzione)
+            {
                 var functionName = deletedBlock.Questions.ElementAt(0).Value;
-                FunctionNames.Remove(functionName);
-                foreach (var callBlock in DroppedBlocks.Where(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName)).ToList())
-                    callBlock.Father?.Children.Remove(callBlock);
+                RemoveFunctionUse(functionName);
             }
 
             toBeRemoved.Add(deletedBlock);
             toBeRemoved.ForEach(block =>
             {
-                deletedBlock.Father?.Children.Remove(deletedBlock);
                 ShiftBlocksWhenDelete(block);
                 DroppedBlocks.Remove(block);
             });
             DroppedBlocks = DroppedBlocks.Where(x => !x.Equals(deletedBlock)).ToList();
+        }
+
+        private void RemoveFunctionUse(string functionName)
+        {
+            FunctionNames.Remove(functionName);
+            IEnumerable<IFrontEndBlock> toRemove = DroppedBlocks.Where(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName));
+            foreach (var callBlock in toRemove)
+            {
+                callBlock.Father?.Children.Remove(callBlock);
+            }
         }
 
         /// <summary>
@@ -226,7 +264,7 @@ namespace Frontend.ViewModels
         /// </summary>
         /// <param name="droppedBlock"> Blocco rilasciato </param>
         /// <param name="underBlock"> Blocco contenente il punto di rilascio </param>
-        private void ShiftBlocksWhenDropped(IFrontEndBlock droppedBlock, IFrontEndBlock underBlock)
+        private void ShiftBlocksWhenDropped(IFrontEndBlock droppedBlock, IFrontEndBlock? underBlock)
         {
             if (droppedBlock.Descriptor.Type != BlockType.Principale && droppedBlock.Descriptor.Type != BlockType.DefinizioneFunzione)
                 Shift(underBlock, droppedBlock.Shape.BlockOffset.Y, GetCurrent, (x, y) => x + y);
@@ -246,10 +284,10 @@ namespace Frontend.ViewModels
         /// <param name="offset"> Offset che indica di quanto i blocchi vadano spostati </param>
         /// <param name="findNextFunction"> Funzione per trovare il prossimo blocco da spostare </param>
         /// <param name="YSetterFunction"> Funzione per impostare le coordinate del punto in alto a sinistra del blocco da spostare </param>
-        private void Shift(IFrontEndBlock currentBlock, float offset, Func<IFrontEndBlock, IFrontEndBlock, bool> findNextFunction, Func<float, float, float> YSetterFunction)
+        private void Shift(IFrontEndBlock? currentBlock, float offset, Func<IFrontEndBlock, IFrontEndBlock, bool> findNextFunction, Func<float, float, float> YSetterFunction)
         {
             var current = currentBlock;
-            IFrontEndBlock next = current;//DroppedBlocks.Find(b => findNextFunction.Invoke(b, current));
+            IFrontEndBlock? next = current;
 
             while (next != null)
             {
@@ -257,7 +295,7 @@ namespace Frontend.ViewModels
                     child.Position.UpperLeft = new(child.Position.UpperLeft.X, YSetterFunction.Invoke(child.Position.UpperLeft.Y, offset));
 
                 current = next;
-                next = current.Next;//DroppedBlocks.Find(b => findNextFunction.Invoke(b, current));
+                next = current.Next;
                 current.Position.UpperLeft = new(current.Position.UpperLeft.X, YSetterFunction.Invoke(current.Position.UpperLeft.Y, offset));
             }
         }
@@ -277,7 +315,7 @@ namespace Frontend.ViewModels
         /// </summary>
         /// <param name="pointF"> Punto dal quale estarre un blocco </param>
         /// <returns> un blocco contenente il punto passato come parametro, o null se questo non esiste </returns>
-        public IFrontEndBlock GetBlockFromPoint(PointF pointF)
+        public IFrontEndBlock? GetBlockFromPoint(PointF pointF)
         {
             return DroppedBlocks.Where(block => Contains(block, pointF)).LastOrDefault();
         }
@@ -324,9 +362,7 @@ namespace Frontend.ViewModels
             List<FEBlockSerializable> list = new();
 
             foreach (var item in DroppedBlocks)
-            {
                 list.Add(new FEBlockSerializable(item));
-            }
 
             return JsonSerializer.Serialize(list, new JsonSerializerOptions
             {
@@ -338,25 +374,31 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Imposta la lista dei blocchi posizionati a partire da una stringa formato Json passata come parametro
         /// </summary>
-        /// <param name="droppedBlocks"> Stringa, in formato Json, che rappresenta i blocchi posizionati </param>
-        public void SetDroppedBlocksFromJson(string droppedBlocks)
+        /// <param name="serializedDroppedBlocks"> Stringa, in formato Json, che rappresenta i blocchi posizionati </param>
+        public void SetDroppedBlocksFromJson(string serializedDroppedBlocks)
         {
-            List<FEBlockSerializable> serializedBlocks = JsonSerializer.Deserialize<List<FEBlockSerializable>>(droppedBlocks);
-            List<IFrontEndBlock> blocks = new();
-            foreach (var block in serializedBlocks)
-            {
-                IFrontEndBlock baseBlock = (IFrontEndBlock)Activator.CreateInstance(Type.GetType(block.BlockType));
-                IFrontEndBlock serialize = baseBlock.GetInfo();
-                serialize.Position = block.Position;
-                serialize.Descriptor = new BlockDescriptor(block.DescriptorName, block.DescriptorType);
+            List<IFrontEndBlock> deserializedBlocks = new();
+            List<FEBlockSerializable> serializedBlocks = JsonSerializer.Deserialize<List<FEBlockSerializable>>(serializedDroppedBlocks) ?? new();
 
-                foreach (var question in block.Questions)
-                    serialize.Questions.ElementAt(question.Item1).SetValue(question.Item2);
-                
-                blocks.Add(serialize);
+            foreach (var serialized in serializedBlocks)
+            {
+                Type? blockType = Type.GetType(serialized.BlockType ?? "");
+                if (blockType != null)
+                {
+                    IFrontEndBlock? baseBlock = (IFrontEndBlock?)Activator.CreateInstance(blockType);
+
+                    if (baseBlock != null)
+                    {
+                        IFrontEndBlock deSerialized = baseBlock.GetInfo();
+                        deSerialized.Position = serialized.Position;
+                        deSerialized.Descriptor = new BlockDescriptor(serialized.DescriptorName, serialized.DescriptorType);
+                        serialized.Questions.ForEach(question => deSerialized.Questions.ElementAt(question.Item1).SetValue(question.Item2));
+                        deserializedBlocks.Add(deSerialized);
+                    }
+                }
             }
 
-            DroppedBlocks = blocks;
+            DroppedBlocks = deserializedBlocks;
         }
     }
 }

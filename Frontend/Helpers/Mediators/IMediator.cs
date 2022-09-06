@@ -27,6 +27,6 @@ namespace Frontend.Helpers.Mediators
         /// <param name="sender"> Oggetto chiamante </param>
         /// <param name="key"> Chiave che rappresenta l'azione da eseguire </param>
         /// <returns>risultato dell'esecuzione dell'azione</returns>
-        object NotifyWithReturn(object sender, MediatorKey key);
+        object? NotifyWithReturn(object sender, MediatorKey key);
     }
 }

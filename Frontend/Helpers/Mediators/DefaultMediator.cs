@@ -10,15 +10,15 @@ namespace Frontend.Helpers.Mediators
         /// <summary>
         /// Istanza di <see cref="MainViewModel"/>
         /// </summary>
-        private MainViewModel _mainViewModel;
+        private MainViewModel? _mainViewModel;
         /// <summary>
         /// Istanza di <see cref="BlockViewModel"/>
         /// </summary>
-        private BlockViewModel _blocksViewModel;
+        private BlockViewModel? _blocksViewModel;
         /// <summary>
         /// Istanza di <see cref="BlockTypeViewModel"/>
         /// </summary>
-        private BlockTypeViewModel _blocksTypeViewModel;
+        private BlockTypeViewModel? _blocksTypeViewModel;
 
 
         public void Register(BaseViewModel vm)
@@ -30,21 +30,26 @@ namespace Frontend.Helpers.Mediators
 
         public void Notify(object sender, MediatorKey key)
         {
-            if (key == MediatorKey.UPDATEBLOCKSBYTYPE)
-                _blocksViewModel.UpdateBlocksByType(_blocksTypeViewModel.SelectedType);
+            if(_blocksViewModel != null)
+            {
+                if (key == MediatorKey.UPDATEBLOCKSBYTYPE && _blocksTypeViewModel != null)
+                    _blocksViewModel.UpdateBlocksByType(_blocksTypeViewModel.SelectedType);
 
-            if (key == MediatorKey.SETDROPPEDBLOCKSFROMJSON)
-                _blocksViewModel.SetDroppedBlocksFromJson(File.ReadAllText(_mainViewModel.FilePath));
+                if (key == MediatorKey.SETDROPPEDBLOCKSFROMJSON && _mainViewModel != null)
+                    _blocksViewModel.SetDroppedBlocksFromJson(File.ReadAllText(_mainViewModel.FilePath));
+            } 
         }
 
-        public object NotifyWithReturn(object sender, MediatorKey key)
+        public object? NotifyWithReturn(object sender, MediatorKey key)
         {
-            if (key == MediatorKey.GETDROPPEDBLOCKS)
-                return _blocksViewModel.DroppedBlocks;
+            if(_blocksViewModel != null)
+            {
+                if (key == MediatorKey.GETDROPPEDBLOCKS)
+                    return _blocksViewModel.DroppedBlocks;
 
-            if (key == MediatorKey.GETJSONDROPPEDBLOCKS)
-                return _blocksViewModel.GetJsonDroppedBlocks();
-
+                if (key == MediatorKey.GETJSONDROPPEDBLOCKS)
+                    return _blocksViewModel.GetJsonDroppedBlocks();
+            }
             return null;
         }
     }
