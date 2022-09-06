@@ -7,7 +7,7 @@
              x:Name="this"
              x:Class="Frontend.MainPage">
 
-    
+
     <ContentPage.BindingContext>
         <vm:MainViewModel/>
     </ContentPage.BindingContext>
@@ -30,17 +30,23 @@
 
     <Grid
         x:Name="mainGrid"
-        RowDefinitions="*"
+        RowDefinitions="*, Auto"
         ColumnDefinitions="Auto, *" >
 
-        <v:BlockTypeView/>
+        <v:BlockTypeView
+            Grid.RowSpan="2"/>
 
         <v:BlockView
             Grid.Column="1"
+            Grid.RowSpan="2"
             />
 
+
+        <v:TabView
+            Grid.Row="1"
+            Grid.Column="1"
+            />
     </Grid>
-
-
+    
 
 </ContentPage>
