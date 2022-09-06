@@ -123,11 +123,25 @@ namespace Frontend.ViewModels
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
             
             if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(0).Value);
-            if(underBlock != null)
+            if(dropped.Shape.Type is ShapeType.UPPER)
             {
+                dropped.Position.UpperLeft = GetStartPosition(dropped, dropPoint);
+            }
+            else
+            {
+                if (underBlock == null) return;
                 ShiftBlocksWhenDropped(dropped, SetUpperLeft(new(dropPoint.X, dropPoint.Y), dropped, underBlock));
             }
             DroppedBlocks = DroppedBlocks.Append(dropped).ToList();
+        }
+
+        private PointF GetStartPosition(IFrontEndBlock dropped, PointF originalPosition)
+        {
+            IFrontEndBlock? bl;
+            while ((bl = GetBlockFromPoint(originalPosition)) != null)
+                originalPosition.X += (bl.Position.BottomRight.X - originalPosition.X) + 20;
+
+            return originalPosition;
         }
 
         /// <summary>
@@ -141,43 +155,33 @@ namespace Frontend.ViewModels
         private IFrontEndBlock? SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
         {
             IFrontEndBlock? returnBlock = null;
+            IFrontEndBlock? start = under.CanContainChildren ? under : under.Father;
+            PointF upperCorner = (start is null) ? new() : new(start.Position.UpperLeft.X, start.Position.UpperLeft.Y + 40);
+            PointF bottomCorner = (start is null) ? new() : new(start.Position.BottomRight.X, start.Position.BottomRight.Y - 40);
 
-            if (dropped.Shape.Type is ShapeType.UPPER)
+            if (start != null && start.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
             {
-                IFrontEndBlock? bl;
-                while ((bl = GetBlockFromPoint(originalPosition)) != null)
-                    originalPosition.X += (bl.Position.BottomRight.X - originalPosition.X) + 20;
+                var lastChildren = under.Children.LastOrDefault();
+                originalPosition = GetChildPosition(lastChildren, upperCorner, originalPosition);
+                returnBlock = ResizeParent(under, dropped.Shape.BlockOffset.Y);
+                dropped.Father = under;
+                if(lastChildren != null)
+                {
+                    lastChildren.Next = dropped;
+                }
+                    
+                under.Children.Add(dropped);
             }
             else
             {
-                IFrontEndBlock? start = under.CanContainChildren ? under : under.Father;
-                PointF upperCorner = (start is null) ? new() : new(start.Position.UpperLeft.X, start.Position.UpperLeft.Y + 40);
-                PointF bottomCorner = (start is null) ? new() : new(start.Position.BottomRight.X, start.Position.BottomRight.Y - 40);
-
-                if (start != null && start.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
-                {
-                    var lastChildren = under.Children.LastOrDefault();
-                    originalPosition = GetChildPosition(lastChildren, upperCorner, originalPosition);
-                    returnBlock = ResizeParent(under, dropped.Shape.BlockOffset.Y);
-                    dropped.Father = under;
-                    if(lastChildren != null)
-                    {
-                        lastChildren.Next = dropped;
-                    }
-                    
-                    under.Children.Add(dropped);
-                }
-                else
-                {
-                    ResizeParent(under.Father, dropped.Shape.BlockOffset.Y);
-                    returnBlock = under.Next;
-                    originalPosition.X = under.Position.UpperLeft.X;
-                    originalPosition.Y = under.Position.UpperLeft.Y + under.Shape.BlockOffset.Y;
-                    dropped.Father = under.Father ?? under;
-                    dropped.Next = under.Next;
-                    under.Next = dropped;
-                    dropped.Father.Children.Add(dropped);
-                }
+                ResizeParent(under.Father, dropped.Shape.BlockOffset.Y);
+                returnBlock = under.Next;
+                originalPosition.X = under.Position.UpperLeft.X;
+                originalPosition.Y = under.Position.UpperLeft.Y + under.Shape.BlockOffset.Y;
+                dropped.Father = under.Father ?? under;
+                dropped.Next = under.Next;
+                under.Next = dropped;
+                dropped.Father.Children.Add(dropped);
             }
             
             dropped.Position.UpperLeft = originalPosition;
