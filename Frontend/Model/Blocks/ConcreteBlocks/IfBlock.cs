@@ -9,7 +9,7 @@ namespace Frontend.Model.Blocks.ConcreteBlocks
     /// <summary>
     /// Classe concreta che rappresenta un blocco If
     /// </summary>
-    public class IfBlock : WithChildrenForntEndBlock
+    public class IfBlock : WithChildrenFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()
         {

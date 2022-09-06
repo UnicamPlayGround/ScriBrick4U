@@ -7,7 +7,7 @@ namespace Frontend.Model.Blocks.ConcreteBlocks
     /// <summary>
     /// Classe concreta che rappresenta un blocco Evento Tastiera
     /// </summary>
-    public class KeyEventBlock : WithChildrenForntEndBlock
+    public class KeyEventBlock : WithChildrenFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()
         {
