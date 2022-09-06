@@ -1,7 +1,7 @@
-using Frontend.Model.EditPage;
-using Frontend.Model.QuestionItem;
-using Frontend.Model.Blocks;
 using Frontend.ViewModels;
+using Frontend.Models.QuestionItem;
+using Frontend.Models.EditPage;
+using Frontend.Models.Blocks;
 
 namespace Frontend.EditPage;
 
@@ -10,7 +10,7 @@ namespace Frontend.EditPage;
 /// </summary>
 public partial class BlockEditPage : ContentPage
 {
-    /// <summary> Variabile che rappresenta il flag di tipo <see cref="BlockEditPageFlag"/> </summary>
+    /// <summary> Variabile che rappresenta il BindingContext </summary>
     public BlockEditPageFlag Flag;
 
     /// <summary> <see cref="ScrollView"/> contenente il <see cref="Grid"/> dei <see cref="IBlockEditItem"/> </summary>
@@ -30,7 +30,6 @@ public partial class BlockEditPage : ContentPage
 	public BlockEditPage(IFrontEndBlock block, bool btnEliminaEnabled)
 	{
 		InitializeComponent();
-        Flag = BlockEditPageFlag.ANNULLA;
 		BackgroundColor = Color.FromRgb(240, 120, 105);
         BindingContext = new BlockEditPageViewModel(block);
 
@@ -106,7 +105,7 @@ public partial class BlockEditPage : ContentPage
         foreach (var item in items) {
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
             grid.Add(item.Question, 0, i);
-            grid.Add((IView)item.Element, 1, i++);
+            grid.Add((IView?)item.Element, 1, i++);
         }
 
         v.Content = grid;
@@ -204,7 +203,7 @@ public partial class BlockEditPage : ContentPage
     /// <param name="flag"> flag per indicare l'azione da eseguire dopo la chiusura della pagina </param>
     private void ClosePage(BlockEditPageFlag flag) {
         Flag = flag;
-        (_itemsScrollView?.Content as Grid).Children.Clear();
+        (_itemsScrollView?.Content as Grid)?.Children.Clear();
         Navigation.PopAsync();
     }
 }

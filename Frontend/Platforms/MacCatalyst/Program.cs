@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Frontend
+namespace Frontend.Platforms.MacCatalyst
 {
     public class Program
     {

@@ -6,7 +6,7 @@ using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
 using Backend.Blocks.Value;
 using Backend.Blocks.Variable;
-using Frontend.Model.Blocks;
+using Frontend.Models.Blocks;
 
 namespace Frontend.Translators
 {
@@ -77,7 +77,7 @@ namespace Frontend.Translators
 
         private IBlock Creator(IFrontEndBlock frontEndBlock)
         {
-            IBlock block = null;
+            IBlock? block = null;
             switch (frontEndBlock.Descriptor.Type)
             {
                 case BlockType.Principale:

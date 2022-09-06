@@ -8,7 +8,7 @@ namespace Frontend
     public partial class MainPage : ContentPage
     {
         /// <summary> Variabile che rappresenta il BindingContext </summary>
-        private readonly MainViewModel _context;
+        private readonly MainViewModel? _context;
 
         /// <summary>
         /// Costruttore di default
@@ -27,7 +27,7 @@ namespace Frontend
         /// <param name="e"> Parametri dell'evento click </param>
         private void New_Clicked(object sender, EventArgs e)
         {
-            _context.NewProgram();
+            _context?.NewProgram();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Frontend
         private async void Close_Clicked(object sender, EventArgs e)
         {
             if (await DisplayAlert("Esci", "Chiudere il programma?", "Si", "No"))
-                _context.ExitProgram();
+                _context?.ExitProgram();
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Frontend
 
             try
             {
-                if (!string.IsNullOrEmpty(_context.FilePath)) fileName = _context.FilePath;
+                if (!string.IsNullOrEmpty(_context?.FilePath)) fileName = _context.FilePath;
                 else
                     while (fileName == "")
                         fileName = await DisplayPromptAsync("Salva file", "Digita il nome del file", "Salva", "Annulla");
@@ -62,8 +62,8 @@ namespace Frontend
                 if (fileName != null)
                 {
 
-                    _context.SaveScript(fileName);
-                    await DisplayAlert("File salvato", $"Il file {_context.FileName} è stato salvato con successo.", "Ok");
+                    _context?.SaveScript(fileName);
+                    await DisplayAlert("File salvato", $"Il file {_context?.FileName} è stato salvato con successo.", "Ok");
                 }
             }
             catch (UnauthorizedAccessException ex) { await DisplayAlert("Accesso non autorizzato", $"Errore: il file {fileName}.json non è stato salvato (" + ex.Message + ").", "Ok"); }
@@ -82,7 +82,7 @@ namespace Frontend
             if (file != null)
                 if (!file.FileName.EndsWith("json", StringComparison.OrdinalIgnoreCase))
                     await DisplayAlert("Estensione file", "Il file deve avere estensione .json per poter essere caricato.", "Ok");
-                else _context.LoadScript(file.FullPath);
+                else _context?.LoadScript(file.FullPath);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Frontend
         /// <param name="e"> Parametri dell'evento click </param>
         private async void TranslateScript_Clicked(object sender, EventArgs e)
         {
-            _context.TranslateScript();
+            _context?.TranslateScript();
             await DisplayAlert("Script tradotto", "Lo script è stato tradotto con successo.", "Ok");
         }
     }
