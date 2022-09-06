@@ -55,7 +55,7 @@ public partial class BlockView : ContentView
     /// </summary>
     /// <param name="sender"> <see cref="StackLayout"/> creato </param>
     /// <param name="e"> Argomenti di tipo <see cref="EventArgs"/> </param>
-    private void BlocksStackLayout_Loaded(object? sender, EventArgs e)
+    private void BlockElementsStackLayout_Loaded(object? sender, EventArgs e)
     {
         var stack = sender as StackLayout;
         var grid = stack?.Parent as Grid;
@@ -68,7 +68,11 @@ public partial class BlockView : ContentView
                 var parentLayout = blockElement.Parent as StackLayout; 
                 parentLayout?.Children.Clear();
             } 
-            stack?.Children.Add((IView)blockElement);
+            if(stack != null)
+            {
+                stack.Margin = block.Shape.Margin;
+                stack.Children.Add((IView)blockElement);
+            }
         });
     }
 
