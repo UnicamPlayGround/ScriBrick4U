@@ -1,7 +1,5 @@
-﻿using Frontend.Builders;
-using Frontend.Model.Blocks;
+﻿using Frontend.Helpers.Builders;
 using Frontend.Model.Blocks.AbstractTypeBlocks;
-using Frontend.Model.Blocks.Shapes;
 using Frontend.Model.QuestionItem;
 
 namespace Frontend.Model.Blocks.ConcreteBlocks

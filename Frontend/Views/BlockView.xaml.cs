@@ -15,9 +15,9 @@ public partial class BlockView : ContentView
     private readonly BlockViewModel context;
 
     /// <summary> variabile che rappresenta il blocco selezionato, che poi verra' trascinato </summary>
-    private IFrontEndBlock SelectedBlock;
+    private IFrontEndBlock? SelectedBlock;
     /// <summary> <see cref="Grid"/> associato al blocco selezionato </summary>
-    private Grid _grid;
+    private Grid? _grid;
 
     /// <summary>
     /// Costruttore di default
@@ -34,8 +34,11 @@ public partial class BlockView : ContentView
     /// <param name="dropPoint"> Punto selezionato per il posizionamento del blocco scelto </param>
     private void Drop(PointF dropPoint)
     {
-        context.AddDroppedBlock(SelectedBlock, dropPoint);
-        ResetBlockSelection();
+        if(SelectedBlock != null)
+        {
+            context.AddDroppedBlock(SelectedBlock, dropPoint);
+            ResetBlockSelection();
+        }
     }
 
     /// <summary>
@@ -55,13 +58,17 @@ public partial class BlockView : ContentView
     private void BlocksStackLayout_Loaded(object sender, EventArgs e)
     {
         var stack = sender as StackLayout;
-        var grid = stack.Parent as Grid;
-        var block = grid.BindingContext as IFrontEndBlock;
+        var grid = stack?.Parent as Grid;
+        var block = grid?.BindingContext as IFrontEndBlock;
 
-        block.Elements.ForEach((blockElement) =>
+        block?.Elements.ForEach((blockElement) =>
         {
-            if (blockElement.Parent != null) (blockElement.Parent as StackLayout).Children.Clear();
-            stack.Children.Add((IView)blockElement);
+            if (blockElement.Parent != null)
+            {
+                var parentLayout = blockElement.Parent as StackLayout; 
+                parentLayout?.Children.Clear();
+            } 
+            stack?.Children.Add((IView)blockElement);
         });
     }
 
@@ -76,7 +83,7 @@ public partial class BlockView : ContentView
         if (e.CurrentSelection.Count > 0)
             if (e.CurrentSelection[0] != null)
             {
-                SelectedBlock = (e.CurrentSelection[0] as IFrontEndBlock).GetInfo();
+                SelectedBlock = (e.CurrentSelection[0] as IFrontEndBlock)?.GetInfo();
             }
     }
 
@@ -86,7 +93,7 @@ public partial class BlockView : ContentView
     /// <param name="block"> Blocco da editare </param>
     /// <param name="unloadedAction"> Azione da eseguire alla chiusura della pagina </param>
     /// <param name="btnEliminaEnabled"> Booleano che indica se il bottone elimina debba essere abilitato o meno </param>
-    private async void ShowEditPage(IFrontEndBlock block, Action<object, EventArgs> unloadedAction, bool btnEliminaEnabled = false)
+    private async void ShowEditPage(IFrontEndBlock block, Action<object?, EventArgs> unloadedAction, bool btnEliminaEnabled = false)
     {
         BlockEditPage editPage = new(block, btnEliminaEnabled);
         editPage.Unloaded += new EventHandler(unloadedAction);
@@ -122,9 +129,12 @@ public partial class BlockView : ContentView
     private void DroppedBlocksGraphicsView_Loaded(object sender, EventArgs e)
     {
         var graphicsView = sender as GraphicsView;
-        graphicsView.Drawable = new BlockDrawable(BaseViewModel.Mediator);
-        graphicsView.WidthRequest = DeviceDisplay.MainDisplayInfo.Width + 200;
-        graphicsView.HeightRequest = DeviceDisplay.MainDisplayInfo.Height + 200;
+        if(graphicsView != null)
+        {
+            graphicsView.Drawable = new BlockDrawable(BaseViewModel.Mediator);
+            graphicsView.WidthRequest = DeviceDisplay.MainDisplayInfo.Width + 200;
+            graphicsView.HeightRequest = DeviceDisplay.MainDisplayInfo.Height + 200;
+        }
     }
 
     /// <summary>
@@ -138,7 +148,7 @@ public partial class BlockView : ContentView
         {
             var selectedBlock = context.GetBlockFromPoint(e.Touches.ElementAt(0));
             if (selectedBlock != null) ShowEditPage(selectedBlock, (sender, args) => {
-                if ((sender as BlockEditPage).Flag == BlockEditPageFlag.ELIMINA)
+                if ((sender as BlockEditPage)?.Flag == BlockEditPageFlag.ELIMINA)
                     Delete(selectedBlock);
             }, true);
         }
@@ -149,7 +159,7 @@ public partial class BlockView : ContentView
                 context.CanBeDropped(SelectedBlock, e.Touches.ElementAt(0));
                 if (SelectedBlock.Descriptor.Type.Equals(BlockType.Principale)) Drop(e.Touches.ElementAt(0));
                 else ShowEditPage(SelectedBlock, (sender, args) => {
-                    if ((sender as BlockEditPage).Flag == BlockEditPageFlag.CONFERMA)
+                    if ((sender as BlockEditPage)?.Flag == BlockEditPageFlag.CONFERMA)
                         Drop(e.Touches.ElementAt(0));
                     ResetBlockSelection();
                 });
@@ -157,7 +167,10 @@ public partial class BlockView : ContentView
             catch (InvalidOperationException ex)
             {
                 ResetBlockSelection();
-                await Application.Current.MainPage.DisplayAlert("Posizionamento blocco", ex.Message, "Ok");
+                if(Application.Current != null && Application.Current.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Posizionamento blocco", ex.Message, "Ok");
+                }
             }
         }
     }

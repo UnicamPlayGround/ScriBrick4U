@@ -203,7 +203,7 @@ public partial class BlockEditPage : ContentPage
     /// <param name="flag"> flag per indicare l'azione da eseguire dopo la chiusura della pagina </param>
     private void ClosePage(BlockEditPageFlag flag) {
         Flag = flag;
-        (_itemsScrollView?.Content as Grid).Children.Clear();
+        (_itemsScrollView?.Content as Grid)?.Children.Clear();
         Navigation.PopAsync();
     }
 }
