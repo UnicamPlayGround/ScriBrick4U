@@ -130,7 +130,7 @@ namespace Frontend.ViewModels
             if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(1).Value);
             if (dropped.Shape.Type is ShapeType.UPPER)
             {
-                dropped.Position.UpperLeft = GetStartPosition(dropped, dropPoint);
+                dropped.Position.UpperLeft = GetStartPosition(dropPoint);
             }
             else
             {
@@ -140,7 +140,7 @@ namespace Frontend.ViewModels
             DroppedBlocks = DroppedBlocks.Append(dropped).ToList();
         }
 
-        private PointF GetStartPosition(IFrontEndBlock dropped, PointF originalPosition)
+        private PointF GetStartPosition(PointF originalPosition)
         {
             IFrontEndBlock? bl;
             while ((bl = GetBlockFromPoint(originalPosition)) != null)
