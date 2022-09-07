@@ -20,7 +20,7 @@ namespace Backend.Blocks.Movement
         public override string GetCode()
         {
             string code = "";
-            code += $"Vector3 {Name} = new Vector2(1, 0);\n";
+            code += $"Vector3 {Name} = new Vector3(1, 0, 0);\n";
             code += "if(gameObject.GetComponent<CharacterController>() == null){\n";
             code += "movementController = gameObject.AddComponent<CharacterController>();\n";
             code += "}\n";
