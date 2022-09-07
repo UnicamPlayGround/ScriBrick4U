@@ -137,7 +137,7 @@ namespace Frontend.ViewModels
                 if (underBlock == null) return;
                 ShiftBlocksWhenDropped(dropped, SetUpperLeft(new(dropPoint.X, dropPoint.Y), dropped, underBlock));
             }
-            DroppedBlocks = DroppedBlocks.Append(dropped).ToList();
+            DroppedBlocks = DroppedBlocks.Append(dropped).OrderBy(b => b.Position.UpperLeft.Y).ToList();
         }
 
         private PointF GetStartPosition(PointF originalPosition)
@@ -175,6 +175,7 @@ namespace Frontend.ViewModels
                 }
 
                 under.Children.Add(dropped);
+                under.Children.OrderBy(b => b.Position.UpperLeft.Y);
             }
             else
             {
@@ -186,6 +187,7 @@ namespace Frontend.ViewModels
                 dropped.Next = under.Next;
                 under.Next = dropped;
                 dropped.Father.Children.Add(dropped);
+                dropped.Father.Children.OrderBy(b => b.Position.UpperLeft.Y);
             }
 
             dropped.Position.UpperLeft = originalPosition;
@@ -351,7 +353,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Metodo che aggiorna la lista dei blocchi mostrati all'utente in base al tipo
         /// </summary>
-        /// <param name="type"> Tipo di blocco in base al quale filtrare la lista </param>
+        /// <param name="category"> Tipo di blocco in base al quale filtrare la lista </param>
         public void UpdateBlocksByCategory(BlockCategory category)
         {
             Blocks = _allBlocks.FindAll((e) => e.Descriptor.Category.Equals(category));
