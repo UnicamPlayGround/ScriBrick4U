@@ -6,9 +6,9 @@
              x:Class="Frontend.Views.BlockTypeView">
 
     <CollectionView
-        ItemsSource="{Binding BlockTypes}"
+        ItemsSource="{Binding BlockCategory}"
         SelectionMode="Single"
-        SelectionChanged="BlocksType_SelectionChanged" 
+        SelectionChanged="BlocksCategory_SelectionChanged" 
         BackgroundColor="Purple">
 
         <CollectionView.ItemsLayout>

@@ -12,18 +12,18 @@ namespace Backend.Blocks.Operation
     public class OperationBlock : AbstractBlock
     {
         /// <summary>
-        /// Blocco contenente il valore della parte sinistra dell'operazione
+        /// Parte sinistra dell'operazione
         /// </summary>
-        private IBlock Value1 { get; set; }
+        private string Value1 { get; set; }
         /// <summary>
-        /// Blocco contenente il valore della parte destra dell'operazione
+        /// Parte destra dell'operazione
         /// </summary>
-        private IBlock Value2 { get; set; }
+        private string Value2 { get; set; }
         /// <summary>
         /// Operatore da utilizzare
         /// </summary>
         private string Operator { get; set; }
-        public OperationBlock(string name, IBlock value1, string operation, IBlock value2) : base(name)
+        public OperationBlock(string name, string value1, string operation, string value2) : base(name)
         {
             Value1 = value1;
             Value2 = value2;
@@ -32,7 +32,7 @@ namespace Backend.Blocks.Operation
 
         public override string GetCode()
         {
-            return $"( ({Value1.GetCode()}) "+Operator+ $" ({Value2.GetCode()}) )";
+            return $"( ({Value1}) {Operator} ({Value2}) )";
         }
 
         public override Dictionary<string, string> GetVariables()

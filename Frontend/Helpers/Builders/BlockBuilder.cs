@@ -18,11 +18,11 @@ namespace Frontend.Helpers.Builders
         /// </summary>
         /// <param name="name"> Nome del blocco </param>
         /// <param name="type"> Tipo del blocco </param>
-        public BlockBuilder(string name, BlockType type)
+        public BlockBuilder(string name, BlockType type, BlockCategory category)
         {
             Block = new()
             {
-                Descriptor = new BlockDescriptor(name, type),
+                Descriptor = new BlockDescriptor(name, type, category),
                 Elements = new(),
                 Questions = new(),
                 Children = new(),

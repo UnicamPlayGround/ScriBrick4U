@@ -10,7 +10,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
     {
         public override IFrontEndBlock GetInfo()
         {
-            return new BlockBuilder<StartBlock>("Start", BlockType.Principale)
+            return new BlockBuilder<StartBlock>("Start", BlockType.Principale, BlockCategory.Principale)
                 .AddLabel("Start", 18)
                 .AddTextDroppedFunction(() => { return "Start"; })
                 .Build();

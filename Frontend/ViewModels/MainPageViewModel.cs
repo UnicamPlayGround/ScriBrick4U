@@ -49,7 +49,7 @@ namespace Frontend.ViewModels
         /// </summary>
         public void SaveScript(string fileName)
         {
-            FilePath = (FilePath!=null) ? FilePath : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{fileName}.json";
+            FilePath = FilePath ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{fileName}.json";
 
             string? ris = (string?)Mediator.NotifyWithReturn(this, MediatorKey.GETJSONDROPPEDBLOCKS);
 
@@ -78,8 +78,8 @@ namespace Frontend.ViewModels
             List<IFrontEndBlock>? blocks = (List<IFrontEndBlock>?)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS);
             if(blocks != null)
             {
-                IEnumerable<IBlock> tradotti = (new Translator()).Translate(blocks);
-                string code = (new Transpiler()).ConvertToCode((FileName == null) ? "script" : FileName, tradotti.AsQueryable());
+                IEnumerable<IBlock> tradotti = new Translator().Translate(blocks);
+                string code = new Transpiler().ConvertToCode("classeTest", tradotti.AsQueryable());
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\test.cs", code);
             }
         }

@@ -12,17 +12,17 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Lista privata di tuple contenente effettivamente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary>
-        private List<Tuple<BlockType, Color>> _blockTypes = new();
+        private List<Tuple<BlockCategory, Color>> _blockCategory = new();
 
         /// <summary>
         /// Lista pubblica di tuple contenente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary> 
-        public List<Tuple<BlockType, Color>> BlockTypes
+        public List<Tuple<BlockCategory, Color>> BlockCategory
         {
-            get => _blockTypes;
+            get => _blockCategory;
             set
             {
-                _blockTypes = value;
+                _blockCategory = value;
                 OnPropertyChanged();
             }
         }
@@ -30,17 +30,17 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Variabile che contiene effettivamente il tipo di blocco selezionato
         /// </summary>
-        private BlockType _selectedType;
+        private BlockCategory _selectedCategory;
 
         /// <summary>
         /// Variabile pubblica che contiene il tipo di blocco selezionato
         /// </summary>
-        public BlockType SelectedType
+        public BlockCategory SelectedCategory
         {
-            get => _selectedType;
+            get => _selectedCategory;
             set
             {
-                _selectedType = value;
+                _selectedCategory = value;
                 Mediator.Notify(this, MediatorKey.UPDATEBLOCKSBYTYPE);
                 OnPropertyChanged();
             }
@@ -52,10 +52,10 @@ namespace Frontend.ViewModels
         public BlockTypeViewModel()
         {
             SetMediator(this);
-            BlockTypes = new();
+            BlockCategory = new();
 
-            foreach (var blockType in Enum.GetValues(typeof(BlockType)).Cast<BlockType>().ToList())
-                BlockTypes.Add(new(blockType, BlockTypeMethods.GetColor(blockType)));
+            foreach (var blockType in Enum.GetValues(typeof(BlockCategory)).Cast<BlockCategory>().ToList())
+                BlockCategory.Add(new(blockType, BlockCategoryMethod.GetColor(blockType)));
         }
     }
 }

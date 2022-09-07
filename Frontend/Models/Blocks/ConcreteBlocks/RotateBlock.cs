@@ -16,7 +16,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                 TypeValue.NUMBER,
                 "I gradi devono essere un numero."
             );
-            return new BlockBuilder<RotateBlock>("Rotazione", BlockType.Movimento)
+            return new BlockBuilder<RotateBlock>("Rotazione", BlockType.Movimento, BlockCategory.Movimento)
                 .AddLabel("ruota di TOT gradi")
                 .AddQuestion(editItem)
                 .AddTextDroppedFunction(() => { return "ruota di " + editItem.ToString() + " gradi"; })

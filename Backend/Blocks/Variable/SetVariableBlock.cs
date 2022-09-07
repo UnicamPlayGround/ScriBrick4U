@@ -6,19 +6,22 @@ using System.Threading.Tasks;
 
 namespace Backend.Blocks.Variable
 {
-    public class VariableBlock : AbstractBlock
+    public class SetVariableBlock : AbstractBlock
     {
+        public string Value { get; set; }
         public string NameVariable { get; set; }
-        public string Type { get; set; }
-        public VariableBlock(string name, string type, string nameVariable) : base(name)
+
+        public string Operation { get; set; }
+        public SetVariableBlock(string name, string nameVariable, string operation, string value) : base(name)
         {
-            Type = type;
+            Value = value;
             NameVariable = nameVariable;
+            Operation = operation;
         }
 
         public override string GetCode()
         {
-            return $"{Type} {NameVariable};\n";
+            return $"{NameVariable} {Operation} {Value};\n";
         }
 
         public override Dictionary<string, string> GetVariables()

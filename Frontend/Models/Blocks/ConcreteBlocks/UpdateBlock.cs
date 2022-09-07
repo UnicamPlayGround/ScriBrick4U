@@ -11,7 +11,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
 
         public override IFrontEndBlock GetInfo()
         {
-            return new BlockBuilder<UpdateBlock>("Update", BlockType.Principale)
+            return new BlockBuilder<UpdateBlock>("Update", BlockType.Principale, BlockCategory.Principale)
                 .AddLabel("Update", 18)
                 .AddTextDroppedFunction(() => { return "Update"; })
                 .Build();

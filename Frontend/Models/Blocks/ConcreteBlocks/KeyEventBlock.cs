@@ -21,7 +21,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                     pickerOptions),
             };
 
-            return new BlockBuilder<KeyEventBlock>("KeyboardEvent", BlockType.Evento)
+            return new BlockBuilder<KeyEventBlock>("KeyboardEvent", BlockType.Evento, BlockCategory.Evento)
                 .AddLabel("Quando premi TASTO")
                 .AddQuestions(editItems)
                 .AddTextDroppedFunction(() => { return "Quando premi tasto " + string.Join(" ", editItems); })
