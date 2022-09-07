@@ -8,8 +8,8 @@ namespace Backend.Blocks.Conditional
 {
     public class ForBlock : AbstractBlock
     {
-        private int Repetitions { get; set; }
-        public ForBlock(string name, int repetitions) : base(name)
+        private string Repetitions { get; set; }
+        public ForBlock(string name, string repetitions) : base(name)
         {
             Repetitions = repetitions;
         }

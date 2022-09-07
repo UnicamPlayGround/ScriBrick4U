@@ -123,6 +123,20 @@ namespace Frontend.Translators
                                 frontEndBlock.Questions[1].Value,
                                 frontEndBlock.Questions[2].Value);
                             break;
+                        case "While":
+                            block = new WhileBlock(
+                                $"While{Counter++}",
+                                frontEndBlock.Questions[0].Value ?? frontEndBlock.Questions[1].Value,
+                                frontEndBlock.Questions[2].Value,
+                                frontEndBlock.Questions[3].Value ?? frontEndBlock.Questions[4].Value
+                            );
+                            break;
+                        case "For":
+                            block = new ForBlock(
+                                $"For{Counter++}",
+                                frontEndBlock.Questions[0].Value
+                            ); 
+                            break;
                     }
                     break;
                 case BlockType.Evento:

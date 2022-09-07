@@ -24,6 +24,14 @@
 
             Element = _picker = p;
         }
+        /// <summary>
+        /// Costruttore per i picker che non richedono un controllo sui valori
+        /// </summary>
+        /// <param name="questionText">Domanda da porre quando si chiede il valore</param>
+        /// <param name="items">Elementi del menu' a tendina</param>
+        public PickerEditItem(string questionText, List<string> items) : this(questionText, TypeValue.DEFAULT, "", items)
+        {
+        }
 
         public override void SetValue(string value)
         {

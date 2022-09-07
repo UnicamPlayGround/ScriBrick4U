@@ -28,7 +28,7 @@ public abstract class EditItem : IBlockEditItem
     public Func<string, bool> ValidationFunc { get; }
 
     /// <summary>
-    /// Costruttore di defualt
+    /// Costruttore di default
     /// </summary>
     /// <param name="questionText"> Domanda da porre quando si chiede il valore </param>
     /// <param name="type"> Tipo di valore atteso </param>
