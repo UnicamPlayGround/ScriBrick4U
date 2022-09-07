@@ -15,7 +15,11 @@ namespace Frontend.Models.QuestionItem
         /// <summary>
         /// E' atteso un nome di variabile
         /// </summary>
-        VARIABLE
+        VARIABLE,
+        /// <summary>
+        /// Nessun controllo sul valore
+        /// </summary>
+        DEFAULT
     }
 
     /// <summary>

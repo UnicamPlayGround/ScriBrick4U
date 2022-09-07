@@ -14,16 +14,16 @@ namespace Backend.Blocks.Conditional
         /// <summary>
         /// Definisce la parte sinsitra dell'if
         /// </summary>
-        public IBlock First { get; set; } = null!;
+        public string First { get; set; } = null!;
         /// <summary>
         /// Definisce la parte destra dell'if
         /// </summary>
-        public IBlock Second { get; set; } = null!;
+        public string Second { get; set; } = null!;
         /// <summary>
         /// Definisce l'operatore da applicare 
         /// </summary>
         public string Condition { get; set; }
-        public IfBlock(string name, IBlock first, string condition, IBlock second) : base(name)
+        public IfBlock(string name, string first, string condition, string second) : base(name)
         {
             First = first;
             Second = second;
@@ -33,7 +33,7 @@ namespace Backend.Blocks.Conditional
         public override string GetCode()
         {
             string code = "";
-            code += $"if( ( {First.GetCode()} ) {Condition} ( {Second.GetCode()} ) ){{\n";
+            code += $"if( ( {First} ) {Condition} ( {Second} ) ){{\n";
             foreach(var child in Children)
             {
                 code += child.GetCode();

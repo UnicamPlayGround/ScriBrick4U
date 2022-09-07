@@ -21,6 +21,13 @@
                 MaxLength = 30
             };
         }
+        /// <summary>
+        /// Costruttore per i picker che non richedono un controllo sui valori
+        /// </summary>
+        /// <param name="questionText">Domanda da porre quando si chiede il valore</param>
+        public EntryEditItem(string questionText) : this(questionText, TypeValue.DEFAULT, "")
+        {
+        }
 
 
         public override void SetValue(string value)
