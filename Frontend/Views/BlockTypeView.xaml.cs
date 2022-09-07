@@ -25,9 +25,9 @@ public partial class BlockTypeView : ContentView
     /// </summary>
     /// <param name="sender"> Oggetto selezionato </param>
     /// <param name="e"> Argomenti di tipo <see cref="SelectionChangedEventArgs"/> </param>
-    private void BlocksType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void BlocksCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var blockType = (Tuple<BlockType, Color>)e.CurrentSelection.ElementAt(0);
-        context.SelectedType = blockType.Item1;
+        var blockCategory = (Tuple<BlockCategory, Color>)e.CurrentSelection.ElementAt(0);
+        context.SelectedCategory = blockCategory.Item1;
     }
 }

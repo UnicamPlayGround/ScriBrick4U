@@ -4,7 +4,6 @@ using Backend.Blocks.Events;
 using Backend.Blocks.Movement;
 using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
-using Backend.Blocks.Value;
 using Backend.Blocks.Variable;
 using Frontend.Models.Blocks;
 
@@ -14,7 +13,7 @@ namespace Frontend.Translators
     {
         private int Counter = 0;
         private IDictionary<string, List<IBlock>> functions = new Dictionary<string, List<IBlock>>();
-        private List<IFrontEndBlock> frontEndFunctions = new ();
+        private List<IFrontEndBlock> frontEndFunctions = new();
 
         public IEnumerable<IBlock> Translate(IEnumerable<IFrontEndBlock> frontEndBlocks)
         {
@@ -95,10 +94,10 @@ namespace Frontend.Translators
                     switch (frontEndBlock.Descriptor.Name)
                     {
                         case "Movimento":
-                            block = new ForwardBlock($"Forward{Counter++}", new ValueBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
+                            block = new ForwardBlock($"Forward{Counter++}", frontEndBlock.Questions[0].Value);
                             break;
                         case "Rotazione":
-                            block = new RotationBlock($"Forward{Counter++}", new ValueBlock($"Variable{Counter++}", int.Parse(frontEndBlock.Questions[0].Value)));
+                            block = new RotationBlock($"Forward{Counter++}", frontEndBlock.Questions[0].Value);
                             break;
                     }
                     break;
@@ -108,10 +107,9 @@ namespace Frontend.Translators
                         case "Operazione":
                             block = new OperationBlock(
                                 $"Addition{Counter++}",
-                                getValueBlock(frontEndBlock.Questions[0].Value),
+                                frontEndBlock.Questions[0].Value,
                                 frontEndBlock.Questions[1].Value,
-                                getValueBlock(frontEndBlock.Questions[2].Value)
-                                );
+                                frontEndBlock.Questions[2].Value);
                             break;
                     }
                     break;
@@ -128,7 +126,8 @@ namespace Frontend.Translators
                     }
                     break;
                 case BlockType.Evento:
-                    switch (frontEndBlock.Descriptor.Name) {
+                    switch (frontEndBlock.Descriptor.Name)
+                    {
                         case "KeyboardEvent":
                             block = new KeyboardEvent(
                                 $"Event{Counter++}",
@@ -137,18 +136,22 @@ namespace Frontend.Translators
                             break;
                     }
                     break;
+                case BlockType.DefinizioneVariabile:
+                    block = new VariableBlock($"Variable{Counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
+                    break;
+                case BlockType.ModificaVariabile:
+                    block = new SetVariableBlock(
+                               $"SetVariable{Counter++}",
+                               frontEndBlock.Questions[0].Value,
+                               frontEndBlock.Questions[1].Value,
+                               frontEndBlock.Questions[2].Value);
+                    break;
             }
-            if(block == null)
+            if (block == null)
             {
                 throw new NotImplementedException(frontEndBlock.Descriptor.Name);
             }
             return block;
-        }
-
-
-        private ValueBlock getValueBlock(string value)
-        {
-            return new ValueBlock($"Value{Counter++}", int.Parse(value));
         }
     }
 }

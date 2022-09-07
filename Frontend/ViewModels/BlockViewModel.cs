@@ -22,6 +22,10 @@ namespace Frontend.ViewModels
         /// Lista contenente i nomi delle funzioni definite
         /// </summary>
         public static List<string> FunctionNames { get; set; } = new();
+        /// <summary>
+        /// Lista contenente i nomi delle variabili definite
+        /// </summary>
+        public static List<string> VariableNames { get; set; } = new();
 
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
@@ -88,7 +92,7 @@ namespace Frontend.ViewModels
             _allBlocks = new();
             foreach (var block in AbstractFrontEndBlock.GetEnumerableOfType())
                 _allBlocks.Add(block.GetInfo());
-            Blocks = _allBlocks;
+            Blocks = _allBlocks.OrderBy(block => block.Descriptor.Category).ToList();
         }
 
         /// <summary>
@@ -102,14 +106,14 @@ namespace Frontend.ViewModels
         {
             var under = GetBlockFromPoint(dropPoint);
 
-            //    if (dropped.CanContainChildren && under!=null && under.CanContainChildren)
-            //        throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' non puo' essere posizionato.");
             if (dropped.Descriptor.Type is BlockType.Principale && DroppedBlocks.Exists(bl => dropped.Descriptor.Name.Equals(bl.Descriptor.Name)))
                 throw new InvalidOperationException("Un blocco '" + dropped.Descriptor.Name.ToUpper() + "' è già stato posizionato.");
             if (under is null && dropped.Shape.Type is not ShapeType.UPPER)
                 throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente sotto ad una altro blocco");
             if (dropped.Descriptor.Type is BlockType.ChiamaFunzione && !FunctionNames.Any())
                 throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente dopo aver DEFINITO almeno 1 funzione.");
+            if (dropped.Descriptor.Type is BlockType.ModificaVariabile && !VariableNames.Any())
+                throw new InvalidOperationException("Il blocco '" + dropped.Descriptor.Name.ToUpper() + "' puo' essere posizionato solamente dopo aver DEFINITO almeno 1 variabile.");
 
             return true;
         }
@@ -123,6 +127,7 @@ namespace Frontend.ViewModels
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
 
             if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(0).Value);
+            if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(1).Value);
             if (dropped.Shape.Type is ShapeType.UPPER)
             {
                 dropped.Position.UpperLeft = GetStartPosition(dropped, dropPoint);
@@ -154,11 +159,10 @@ namespace Frontend.ViewModels
         /// <returns> Il blocco dal quale shiftare </returns>
         private IFrontEndBlock? SetUpperLeft(PointF originalPosition, IFrontEndBlock dropped, IFrontEndBlock under)
         {
-            IFrontEndBlock? returnBlock = null;
+            IFrontEndBlock? returnBlock;
             IFrontEndBlock? start = under.CanContainChildren ? under : under.Father;
             PointF upperCorner = (start is null) ? new() : new(start.Position.UpperLeft.X, start.Position.UpperLeft.Y + 40);
             PointF bottomCorner = (start is null) ? new() : new(start.Position.BottomRight.X, start.Position.BottomRight.Y - 40);
-
             if (start != null && start.CanContainChildren && Contains(upperCorner, bottomCorner, originalPosition))
             {
                 var lastChildren = under.Children.LastOrDefault();
@@ -348,9 +352,9 @@ namespace Frontend.ViewModels
         /// Metodo che aggiorna la lista dei blocchi mostrati all'utente in base al tipo
         /// </summary>
         /// <param name="type"> Tipo di blocco in base al quale filtrare la lista </param>
-        public void UpdateBlocksByType(BlockType type)
+        public void UpdateBlocksByCategory(BlockCategory category)
         {
-            Blocks = _allBlocks.FindAll((e) => e.Descriptor.Type.Equals(type));
+            Blocks = _allBlocks.FindAll((e) => e.Descriptor.Category.Equals(category));
         }
 
         /// <summary>
@@ -391,7 +395,7 @@ namespace Frontend.ViewModels
                     {
                         IFrontEndBlock deSerialized = baseBlock.GetInfo();
                         deSerialized.Position = serialized.Position;
-                        deSerialized.Descriptor = new BlockDescriptor(serialized.DescriptorName, serialized.DescriptorType);
+                        deSerialized.Descriptor = new BlockDescriptor(serialized.DescriptorName, serialized.DescriptorType, serialized.DescriptorCategory);
                         serialized.Questions.ForEach(question => deSerialized.Questions.ElementAt(question.Item1).SetValue(question.Item2));
                         deserializedBlocks.Add(deSerialized);
                     }

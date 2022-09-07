@@ -24,7 +24,15 @@
         Movimento,
 
         /// <summary> Blocco che rappresenta un'operazione (ad esempio somma, sottrazione) </summary>
-        Operazionale
+        Operazionale,
+        /// <summary>
+        /// Blocco che rappresenta la definizione di una variabile
+        /// </summary>
+        DefinizioneVariabile,
+        /// <summary>
+        /// 
+        /// </summary>
+        ModificaVariabile,
     }
 
     /// <summary>

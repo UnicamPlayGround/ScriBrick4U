@@ -29,7 +29,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                 BlockViewModel.FunctionNames
             );
 
-            return new BlockBuilder<FunctionCallBlock>("Chiama Funzione", BlockType.ChiamaFunzione)
+            return new BlockBuilder<FunctionCallBlock>("Chiama Funzione", BlockType.ChiamaFunzione, BlockCategory.Funzione)
                 .AddLabel("chiama funzione NOMEFUNZIONE")
                 .AddQuestion(editItem)
                 .AddTextDroppedFunction(() => { return "chiama funzione " + editItem.ToString()?.ToUpper(); })

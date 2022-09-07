@@ -16,7 +16,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                 TypeValue.NUMBER,
                 "La quantità di passi deve essere un numero."
             );
-            return new BlockBuilder<MovementBlock>("Movimento", BlockType.Movimento)
+            return new BlockBuilder<MovementBlock>("Movimento", BlockType.Movimento, BlockCategory.Movimento)
                 .AddLabel("muovi di TOT passi")
                 .AddQuestion(editItem)
                 .AddTextDroppedFunction(() => { return "muovi di " + editItem.ToString() + " passi"; })

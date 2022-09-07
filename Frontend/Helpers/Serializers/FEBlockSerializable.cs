@@ -20,6 +20,10 @@ namespace Frontend.Helpers.Serializers
 
         /// <summary> Tipo del blocco </summary>
         public BlockType DescriptorType { get; set; }
+        /// <summary>
+        /// Categoria del blocco
+        /// </summary>
+        public BlockCategory DescriptorCategory { get; set; }
 
         /// <summary> Dimensioni e coordinate di un blocco </summary>
         public BlockBound Position { get; set; } = null!;
@@ -41,6 +45,7 @@ namespace Frontend.Helpers.Serializers
             Path = block.Shape.Path;
             DescriptorName = block.Descriptor.Name;
             DescriptorType = block.Descriptor.Type;
+            DescriptorCategory = block.Descriptor.Category;
             Position = new(block.Position.Width, block.Position.Height, block.Position.UpperLeft);
             BlockType = block.GetType().FullName;
             Questions = new();

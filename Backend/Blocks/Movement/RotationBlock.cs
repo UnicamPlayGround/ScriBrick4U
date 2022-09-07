@@ -14,15 +14,15 @@ namespace Backend.Blocks.Movement
         /// <summary>
         /// Blocco contente il valore
         /// </summary>
-        private IBlock Value { set; get; }
-        public RotationBlock(string name, IBlock value) : base(name)
+        private string Value { set; get; }
+        public RotationBlock(string name, string value) : base(name)
         {
             Value = value;
         }
 
         public override string GetCode()
         {
-            return $"transform.Rotate(new Vector3(0, 0, transform.rotation.z + {Value.GetCode()}));\n";
+            return $"transform.Rotate(new Vector3(0, 0, transform.rotation.z + {Value}));\n";
         }
 
         public override Dictionary<string, string> GetVariables()
