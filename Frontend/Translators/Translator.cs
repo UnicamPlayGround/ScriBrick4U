@@ -1,6 +1,7 @@
 using Backend.Blocks;
 using Backend.Blocks.Conditional;
 using Backend.Blocks.Events;
+using Backend.Blocks.Function;
 using Backend.Blocks.Movement;
 using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
@@ -12,16 +13,12 @@ namespace Frontend.Translators
     public class Translator : ITranslator
     {
         private int Counter = 0;
-        private IDictionary<string, List<IBlock>> functions = new Dictionary<string, List<IBlock>>();
-        private List<IFrontEndBlock> frontEndFunctions = new();
 
         public IEnumerable<IBlock> Translate(IEnumerable<IFrontEndBlock> frontEndBlocks)
         {
-            frontEndFunctions.AddRange(frontEndBlocks.Where(x => x.Descriptor.Type.Equals(BlockType.DefinizioneFunzione)));
-            TranslateAllFunctions();
-
             List<IBlock> blocks = new();
-            foreach (IFrontEndBlock start in frontEndBlocks.Where(x => x.Descriptor.Type.Equals(BlockType.Principale)))
+            foreach (IFrontEndBlock start in frontEndBlocks.Where(x => (x.Descriptor.Type.Equals(BlockType.Principale)
+            || x.Descriptor.Type.Equals(BlockType.DefinizioneFunzione))))
             {
                 IBlock block = Creator(start);
                 block.Children = TranslateChildren(start.Children);
@@ -29,47 +26,18 @@ namespace Frontend.Translators
             }
             return blocks;
         }
-        private void TranslateAllFunctions()
-        {
-            foreach (IFrontEndBlock function in frontEndFunctions)
-            {
-                if (!functions.ContainsKey(function.Questions[0].Value))
-                {
-                    TranslateFunction(function);
-                }
-            }
-        }
-
-        private void TranslateFunction(IFrontEndBlock function)
-        {
-            foreach (IFrontEndBlock child in function.Children)
-            {
-                if (child.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && !functions.ContainsKey(child.Questions[0].Value))
-                {
-                    TranslateFunction(frontEndFunctions.Single(x => x.Questions[0].Value.Equals(child.Questions[0].Value)));
-                }
-            }
-            functions.Add(function.Questions[0].Value, TranslateChildren(function.Children));
-        }
 
         private List<IBlock> TranslateChildren(IEnumerable<IFrontEndBlock> children)
         {
             List<IBlock> backEndChildren = new();
             foreach (IFrontEndBlock child in children)
             {
-                if (child.Descriptor.Type.Equals(BlockType.ChiamaFunzione))
+                IBlock block = Creator(child);
+                if (child.Children.Count > 0)
                 {
-                    backEndChildren.AddRange(functions[child.Questions[0].Value]);
+                    block.Children = TranslateChildren(child.Children);
                 }
-                else
-                {
-                    IBlock block = Creator(child);
-                    if (child.Children.Count > 0)
-                    {
-                        block.Children = TranslateChildren(child.Children);
-                    }
-                    backEndChildren.Add(block);
-                }
+                backEndChildren.Add(block);
             }
             return backEndChildren;
         }
@@ -136,7 +104,7 @@ namespace Frontend.Translators
                             block = new ForBlock(
                                 $"For{Counter++}",
                                 frontEndBlock.Questions[0].Value
-                            ); 
+                            );
                             break;
                     }
                     break;
@@ -150,6 +118,18 @@ namespace Frontend.Translators
                             );
                             break;
                     }
+                    break;
+                case BlockType.DefinizioneFunzione:
+                    block = new FunctionDefinitionBlock(
+                        $"DefinitionFunction{Counter++}",
+                        frontEndBlock.Questions[0].Value,
+                        frontEndBlock.Questions[1].Value,
+                        frontEndBlock.Questions[2].Value);
+                    break;
+                case BlockType.ChiamaFunzione:
+                    block = new FunctionCallBlock(
+                        $"CallFunction{Counter++}",
+                        frontEndBlock.Questions[0].Value);
                     break;
                 case BlockType.DefinizioneVariabile:
                     block = new VariableBlock($"Variable{Counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
