@@ -27,10 +27,5 @@ namespace Backend.Blocks.Starts
             code += "}\n";
             return code;
         }
-
-        public override Dictionary<string, string> GetVariables()
-        {
-            return new();
-        }
     }
 }

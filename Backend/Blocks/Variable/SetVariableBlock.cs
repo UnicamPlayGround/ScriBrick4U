@@ -23,10 +23,5 @@ namespace Backend.Blocks.Variable
         {
             return $"{NameVariable} {Operation} {Value};\n";
         }
-
-        public override Dictionary<string, string> GetVariables()
-        {
-            return new();
-        }
     }
 }

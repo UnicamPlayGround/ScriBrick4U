@@ -25,10 +25,5 @@ namespace Backend.Blocks.Conditional
             code += "}\n";
             return code;
         }
-
-        public override Dictionary<string, string> GetVariables()
-        {
-            return new();
-        }
     }
 }

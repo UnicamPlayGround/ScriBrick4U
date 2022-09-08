@@ -12,5 +12,8 @@ public abstract class AbstractBlock : IBlock
     public string Name { get; set; }
     public IEnumerable<IBlock> Children { get; set; } = Enumerable.Empty<IBlock>();
     public abstract string GetCode();
-    public abstract Dictionary<string, string> GetVariables();
+    public virtual Dictionary<string, string> GetVariables()
+    {
+        return new();
+    }
 }

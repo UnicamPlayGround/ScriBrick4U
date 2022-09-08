@@ -31,10 +31,5 @@ namespace Backend.Blocks.Events
             code += "}\n";
             return code;
         }
-
-        public override Dictionary<string, string> GetVariables()
-        {
-            return new();
-        }
     }
 }

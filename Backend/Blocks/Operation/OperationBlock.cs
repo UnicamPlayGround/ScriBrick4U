@@ -34,10 +34,5 @@ namespace Backend.Blocks.Operation
         {
             return $"( ({Value1}) {Operator} ({Value2}) )";
         }
-
-        public override Dictionary<string, string> GetVariables()
-        {
-            return new();
-        }
     }
 }
