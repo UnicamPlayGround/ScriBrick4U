@@ -88,6 +88,9 @@ namespace Frontend.Translators
                         case "Update":
                             block = new UpdateBlock();
                             break;
+                        case "Collider":
+                            block = new ColliderBlock();
+                            break;
                     }
                     break;
                 case BlockType.Movimento:
@@ -137,6 +140,11 @@ namespace Frontend.Translators
                                 $"For{Counter++}",
                                 frontEndBlock.Questions[0].Value
                             ); 
+                            break;
+                        case "CollisionWith":
+                            block = new CollisionWithBlock(
+                                $"CollisionWith{Counter++}",
+                                frontEndBlock.Questions[0].Value);
                             break;
                     }
                     break;
