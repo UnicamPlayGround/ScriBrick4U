@@ -24,10 +24,10 @@ namespace Backend.Blocks.Function
         {
             string code = "";
             code += $"{Visibility} {ReturnType} {FunctionName} () {{\n";
-            foreach () foreach (var child in Children)
-                {
-                    code += child.GetCode();
-                }
+            foreach (var child in Children)
+            {
+                code += child.GetCode();
+            }
             code += "}\n";
             return code;
         }
