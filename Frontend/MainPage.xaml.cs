@@ -8,7 +8,7 @@ namespace Frontend
     public partial class MainPage : ContentPage
     {
         /// <summary> Variabile che rappresenta il BindingContext </summary>
-        private readonly MainViewModel? _context;
+        private readonly MainPageViewModel? _context;
 
         /// <summary>
         /// Costruttore di default
@@ -16,12 +16,12 @@ namespace Frontend
         public MainPage()
         {
             InitializeComponent();
-            _context = BindingContext as MainViewModel;
+            _context = BindingContext as MainPageViewModel;
         }
 
         /// <summary>
         /// Gestisce il click della voce del menù per aprire una nuova finestra del programma, richiamando un'apposito metodo
-        /// nel <see cref="MainViewModel"/>
+        /// nel <see cref="MainPageViewModel"/>
         /// </summary>
         /// <param name="sender"> Oggetto chiamante </param>
         /// <param name="e"> Parametri dell'evento click </param>
@@ -32,7 +32,7 @@ namespace Frontend
 
         /// <summary>
         /// Gestisce il click della voce del menù per chiudere il programma, chiedendone conferma e richiamando un'apposito metodo
-        /// nel <see cref="MainViewModel"/>
+        /// nel <see cref="MainPageViewModel"/>
         /// </summary>
         /// <param name="sender"> Oggetto chiamante </param>
         /// <param name="e"> Parametri dell'evento click </param>
@@ -44,7 +44,7 @@ namespace Frontend
 
         /// <summary>
         /// Gestisce il click della voce del menù per salvare lo script, chiedendone il nome e richiamando un'apposito metodo
-        /// nel <see cref="MainViewModel"/>
+        /// nel <see cref="MainPageViewModel"/>
         /// </summary>
         /// <param name="sender"> Oggetto chiamante </param>
         /// <param name="e"> Parametri dell'evento click </param>
@@ -61,7 +61,6 @@ namespace Frontend
 
                 if (fileName != null)
                 {
-
                     _context?.SaveScript(fileName);
                     await DisplayAlert("File salvato", $"Il file {_context?.FileName} è stato salvato con successo.", "Ok");
                 }
@@ -71,7 +70,7 @@ namespace Frontend
 
         /// <summary>
         /// Gestisce il click della voce del menù per caricare uno script, chiedendone la selezione dal file system e richiamando 
-        /// un'apposito metodo nel <see cref="MainViewModel"/>
+        /// un'apposito metodo nel <see cref="MainPageViewModel"/>
         /// </summary>
         /// <param name="sender"> Oggetto chiamante </param>
         /// <param name="e"> Parametri dell'evento click </param>
@@ -87,7 +86,7 @@ namespace Frontend
 
         /// <summary>
         /// Gestisce il click della voce del menù per tradurre uno script, richiamando un'apposito metodo 
-        /// nel <see cref="MainViewModel"/>
+        /// nel <see cref="MainPageViewModel"/>
         /// </summary>
         /// <param name="sender"> Oggetto chiamante </param>
         /// <param name="e"> Parametri dell'evento click </param>

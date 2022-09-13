@@ -29,7 +29,7 @@ namespace Frontend.Models.Blocks
         Variabile,
     }
 
-    static class BlockCategoryMethod
+    static class BlockCategoryMethods
     {
         /// <summary>
         /// Dizionario contenente tutti i tipi di blocco con associato il rispettivo colore

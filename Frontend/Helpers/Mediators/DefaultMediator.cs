@@ -8,9 +8,9 @@ namespace Frontend.Helpers.Mediators
     public class DefaultMediator : IMediator
     {
         /// <summary>
-        /// Istanza di <see cref="MainViewModel"/>
+        /// Istanza di <see cref="MainPageViewModel"/>
         /// </summary>
-        private MainViewModel? _mainViewModel;
+        private MainPageViewModel? _mainViewModel;
         /// <summary>
         /// Istanza di <see cref="BlockViewModel"/>
         /// </summary>
@@ -23,7 +23,7 @@ namespace Frontend.Helpers.Mediators
 
         public void Register(BaseViewModel vm)
         {
-            if (vm is MainViewModel mainModel && _mainViewModel == null) _mainViewModel = mainModel;
+            if (vm is MainPageViewModel mainModel && _mainViewModel == null) _mainViewModel = mainModel;
             else if (vm is BlockViewModel blocksViewModel && _blocksViewModel == null) _blocksViewModel = blocksViewModel;
             else if (vm is BlockTypeViewModel blocksTypeViewModel && _blocksTypeViewModel == null) _blocksTypeViewModel = blocksTypeViewModel;
         }

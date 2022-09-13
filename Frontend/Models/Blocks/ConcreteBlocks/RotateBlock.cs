@@ -12,7 +12,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
         public override IFrontEndBlock GetInfo()
         {
             IBlockEditItem editItem = new EntryEditItem(
-                "Digita di quanto vuoi muovere lo sprite: ",
+                "Digita di quanto vuoi ruotare lo sprite: ",
                 TypeValue.NUMBER,
                 "I gradi devono essere un numero."
             );

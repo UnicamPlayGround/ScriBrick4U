@@ -55,7 +55,7 @@ namespace Frontend.ViewModels
             BlockCategory = new();
 
             foreach (var blockType in Enum.GetValues(typeof(BlockCategory)).Cast<BlockCategory>().ToList())
-                BlockCategory.Add(new(blockType, BlockCategoryMethod.GetColor(blockType)));
+                BlockCategory.Add(new(blockType, BlockCategoryMethods.GetColor(blockType)));
         }
     }
 }

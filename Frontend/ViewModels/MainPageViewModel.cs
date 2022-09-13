@@ -10,23 +10,23 @@ namespace Frontend.ViewModels
     /// <summary>
     /// Classe che rappresenta un ViewModel per la <see cref="MainPage"/>
     /// </summary>
-    public class MainViewModel : BaseViewModel
+    public class MainPageViewModel : BaseViewModel
     {
 
         /// <summary>
         /// Nome del file salvato o caricato dal file system
         /// </summary>
-        public string FileName { get => Path.GetFileName(FilePath); }
+        public string? FileName { get => Path.GetFileName(FilePath); }
 
         /// <summary>
         /// Path del file salvato o caricato dal file system
         /// </summary>
-        public string FilePath { get; set; } = "";
+        public string? FilePath { get; set; }
 
         /// <summary>
         /// Costruttore di default
         /// </summary>
-        public MainViewModel()
+        public MainPageViewModel()
         {
             SetMediator(this);
         }
@@ -49,7 +49,7 @@ namespace Frontend.ViewModels
         /// </summary>
         public void SaveScript(string fileName)
         {
-            FilePath = FilePath ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{fileName}.json";
+            FilePath ??= Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\ScriBrick4U\\{fileName}.json";
 
             string? ris = (string?)Mediator.NotifyWithReturn(this, MediatorKey.GETJSONDROPPEDBLOCKS);
 
@@ -64,9 +64,9 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Carica uno script precedentemente salvato sotto forma di file .Json
         /// </summary>
-        public void LoadScript(string path)
+        public void LoadScript(string filePath)
         {
-            FilePath = path;
+            FilePath = filePath;
             Mediator.Notify(this, MediatorKey.SETDROPPEDBLOCKSFROMJSON);
         }
 

@@ -24,7 +24,7 @@ namespace Frontend.Models.Blocks.Descriptors
             Name = name;
             Type = type;
             Category = category;
-            BackgroundColor = BlockCategoryMethod.GetColor(category);
+            BackgroundColor = BlockCategoryMethods.GetColor(category);
         }
     }
 }
