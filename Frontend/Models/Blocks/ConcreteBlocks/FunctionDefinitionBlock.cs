@@ -30,8 +30,8 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                 ),
                 new EntryEditItem(
                     "Digita il nome della funzione: ",
-                    TypeValue.STRING,
-                    "Devi scrivere il nome della funzione."
+                    TypeValue.FUNCTION_NAME,
+                    "Nome funzione non valido."
                 ),
             };
             return new BlockBuilder<FunctionDefinitionBlock>("Definizione Funzione", BlockType.DefinizioneFunzione, BlockCategory.Funzione)
