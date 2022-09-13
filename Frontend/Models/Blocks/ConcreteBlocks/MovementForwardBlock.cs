@@ -5,21 +5,21 @@ using Frontend.Helpers.Builders;
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
     /// <summary>
-    /// Classe concreta che rappresenta un blocco movimento
+    /// Classe concreta che rappresenta un blocco movimento in avanti
     /// </summary>
-    public class MovementBlock : RectangleFrontEndBlock
+    public class MovementForwardBlock : RectangleFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()
         {
             IBlockEditItem editItem = new EntryEditItem(
-                "Digita di quanto vuoi muovere lo sprite: ",
+                "Digita di quanto vuoi muovere lo sprite in avanti: ",
                 TypeValue.NUMBER,
                 "La quantità di passi deve essere un numero."
             );
-            return new BlockBuilder<MovementBlock>("Movimento", BlockType.Movimento, BlockCategory.Movimento)
-                .AddLabel("muovi di TOT passi")
+            return new BlockBuilder<MovementForwardBlock>("MovimentoAvanti", BlockType.Movimento, BlockCategory.Movimento)
+                .AddLabel("muovi di TOT passi in avanti")
                 .AddQuestion(editItem)
-                .AddTextDroppedFunction(() => { return "muovi di " + editItem.ToString() + " passi"; })
+                .AddTextDroppedFunction(() => { return "muovi di " + editItem.ToString() + " passi in avanti"; })
                 .Build();
         }
     }
