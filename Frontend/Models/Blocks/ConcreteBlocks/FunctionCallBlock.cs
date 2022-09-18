@@ -22,17 +22,33 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
 
         public override IFrontEndBlock GetInfo()
         {
-            IBlockEditItem editItem = new PickerEditItem(
-                "Seleziona il nome della funzione da richiamare: ",
-                TypeValue.STRING,
-                "Devi selezionare il nome della funzione da richiamare.",
-                BlockViewModel.FunctionNames
-            );
+            List<IBlockEditItem> editItems = new()
+            {
+                 new PickerEditItem(
+                    "Seleziona il nome della funzione da richiamare: ",
+                    TypeValue.STRING,
+                    "Devi selezionare il nome della funzione da richiamare.",
+                    BlockViewModel.FunctionNames
+                ),
+                new PickerEditItem(
+                    "Seleziona la variabile dove salvare il valore di ritorno",
+                    BlockViewModel.VariableNames
+                )
+            };
 
             return new BlockBuilder<FunctionCallBlock>("Chiama Funzione", BlockType.ChiamaFunzione, BlockCategory.Funzione)
                 .AddLabel("chiama funzione NOMEFUNZIONE")
-                .AddQuestion(editItem)
-                .AddTextDroppedFunction(() => { return "chiama funzione " + editItem.ToString()?.ToUpper(); })
+                .AddQuestions(editItems)
+                .AddTextDroppedFunction(() => 
+                {
+                    string text = "";
+                    if (!string.IsNullOrEmpty(editItems[1].Value))
+                    {
+                        text += $"{editItems[1].Value} = ";
+                    }
+                    text += $"{editItems[0].Value}()";
+                    return text;
+                })
                 .Build();
         }
     }

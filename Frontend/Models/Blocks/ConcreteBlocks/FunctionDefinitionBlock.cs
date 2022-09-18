@@ -12,15 +12,32 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
     {
         public override IFrontEndBlock GetInfo()
         {
-            IBlockEditItem editItem = new EntryEditItem(
-                "Digita il nome della funzione: ",
-                TypeValue.STRING,
-                "Devi scrivere il nome della funzione."
-            );
+            List<string> scopes = new() { "private", "public", "protected" };
+            List<string> returnTypes = new() { "void", "int", "double", "float", "char", "string" };
+            List<IBlockEditItem> editItems = new()
+            {
+                new PickerEditItem(
+                  "Seleziona scope della funzione",
+                  TypeValue.STRING,
+                  "Scope della funzione obbligatorio",
+                  scopes
+                ),
+                new PickerEditItem(
+                    "Seleziona valore di ritorno",
+                    TypeValue.STRING,
+                    "Valore di ritorno obbligatorio",
+                    returnTypes
+                ),
+                new EntryEditItem(
+                    "Digita il nome della funzione: ",
+                    TypeValue.FUNCTION_NAME,
+                    "Nome funzione non valido."
+                ),
+            };
             return new BlockBuilder<FunctionDefinitionBlock>("Definizione Funzione", BlockType.DefinizioneFunzione, BlockCategory.Funzione)
                 .AddLabel("funzione NOME")
-                .AddQuestion(editItem)
-                .AddTextDroppedFunction(() => { return "funzione " + editItem.ToString()?.ToUpper(); })
+                .AddQuestions(editItems)
+                .AddTextDroppedFunction(() => { return $"{editItems[0].Value} {editItems[1].Value} {editItems[2].Value}"; })
                 .Build();
         }
     }
