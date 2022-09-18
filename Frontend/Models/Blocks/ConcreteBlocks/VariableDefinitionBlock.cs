@@ -14,8 +14,14 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
         public override IFrontEndBlock GetInfo()
         {
             List<string> variableTypes = new() { "int", "float", "char", "string", "bool" };
+            List<string> scopes = new() { "local", "global"};
             List<IBlockEditItem> editItems = new()
             {
+                new PickerEditItem(
+                    "Seleziona scope della variabile: ",
+                    TypeValue.STRING,
+                    "Devi selezionare uno scope",
+                    scopes),
                 new PickerEditItem(
                     "Seleziona il tipo della variabile: ",
                     TypeValue.STRING,
@@ -30,7 +36,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
             return new BlockBuilder<VariableDefinitionBlock>("DefinizioneVariabile", BlockType.DefinizioneVariabile, BlockCategory.Variabile)
                 .AddLabel("Definisci variabile")
                 .AddQuestions(editItems)
-                .AddTextDroppedFunction(() => $"{editItems[0].Value} {editItems[1].Value}")
+                .AddTextDroppedFunction(() => $"{editItems[0].Value} {editItems[1].Value} {editItems[2].Value}")
                 .Build();
         }
     }
