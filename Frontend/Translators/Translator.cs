@@ -129,7 +129,8 @@ namespace Frontend.Translators
                 case BlockType.ChiamaFunzione:
                     block = new FunctionCallBlock(
                         $"CallFunction{Counter++}",
-                        frontEndBlock.Questions[0].Value);
+                        frontEndBlock.Questions[0].Value,
+                        frontEndBlock.Questions[1].Value);
                     break;
                 case BlockType.RitornaValore:
                     block = new ReturnBlock(

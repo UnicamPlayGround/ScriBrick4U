@@ -9,14 +9,22 @@ namespace Backend.Blocks.Function
     public class FunctionCallBlock : AbstractBlock
     {
         public string FunctionName { get; set; }
-        public FunctionCallBlock(string name, string functionName) : base(name)
+        public string ReturnVariable { get; set; }
+        public FunctionCallBlock(string name, string functionName, string returnVariable) : base(name)
         {
             FunctionName = functionName;
+            ReturnVariable = returnVariable;
         }
 
         public override string GetCode()
         {
-            return $"{FunctionName}();\n";
+            string code = "";
+            if (!string.IsNullOrEmpty(ReturnVariable))
+            {
+                code += $"{ReturnVariable} = ";
+            }
+            code += $"{FunctionName}();\n";
+            return code;
         }
     }
 }
