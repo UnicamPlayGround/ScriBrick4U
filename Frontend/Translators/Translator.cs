@@ -139,7 +139,11 @@ namespace Frontend.Translators
                     );
                     break;
                 case BlockType.DefinizioneVariabile:
-                    block = new VariableBlock($"Variable{Counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
+                    block = new VariableBlock(
+                        $"Variable{Counter++}", 
+                        frontEndBlock.Questions[0].Value,
+                        frontEndBlock.Questions[1].Value,
+                        frontEndBlock.Questions[2].Value);
                     break;
                 case BlockType.ModificaVariabile:
                     block = new SetVariableBlock(

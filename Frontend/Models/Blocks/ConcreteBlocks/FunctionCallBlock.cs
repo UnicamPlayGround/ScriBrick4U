@@ -1,4 +1,5 @@
 ﻿using Frontend.Helpers.Builders;
+using Frontend.Models.Blocks.AbstractTypeBlocks;
 using Frontend.Models.Blocks.Shapes;
 using Frontend.Models.QuestionItem;
 using Frontend.ViewModels;
@@ -8,18 +9,8 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
     /// <summary>
     /// Classe concreta che rappresenta un blocco per chiamare una funzione
     /// </summary>
-    public class FunctionCallBlock : AbstractFrontEndBlock
+    public class FunctionCallBlock : RectangleFrontEndBlock
     {
-        /// <summary>
-        /// Costruttore di default che imposta la forma, l'<see cref="IFrontEndBlock.Width"/> e l'altezza del blocco
-        /// </summary>
-        public FunctionCallBlock()
-        {
-            Shape = ShapeTypeMethods.GetShape(ShapeType.RECTANGLE);
-            Width = 130;
-            Height = 48;
-        }
-
         public override IFrontEndBlock GetInfo()
         {
             List<IBlockEditItem> editItems = new()
