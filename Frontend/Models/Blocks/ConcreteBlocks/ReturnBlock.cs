@@ -25,7 +25,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
                 ),
             };
             return new BlockBuilder<ReturnBlock>("Return", BlockType.RitornaValore, BlockCategory.Funzione)
-                .AddLabel("ruota di TOT gradi")
+                .AddLabel("ritorna VALORE")
                 .AddQuestions(editItems)
                 .AddTextDroppedFunction(() => { return $"return {editItems[0].Value ?? editItems[1].Value}"; })
                 .Build();
