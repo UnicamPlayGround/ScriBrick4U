@@ -16,12 +16,12 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Nome del file salvato o caricato dal file system
         /// </summary>
-        public string? FileName { get => Path.GetFileName(FilePath); }
+        public string FileName { get => Path.GetFileName(FilePath); }
 
         /// <summary>
         /// Path del file salvato o caricato dal file system
         /// </summary>
-        public string? FilePath { get; set; }
+        public string FilePath { get; set; } = null!;
 
         /// <summary>
         /// Costruttore di default
@@ -79,8 +79,8 @@ namespace Frontend.ViewModels
             if(blocks != null)
             {
                 IEnumerable<IBlock> tradotti = new Translator().Translate(blocks);
-                string code = new Transpiler().ConvertToCode("classeTest", tradotti.AsQueryable());
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\test.cs", code);
+                string code = new Transpiler().ConvertToCode(Path.GetFileNameWithoutExtension(FileName), tradotti.AsQueryable());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\{Path.GetFileNameWithoutExtension(FileName)}.cs", code);
             }
         }
 
