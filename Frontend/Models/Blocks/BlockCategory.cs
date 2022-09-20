@@ -40,7 +40,7 @@ namespace Frontend.Models.Blocks
             { BlockCategory.Controllo, Color.FromRgb(0, 0, 255) },
             { BlockCategory.Evento, Color.FromRgb(204, 0, 102) },
             { BlockCategory.Movimento, Color.FromRgb(0, 102, 0) },
-            { BlockCategory.Variabile, Color.FromRgb(96, 96, 96) },
+            { BlockCategory.Variabile, Color.FromRgb(0, 153, 153) },
         };
 
         /// <summary>
