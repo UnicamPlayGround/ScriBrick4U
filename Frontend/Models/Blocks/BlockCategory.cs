@@ -36,11 +36,11 @@ namespace Frontend.Models.Blocks
         /// </summary>
         private static readonly Dictionary<BlockCategory, Color> _dictionary = new() {
             { BlockCategory.Principale, Color.FromRgb(255, 165, 0) },
-            { BlockCategory.Funzione, Color.FromRgb(235, 190, 15) },
-            { BlockCategory.Controllo, Color.FromRgb(255, 255, 0) },
-            { BlockCategory.Evento, Color.FromRgb(220, 180, 0) },
-            { BlockCategory.Movimento, Color.FromRgb(0, 97, 62) },
-            { BlockCategory.Variabile, Color.FromRgb(235, 190, 15) },
+            { BlockCategory.Funzione, Color.FromRgb(255, 0, 0) },
+            { BlockCategory.Controllo, Color.FromRgb(0, 0, 255) },
+            { BlockCategory.Evento, Color.FromRgb(204, 0, 102) },
+            { BlockCategory.Movimento, Color.FromRgb(0, 102, 0) },
+            { BlockCategory.Variabile, Color.FromRgb(96, 96, 96) },
         };
 
         /// <summary>
