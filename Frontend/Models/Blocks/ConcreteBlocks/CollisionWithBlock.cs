@@ -14,9 +14,9 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
     {
         public override IFrontEndBlock GetInfo()
         {
-            IBlockEditItem editItems = new EntryEditItem("Digita il secondo valore: ", TypeValue.STRING, "Valore non valido");
+            IBlockEditItem editItems = new EntryEditItem("Digita il nome dell'oggetto con cui hai colliso: ", TypeValue.STRING, "Valore non valido");
 
-            return new BlockBuilder<IfBlock>("CollisionWith", BlockType.Condizionale, BlockCategory.Controllo)
+            return new BlockBuilder<CollisionWithBlock>("CollisionWith", BlockType.Condizionale, BlockCategory.Controllo)
                 .AddLabel("HAI COLLISO CON ")
                 .AddQuestion(editItems)
                 .AddTextDroppedFunction(() => { return $"Hai colliso con {editItems.Value}"; })

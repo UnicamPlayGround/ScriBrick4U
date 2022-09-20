@@ -56,7 +56,7 @@ namespace Frontend.Translators
                         case "Update":
                             block = new UpdateBlock();
                             break;
-                        case "Collider":
+                        case "Collision":
                             block = new ColliderBlock();
                             break;
                     }
