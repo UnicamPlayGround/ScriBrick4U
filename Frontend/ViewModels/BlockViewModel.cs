@@ -127,7 +127,7 @@ namespace Frontend.ViewModels
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
 
             if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(2).Value);
-            if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(1).Value);
+            if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(2).Value);
             if (dropped.Shape.Type is ShapeType.UPPER)
             {
                 dropped.Position.UpperLeft = GetStartPosition(dropPoint);
