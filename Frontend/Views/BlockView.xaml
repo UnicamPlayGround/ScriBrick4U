@@ -27,12 +27,7 @@
                     <Grid Margin="10" Padding="5" RowDefinitions="Auto" ColumnDefinitions="Auto" HorizontalOptions="Center" VerticalOptions="Fill">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" >
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor"
-                                        Value="LightCoral" />
-                                    </VisualState.Setters>
-                                </VisualState>
+                                <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
                                         <Setter Property="BackgroundColor"

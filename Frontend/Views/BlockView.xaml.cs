@@ -121,7 +121,6 @@ public partial class BlockView : ContentView
     {
         if (_grid == null) return;
         SelectedBlock = null;
-        VisualStateManager.GoToState(_grid, "Normal");
         blocksCollView.SelectedItem = null;
     }
 
