@@ -11,7 +11,7 @@ namespace Frontend.Models.Blocks.ConcreteBlocks
     {
         public override IFrontEndBlock GetInfo()
         {
-            List<string> pickerOptions = new() { "left", "right", };
+            List<string> pickerOptions = new() { "left", "right", "up", "down", "w", "a", "s", "d"};
             List<IBlockEditItem> editItems = new()
             {
                 new PickerEditItem(

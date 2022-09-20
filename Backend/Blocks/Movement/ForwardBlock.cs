@@ -24,7 +24,7 @@ namespace Backend.Blocks.Movement
             code += "if(gameObject.GetComponent<CharacterController>() == null){\n";
             code += "movementController = gameObject.AddComponent<CharacterController>();\n";
             code += "}\n";
-            code += $"movementController.Move({Value} * {Name});\n";
+            code += $"movementController.Move( 0.01f * {Value} * {Name});\n";
             return code;
         }
         public override Dictionary<string, string> GetVariables()
