@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Frontend.ViewModels;
+using System.Text.RegularExpressions;
 
 namespace Frontend.Models.QuestionItem
 {
@@ -16,6 +17,10 @@ namespace Frontend.Models.QuestionItem
         /// E' atteso un nome di variabile
         /// </summary>
         VARIABLE,
+        /// <summary>
+        /// E' atteso un nome di funzione unico
+        /// </summary>
+        FUNCTION_NAME,
         /// <summary>
         /// Nessun controllo sul valore
         /// </summary>
@@ -47,6 +52,9 @@ namespace Frontend.Models.QuestionItem
                     //regex per validare il nome della variabile:
                     Regex rgx = new("^[a-zA-Z_][a-zA-Z_$0-9]");
                     validator = (v) => { return rgx.IsMatch(v); };
+                    break;
+                case TypeValue.FUNCTION_NAME:
+                    validator = (v) => !BlockViewModel.FunctionNames.Contains(v);
                     break;
                 default:
                     validator = (v) => true;

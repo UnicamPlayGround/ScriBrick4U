@@ -126,8 +126,8 @@ namespace Frontend.ViewModels
         {
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
 
-            if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(0).Value);
-            if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(1).Value);
+            if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(2).Value);
+            if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(2).Value);
             if (dropped.Shape.Type is ShapeType.UPPER)
             {
                 dropped.Position.UpperLeft = GetStartPosition(dropPoint);
@@ -273,7 +273,7 @@ namespace Frontend.ViewModels
         private void ShiftBlocksWhenDropped(IFrontEndBlock droppedBlock, IFrontEndBlock? underBlock)
         {
             if (droppedBlock.Descriptor.Type != BlockType.Principale && droppedBlock.Descriptor.Type != BlockType.DefinizioneFunzione)
-                Shift(underBlock, droppedBlock.Shape.BlockOffset.Y, GetCurrent, (x, y) => x + y);
+                Shift(underBlock, droppedBlock.Shape.BlockOffset.Y, (x, y) => x + y);
         }
         /// <summary>
         /// Sposta i blocchi quando un blocco, precedentemente rilasciato, viene eliminato
@@ -281,16 +281,15 @@ namespace Frontend.ViewModels
         /// <param name="deletedBlock"> Blocco eliminato </param>
         private void ShiftBlocksWhenDelete(IFrontEndBlock deletedBlock)
         {
-            Shift(deletedBlock, deletedBlock.Shape.BlockOffset.Y, GetCurrent, (x, y) => x - y);
+            Shift(deletedBlock, deletedBlock.Shape.BlockOffset.Y, (x, y) => x - y);
         }
         /// <summary>
         /// Sposta i blocchi, a partire da quello posizionato sotto al blocco di partenza passato come parametro
         /// </summary>
         /// <param name="currentBlock"> Blocco di partenza </param>
         /// <param name="offset"> Offset che indica di quanto i blocchi vadano spostati </param>
-        /// <param name="findNextFunction"> Funzione per trovare il prossimo blocco da spostare </param>
         /// <param name="YSetterFunction"> Funzione per impostare le coordinate del punto in alto a sinistra del blocco da spostare </param>
-        private void Shift(IFrontEndBlock? currentBlock, float offset, Func<IFrontEndBlock, IFrontEndBlock, bool> findNextFunction, Func<float, float, float> YSetterFunction)
+        private void Shift(IFrontEndBlock? currentBlock, float offset, Func<float, float, float> YSetterFunction)
         {
             var current = currentBlock;
             IFrontEndBlock? next = current;
@@ -307,16 +306,6 @@ namespace Frontend.ViewModels
         }
 
         /// <summary>
-        /// Verifica se un blocco è posizionato sotto ad un altro
-        /// </summary>
-        /// <param name="block"> Blocco del quale verificare la posizione </param>
-        /// <param name="current"> Blocco corrente </param>
-        /// <returns> se esiste un blocco è posizionato sotto ad un altro, false altrimenti </returns>
-        private bool GetCurrent(IFrontEndBlock block, IFrontEndBlock current)
-        {
-            return block.Position.UpperLeft.X == current.Position.UpperLeft.X && block.Position.UpperLeft.Y == current.Position.UpperLeft.Y + current.Shape.BlockOffset.Y;
-        }
-        /// <summary>
         /// Restitusce un blocco contenente il punto passato come parametro, o null se questo non esiste
         /// </summary>
         /// <param name="pointF"> Punto dal quale estarre un blocco </param>
@@ -332,7 +321,7 @@ namespace Frontend.ViewModels
         /// <param name="block"> Blocco con il quale effettuare la verifica </param>
         /// <param name="point"> Punto del quale verificare l'appartenenza al blocco </param>
         /// <returns> se il blocco contiene il punto passato come parametro, false altrimenti </returns>
-        public static bool Contains(IFrontEndBlock block, PointF point)
+        public bool Contains(IFrontEndBlock block, PointF point)
         {
             return Contains(block.Position.UpperLeft, block.Position.BottomRight, point);
         }
@@ -343,7 +332,7 @@ namespace Frontend.ViewModels
         /// <param name="bottomCorner"> Secondo punto </param>
         /// <param name="point"> Punto su cui viene effettuata la verifica </param>
         /// <returns> true se il punto passato come parametro è compreso tra altri 2, false altrimenti </returns>
-        public static bool Contains(PointF upperCorner, PointF bottomCorner, PointF point)
+        public bool Contains(PointF upperCorner, PointF bottomCorner, PointF point)
         {
             if (upperCorner.X > point.X || bottomCorner.X < point.X) return false;
             if (upperCorner.Y > point.Y || bottomCorner.Y < point.Y) return false;

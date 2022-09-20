@@ -31,7 +31,6 @@ public partial class BlockEditPage : ContentPage
 	{
 		InitializeComponent();
 		BackgroundColor = Color.FromRgb(240, 120, 105);
-        BindingContext = new BlockEditPageViewModel(block);
 
         _editItems = new(block.Questions);
         _itemsScrollView = BuildItemsGrid(block.Questions);

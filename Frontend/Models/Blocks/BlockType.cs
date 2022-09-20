@@ -30,9 +30,13 @@
         /// </summary>
         DefinizioneVariabile,
         /// <summary>
-        /// 
+        /// Blocco che rappresenta la modifica di una variabile
         /// </summary>
         ModificaVariabile,
+        /// <summary>
+        /// Blocco che rappresenta il ritorno di un valore
+        /// </summary>
+        RitornaValore
     }
 
     /// <summary>
