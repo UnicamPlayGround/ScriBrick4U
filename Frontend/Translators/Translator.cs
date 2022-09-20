@@ -64,11 +64,20 @@ namespace Frontend.Translators
                 case BlockType.Movimento:
                     switch (frontEndBlock.Descriptor.Name)
                     {
-                        case "Movimento":
+                        case "MovimentoAvanti":
                             block = new ForwardBlock($"Forward{Counter++}", frontEndBlock.Questions[0].Value);
                             break;
+                        case "MovimentoIndietro":
+                            block = new BackwardBlock($"Backward{Counter++}", frontEndBlock.Questions[0].Value);
+                            break;
+                        case "MovimentoSu":
+                            block = new UpBlock($"Up{Counter++}", frontEndBlock.Questions[0].Value);
+                            break;
+                        case "MovimentoGiu":
+                            block = new DownBlock($"Down{Counter++}", frontEndBlock.Questions[0].Value);
+                            break;
                         case "Rotazione":
-                            block = new RotationBlock($"Forward{Counter++}", frontEndBlock.Questions[0].Value);
+                            block = new RotationBlock($"Rotation{Counter++}", frontEndBlock.Questions[0].Value);
                             break;
                     }
                     break;
