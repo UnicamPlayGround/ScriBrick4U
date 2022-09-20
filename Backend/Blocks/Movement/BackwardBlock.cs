@@ -1,18 +1,21 @@
-﻿using Backend.Blocks;
-using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Backend.Blocks.Movement
 {
     /// <summary>
-    /// Definisce il blocco per il movimento in avanti
+    /// Definisce il blocco per il movimento indietro
     /// </summary>
-    public class ForwardBlock : AbstractBlock
+    public class BackwardBlock : AbstractBlock
     {
         /// <summary>
         /// Blocco contente il valore
         /// </summary>
         public string Value { get; set; }
-        public ForwardBlock(string name, string value) : base(name)
+        public BackwardBlock(string name, string value) : base(name)
         {
             Value = value;
         }
@@ -20,7 +23,7 @@ namespace Backend.Blocks.Movement
         public override string GetCode()
         {
             string code = "";
-            code += $"Vector3 {Name} = new Vector3(1, 0, 0);\n";
+            code += $"Vector3 {Name} = new Vector3(-1, 0, 0);\n";
             code += "if(gameObject.GetComponent<CharacterController>() == null){\n";
             code += "movementController = gameObject.AddComponent<CharacterController>();\n";
             code += "}\n";
