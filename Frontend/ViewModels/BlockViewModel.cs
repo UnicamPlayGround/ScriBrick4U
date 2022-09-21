@@ -167,7 +167,7 @@ namespace Frontend.ViewModels
             {
                 var lastChildren = under.Children.LastOrDefault();
                 originalPosition = GetChildPosition(lastChildren, upperCorner, originalPosition);
-                returnBlock = ResizeParent(under, dropped.Shape.BlockOffset.Y);
+                returnBlock = ResizeParent(under, dropped.Shape.BlockOffset.Y, (x, y) => x + y);
                 dropped.Father = under;
                 if (lastChildren != null)
                 {
@@ -175,11 +175,11 @@ namespace Frontend.ViewModels
                 }
 
                 under.Children.Add(dropped);
-                under.Children.OrderBy(b => b.Position.UpperLeft.Y);
+                under.Children = under.Children.OrderBy(b => b.Position.UpperLeft.Y).ToList();
             }
             else
             {
-                ResizeParent(under.Father, dropped.Shape.BlockOffset.Y);
+                ResizeParent(under.Father, dropped.Shape.BlockOffset.Y, (x, y) => x + y);
                 returnBlock = under.Next;
                 originalPosition.X = under.Position.UpperLeft.X;
                 originalPosition.Y = under.Position.UpperLeft.Y + under.Shape.BlockOffset.Y;
@@ -187,19 +187,19 @@ namespace Frontend.ViewModels
                 dropped.Next = under.Next;
                 under.Next = dropped;
                 dropped.Father.Children.Add(dropped);
-                dropped.Father.Children.OrderBy(b => b.Position.UpperLeft.Y).ToList();
+                dropped.Father.Children = dropped.Father.Children.OrderBy(b => b.Position.UpperLeft.Y).ToList();
             }
 
             dropped.Position.UpperLeft = originalPosition;
             return returnBlock ?? dropped.Next;
         }
 
-        private IFrontEndBlock? ResizeParent(IFrontEndBlock? current, float offset)
+        private IFrontEndBlock? ResizeParent(IFrontEndBlock? current, float offset, Func<float, float, float> heightSetter)
         {
             while (current?.Shape.Type is ShapeType.WITH_CHILDREN)
             {
-                current.Height += offset;
-                current.Shape.BlockOffset = new(current.Shape.BlockOffset.X, current.Shape.BlockOffset.Y + offset);
+                current.Height = heightSetter.Invoke(current.Height, offset);
+                current.Shape.BlockOffset = new(current.Shape.BlockOffset.X, heightSetter.Invoke(current.Shape.BlockOffset.Y, offset));
                 if (current.Father == null || current.Father.Shape.Type != ShapeType.WITH_CHILDREN) break;
                 current = current.Father;
             }
@@ -210,7 +210,6 @@ namespace Frontend.ViewModels
         {
             if (lastChildren == null)
             {
-                //16 è un numero (giusto) tirato a caso sarebbe da sistemare
                 upperCorner.X += 16;
                 originalPosition = upperCorner;
             }
@@ -235,7 +234,7 @@ namespace Frontend.ViewModels
                 if (deletedBlock.Father.Next == deletedBlock) deletedBlock.Father.Next = deletedBlock.Next;
                 if (deletedBlock.Father.CanContainChildren)
                 {
-                    deletedBlock.Father.Height -= deletedBlock.Shape.BlockOffset.Y;
+                    ResizeParent(deletedBlock.Father, deletedBlock.Shape.BlockOffset.Y, (x, y) => x - y);
                 }
                 deletedBlock.Father.Children.Remove(deletedBlock);
             }
@@ -282,6 +281,14 @@ namespace Frontend.ViewModels
         private void ShiftBlocksWhenDelete(IFrontEndBlock deletedBlock)
         {
             Shift(deletedBlock, deletedBlock.Shape.BlockOffset.Y, (x, y) => x - y);
+            if (deletedBlock.Father == null || deletedBlock.Father.IsStart) return;
+            IFrontEndBlock? next = deletedBlock.Father?.Next;
+            while(next != null)
+            {
+                Shift(next, deletedBlock.Shape.BlockOffset.Y, (x, y) => x - y);
+                if (next.Father == null || next.Father.IsStart) return;
+                next = next.Father?.Next;
+            }
         }
         /// <summary>
         /// Sposta i blocchi, a partire da quello posizionato sotto al blocco di partenza passato come parametro
