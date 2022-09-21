@@ -187,7 +187,7 @@ namespace Frontend.ViewModels
                 dropped.Next = under.Next;
                 under.Next = dropped;
                 dropped.Father.Children.Add(dropped);
-                dropped.Father.Children.OrderBy(b => b.Position.UpperLeft.Y);
+                dropped.Father.Children.OrderBy(b => b.Position.UpperLeft.Y).ToList();
             }
 
             dropped.Position.UpperLeft = originalPosition;
