@@ -73,14 +73,14 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Esegue la traduzione dello script
         /// </summary>
-        public void TranslateScript()
+        public void TranslateScript(string filename)
         {
             List<IFrontEndBlock>? blocks = (List<IFrontEndBlock>?)Mediator.NotifyWithReturn(this, MediatorKey.GETDROPPEDBLOCKS);
             if(blocks != null)
             {
                 IEnumerable<IBlock> tradotti = new Translator().Translate(blocks);
-                string code = new Transpiler().ConvertToCode(Path.GetFileNameWithoutExtension(FileName), tradotti.AsQueryable());
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\{Path.GetFileNameWithoutExtension(FileName)}.cs", code);
+                string code = new Transpiler().ConvertToCode(filename, tradotti.AsQueryable());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\{filename}.cs", code);
             }
         }
 

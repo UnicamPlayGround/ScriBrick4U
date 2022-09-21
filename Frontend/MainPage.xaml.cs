@@ -50,7 +50,12 @@ namespace Frontend
         /// <param name="e"> Parametri dell'evento click </param>
         private async void SaveScript_Clicked(object sender, EventArgs e)
         {
-            await SaveScript();
+            string? filename = await SaveScript();
+            if (filename != null)
+            {
+                _context?.SaveScript(filename);
+                await DisplayAlert("File salvato", $"Il file {_context?.FileName} è stato salvato con successo.", "Ok");
+            }
         }
 
         /// <summary>
@@ -77,12 +82,16 @@ namespace Frontend
         /// <param name="e"> Parametri dell'evento click </param>
         private async void TranslateScript_Clicked(object sender, EventArgs e)
         {
-            if (_context?.FilePath == null) await SaveScript();
-            _context?.TranslateScript();
-            await DisplayAlert("Script tradotto", "Lo script è stato tradotto con successo.", "Ok");
+            string? filename = "";
+            if (_context?.FilePath == null) filename = await SaveScript();
+            if (filename != null)
+            {
+                _context?.TranslateScript(filename);
+                await DisplayAlert("Script tradotto", "Lo script è stato tradotto con successo.", "Ok");
+            }
         }
 
-        private async Task SaveScript()
+        private async Task<string?> SaveScript()
         {
             string fileName = "";
 
@@ -92,14 +101,13 @@ namespace Frontend
                 else
                     while (fileName == "")
                         fileName = await DisplayPromptAsync("Salva file", "Digita il nome del file", "Salva", "Annulla");
-
-                if (fileName != null)
-                {
-                    _context?.SaveScript(fileName);
-                    await DisplayAlert("File salvato", $"Il file {_context?.FileName} è stato salvato con successo.", "Ok");
-                }
+                
+                return fileName;
             }
-            catch (UnauthorizedAccessException ex) { await DisplayAlert("Accesso non autorizzato", $"Errore: il file {fileName}.json non è stato salvato (" + ex.Message + ").", "Ok"); }
+            catch (UnauthorizedAccessException ex) { 
+                await DisplayAlert("Accesso non autorizzato", $"Errore: il file {fileName}.json non è stato salvato (" + ex.Message + ").", "Ok");
+                return null;
+            }
 
         }
     }
