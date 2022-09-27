@@ -30,13 +30,6 @@ namespace Frontend.Helpers.Builders
                 Position = new BlockBound()
             };
         }
-
-        public IBlockBuilder<T> AddInput()
-        {
-            _block.Elements.Add(new Editor());
-            return this;
-        }
-
         public IBlockBuilder<T> AddLabel(string s, double fontSize = 12)
         {
             Label l = new()
