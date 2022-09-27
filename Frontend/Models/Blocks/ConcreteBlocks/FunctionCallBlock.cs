@@ -1,6 +1,5 @@
 ﻿using Frontend.Helpers.Builders;
 using Frontend.Models.Blocks.AbstractTypeBlocks;
-using Frontend.Models.Blocks.Shapes;
 using Frontend.Models.QuestionItem;
 using Frontend.ViewModels;
 

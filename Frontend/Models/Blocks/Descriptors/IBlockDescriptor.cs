@@ -1,6 +1,4 @@
-﻿using Frontend.Models.Blocks;
-
-namespace Frontend.Models.Blocks.Descriptors
+﻿namespace Frontend.Models.Blocks.Descriptors
 {
     /// <summary>
     /// Interfaccia che rappresenta un descrittore di blocchi

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Frontend.Models.Blocks
+﻿namespace Frontend.Models.Blocks
 {
     /// <summary>
     /// Enum che descrive le categorie di blocco
