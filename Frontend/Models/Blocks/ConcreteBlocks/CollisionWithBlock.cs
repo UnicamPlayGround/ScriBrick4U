@@ -5,7 +5,7 @@ using Frontend.Models.QuestionItem;
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
     /// <summary>
-    /// 
+    /// Classe concreta che rappresenta un blocco per l'evento collisione in Unity
     /// </summary>
     public class CollisionWithBlock : WithChildrenFrontEndBlock
     {

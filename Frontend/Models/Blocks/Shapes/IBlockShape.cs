@@ -16,7 +16,9 @@ namespace Frontend.Models.Blocks.Shapes
         /// <summary> Oggetto che rappresenta la forma dopo il parsing del <see cref="Path"/> </summary>
         public Geometry? SvgData { get; set; }
 
-        /// <summary>   </summary>
+        /// <summary>  
+        /// Distanza tra il blocco posizionato e il blocco precedente
+        /// </summary>
         public PointF BlockOffset { get; set; }
 
         /// <summary> Tipo di forma </summary>

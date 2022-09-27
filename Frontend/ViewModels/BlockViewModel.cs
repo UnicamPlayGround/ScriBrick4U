@@ -139,7 +139,7 @@ namespace Frontend.ViewModels
         }
 
         /// <summary>
-        /// 
+        /// Calcola la posizione iniziale di un blocco posizionato nel canvas
         /// </summary>
         private PointF GetStartPosition(PointF originalPosition)
         {
@@ -194,7 +194,13 @@ namespace Frontend.ViewModels
             dropped.Position.UpperLeft = originalPosition;
             return returnBlock ?? dropped.Next;
         }
-
+        /// <summary>
+        /// Ricalcola le dimensioni del blocco padre dopo l'inserimento/rimozione di un blocco figlio
+        /// </summary>
+        /// <param name="current">Blocco posizionato</param>
+        /// <param name="offset">Dimensioni del blocco</param>
+        /// <param name="heightSetter">Funzione per il calcolo delle nuove dimensioni</param>
+        /// <returns>Blocco ridimensionato</returns>
         private IFrontEndBlock? ResizeParent(IFrontEndBlock? current, float offset, Func<float, float, float> heightSetter)
         {
             while (current?.Shape.Type is ShapeType.WITH_CHILDREN)
@@ -207,6 +213,13 @@ namespace Frontend.ViewModels
 
             return current?.Next;
         }
+        /// <summary>
+        /// Calcola la posizione di un blocco figlio
+        /// </summary>
+        /// <param name="lastChildren">Ultimo figlio</param>
+        /// <param name="upperCorner">Posizione del padre</param>
+        /// <param name="originalPosition">Posizione iniziale del blocco</param>
+        /// <returns>Nuova posizione</returns>
         private PointF GetChildPosition(IFrontEndBlock? lastChildren, PointF upperCorner, PointF originalPosition)
         {
             if (lastChildren == null)
@@ -254,7 +267,10 @@ namespace Frontend.ViewModels
             });
             DroppedBlocks = DroppedBlocks.Where(x => !x.Equals(deletedBlock)).ToList();
         }
-
+        /// <summary>
+        /// Metodo di utilità per la rimozione di blocchi funzione
+        /// </summary>
+        /// <param name="functionName">Nome della funzione da rimuovere</param>
         private void RemoveFunctionUse(string functionName)
         {
             FunctionNames.Remove(functionName);

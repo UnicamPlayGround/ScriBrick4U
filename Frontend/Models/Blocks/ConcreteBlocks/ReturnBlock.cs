@@ -6,7 +6,7 @@ using Frontend.ViewModels;
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
     /// <summary>
-    /// 
+    /// Classe concreta che rappresenta un blocco per il valore di ritorno di una funzione
     /// </summary>
     public class ReturnBlock : RectangleFrontEndBlock
     {
