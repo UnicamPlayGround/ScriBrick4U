@@ -284,7 +284,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Metodo di utilità per la rimozione di blocchi variabile
         /// </summary>
-        /// <param name="functionName">Nome della variabile da rimuovere</param>
+        /// <param name="varName">Nome della variabile da rimuovere</param>
         private void RemoveVariableName(string varName)
         {
             VariableNames.Remove(varName);
