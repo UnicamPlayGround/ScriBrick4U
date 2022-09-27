@@ -4,7 +4,7 @@ using Frontend.Models.Blocks.AbstractTypeBlocks;
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
     /// <summary>
-    /// Classe concreta che rappresenta un blocco Update
+    /// Classe concreta che rappresenta un blocco per l'evento Update di Unity
     /// </summary>
     public class UpdateBlock : UpperFrontEndBlock
     {

@@ -50,7 +50,7 @@ namespace Frontend
         /// <param name="e"> Parametri dell'evento click </param>
         private async void SaveScript_Clicked(object sender, EventArgs e)
         {
-            string? filename = await SaveScript();
+            string? filename = await AcquireScriptName();
             if (filename != null)
             {
                 _context?.SaveScript(filename);
@@ -83,7 +83,7 @@ namespace Frontend
         private async void TranslateScript_Clicked(object sender, EventArgs e)
         {
             string? filename = "";
-            if (_context?.FilePath == null) filename = await SaveScript();
+            if (_context?.FilePath == null) filename = await AcquireScriptName();
             if (filename != null)
             {
                 _context?.TranslateScript(filename);
@@ -91,7 +91,11 @@ namespace Frontend
             }
         }
 
-        private async Task<string?> SaveScript()
+        /// <summary>
+        /// Acquisisce il nome da utilizzare per lo script che verrà salvato
+        /// </summary>
+        /// <returns> Il nome digitato dall'utente </returns>
+        private async Task<string?> AcquireScriptName()
         {
             string fileName = "";
 

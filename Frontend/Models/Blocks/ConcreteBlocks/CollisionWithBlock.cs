@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CollisionWithBlock : WithChildrenFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()

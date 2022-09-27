@@ -65,20 +65,28 @@ namespace Frontend.Models.Blocks
         /// Elementi contenuti nel blocco (utilizzati prima che questo venga posizionato)
         /// </summary>
         public List<Element> Elements { get; set; }
-        public bool CanContainChildren { get; }
-        public bool IsStart { get; }
 
         /// <summary>
-        /// Disegna il blocco nel canvas passato come parametro
+        /// Valore booleano che indica se il blocco puo' contenere figli
         /// </summary>
-        /// <param name="canvas"> Canvas nel quale disegnare il blocco </param>
-        public void Draw(ICanvas canvas);
+        public bool CanContainChildren { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsStart { get; }
 
         /// <summary>
         /// Restituisce una nuova istanza del blocco corrente
         /// </summary>
         /// <returns> una nuova istanza del blocco corrente </returns>
         public IFrontEndBlock GetInfo();
+
+        /// <summary>
+        /// Disegna il blocco nel canvas passato come parametro
+        /// </summary>
+        /// <param name="canvas"> Canvas nel quale disegnare il blocco </param>
+        public void Draw(ICanvas canvas);
 
         /// <summary>
         /// Restituisce, partendo da un serie di punti passati come parametro, un'oggetto che rappresenta la forma

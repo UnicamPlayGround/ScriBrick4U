@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco per l'evento collisione in Unity
+    /// </summary>
     public class CollisionBlock : UpperFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco per impostare il valore di una variabile
+    /// </summary>
     public class SetVariableBlock : RectangleFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()

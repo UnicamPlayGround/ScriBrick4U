@@ -38,7 +38,6 @@ namespace Frontend.ViewModels
         /// che possono essere trascinati
         /// </summary>
         private List<IFrontEndBlock> _blocks = new();
-
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
         /// </summary>
@@ -57,7 +56,6 @@ namespace Frontend.ViewModels
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene effettivamente i blocchi trascinati dall'utente
         /// </summary>
         private List<IFrontEndBlock> _droppedBlocks = new();
-
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene i blocchi trascinati dall'utente
         /// </summary>
@@ -140,6 +138,9 @@ namespace Frontend.ViewModels
             DroppedBlocks = DroppedBlocks.Append(dropped).OrderBy(b => b.Position.UpperLeft.Y).ToList();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private PointF GetStartPosition(PointF originalPosition)
         {
             IFrontEndBlock? bl;

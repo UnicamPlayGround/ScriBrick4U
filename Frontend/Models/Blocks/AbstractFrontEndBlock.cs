@@ -27,6 +27,7 @@ namespace Frontend.Models.Blocks
         public Func<string> TextDropped { get; set; } = null!;
 
         public IFrontEndBlock? Father { get; set; }
+        public IFrontEndBlock? Next { get; set; }
         public List<IFrontEndBlock> Children { get; set; } = new();
 
         /// <summary> Lista privata che rappresenta gli elementi contenuti nel blocco </summary>
@@ -36,11 +37,11 @@ namespace Frontend.Models.Blocks
             get => _elements;
             set => _elements = value;
         }
-        public IFrontEndBlock? Next { get; set; }
 
         public bool CanContainChildren => Shape.Type.Equals(ShapeType.WITH_CHILDREN);
-
         public bool IsStart => Descriptor.Type.Equals(BlockType.Principale) || Descriptor.Type.Equals(BlockType.DefinizioneFunzione);
+
+        public abstract IFrontEndBlock GetInfo();
 
         public void Draw(ICanvas canvas)
         {
@@ -68,8 +69,6 @@ namespace Frontend.Models.Blocks
             Width = defaultWidth;
             Height = defaultHeight;
         }
-
-        public abstract IFrontEndBlock GetInfo();
 
         /// <summary>
         /// Restituisce una lista contenente un'istanza per ogni classe che eredita da quella corrente

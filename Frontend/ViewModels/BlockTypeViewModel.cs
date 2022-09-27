@@ -13,7 +13,6 @@ namespace Frontend.ViewModels
         /// Lista privata di tuple contenente effettivamente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary>
         private List<Tuple<BlockCategory, Color>> _blockCategory = new();
-
         /// <summary>
         /// Lista pubblica di tuple contenente tutti i tipi di blocco, con associato il rispettivo colore
         /// </summary> 
@@ -31,7 +30,6 @@ namespace Frontend.ViewModels
         /// Variabile che contiene effettivamente il tipo di blocco selezionato
         /// </summary>
         private BlockCategory _selectedCategory;
-
         /// <summary>
         /// Variabile pubblica che contiene il tipo di blocco selezionato
         /// </summary>
@@ -46,6 +44,7 @@ namespace Frontend.ViewModels
             }
         }
 
+
         /// <summary>
         /// Costruttore di default
         /// </summary>
@@ -56,6 +55,14 @@ namespace Frontend.ViewModels
 
             foreach (var blockType in Enum.GetValues(typeof(BlockCategory)).Cast<BlockCategory>().ToList())
                 BlockCategory.Add(new(blockType, BlockCategoryMethods.GetColor(blockType)));
+        }
+
+       /// <summary>
+       /// Imposta la categoria selezionata con quella passata come parametro
+       /// </summary>
+       /// <param name="selectedCategory"> Categoria selezionata </param>
+        public void SetSelectedCategory(BlockCategory selectedCategory) {
+            SelectedCategory = selectedCategory;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Frontend.Models.Blocks.Shapes
         public string Path { get; set; } = "";
         public string PathTemplate { get; } = "";
         public Geometry? SvgData { get; set; }
+
         public PointF BlockOffset { get; set; }
         public ShapeType Type { get; set; }
         public Thickness Margin { get; set; }

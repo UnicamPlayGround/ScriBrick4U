@@ -25,6 +25,7 @@ namespace Frontend.Models.Blocks.Shapes
         /// <summary> Margini del contenuto del blocco </summary>
         public Thickness Margin { get; set; }
 
+
         /// <summary>
         /// Parsa il <see cref="PathTemplate"/> con la larghezza e l'altezza passate come parametro
         /// </summary>

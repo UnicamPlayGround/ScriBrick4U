@@ -23,6 +23,7 @@ namespace Frontend.ViewModels
         /// </summary>
         public string FilePath { get; set; } = null!;
 
+
         /// <summary>
         /// Costruttore di default
         /// </summary>
@@ -30,7 +31,6 @@ namespace Frontend.ViewModels
         {
             SetMediator(this);
         }
-
 
         /// <summary>
         /// Apre una nuova finestra del programma

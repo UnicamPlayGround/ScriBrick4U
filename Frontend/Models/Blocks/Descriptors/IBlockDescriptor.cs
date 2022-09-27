@@ -13,6 +13,10 @@ namespace Frontend.Models.Blocks.Descriptors
         public string Name { get; set; }
 
         /// <summary>
+        /// Categoria blocco
+        /// </summary>
+        public BlockCategory Category { get; set; }
+        /// <summary>
         /// Tipo del blocco
         /// </summary>
         public BlockType Type { get; set; }
@@ -21,10 +25,5 @@ namespace Frontend.Models.Blocks.Descriptors
         /// Colore di sfondo del blocco
         /// </summary>
         public Color BackgroundColor { get; set; }
-
-        /// <summary>
-        /// Categoria blocco
-        /// </summary>
-        public BlockCategory Category { get; set; }
     }
 }

@@ -12,12 +12,13 @@ namespace Frontend.Views;
 public partial class BlockView : ContentView
 {
     /// <summary> Variabile che rappresenta il BindingContext </summary>
-    private readonly BlockViewModel context;
+    private readonly BlockViewModel _context;
 
-    /// <summary> variabile che rappresenta il blocco selezionato, che poi verra' trascinato </summary>
-    private IFrontEndBlock? SelectedBlock;
+    /// <summary> Variabile che rappresenta il blocco selezionato, che poi verra' trascinato </summary>
+    private IFrontEndBlock? _SelectedBlock;
     /// <summary> <see cref="Grid"/> associato al blocco selezionato </summary>
     private Grid? _grid;
+
 
     /// <summary>
     /// Costruttore di default
@@ -25,7 +26,7 @@ public partial class BlockView : ContentView
     public BlockView()
     {
         InitializeComponent();
-        BindingContext = context = new BlockViewModel(DroppedBlocksGraphicsView);
+        BindingContext = _context = new BlockViewModel(DroppedBlocksGraphicsView);
     }
 
     /// <summary>
@@ -34,9 +35,9 @@ public partial class BlockView : ContentView
     /// <param name="dropPoint"> Punto selezionato per il posizionamento del blocco scelto </param>
     private void Drop(PointF dropPoint)
     {
-        if(SelectedBlock != null)
+        if(_SelectedBlock != null)
         {
-            context.AddDroppedBlock(SelectedBlock, dropPoint);
+            _context.AddDroppedBlock(_SelectedBlock, dropPoint);
             ResetBlockSelection();
         }
     }
@@ -47,7 +48,7 @@ public partial class BlockView : ContentView
     /// <param name="block"> Blocco da eliminare </param>
     private void Delete(IFrontEndBlock block)
     {
-        context.DeleteDroppedBlock(block);
+        _context.DeleteDroppedBlock(block);
     }
 
     /// <summary>
@@ -87,7 +88,7 @@ public partial class BlockView : ContentView
         if (e.CurrentSelection.Count > 0)
             if (e.CurrentSelection[0] != null)
             {
-                SelectedBlock = (e.CurrentSelection[0] as IFrontEndBlock)?.GetInfo();
+                _SelectedBlock = (e.CurrentSelection[0] as IFrontEndBlock)?.GetInfo();
             }
     }
 
@@ -120,7 +121,7 @@ public partial class BlockView : ContentView
     private void ResetBlockSelection()
     {
         if (_grid == null) return;
-        SelectedBlock = null;
+        _SelectedBlock = null;
         VisualStateManager.GoToState(_grid, "Normal");
         blocksCollView.SelectedItem = null;
     }
@@ -145,12 +146,12 @@ public partial class BlockView : ContentView
     /// Gestisce la fine dell'interazione con la <see cref="GraphicsView"/> dei blocchi trascinati
     /// </summary>
     /// <param name="sender"> <see cref="GraphicsView"/> chiamante </param>
-    /// <param name="e"> Asrgomenti dell'evento </param>
+    /// <param name="e"> Argomenti dell'evento </param>
     private async void DroppedBlocksGraphicsView_EndInteraction(object sender, TouchEventArgs e)
     {
-        if (SelectedBlock == null)
+        if (_SelectedBlock == null)
         {
-            var selectedBlock = context.GetBlockFromPoint(e.Touches.ElementAt(0));
+            var selectedBlock = _context.GetBlockFromPoint(e.Touches.ElementAt(0));
             if (selectedBlock != null) ShowEditPage(selectedBlock, (sender, args) => {
                 if ((sender as BlockEditPage)?.Flag == BlockEditPageFlag.ELIMINA)
                     Delete(selectedBlock);
@@ -160,9 +161,9 @@ public partial class BlockView : ContentView
         {
             try
             {
-                context.CanBeDropped(SelectedBlock, e.Touches.ElementAt(0));
-                if (SelectedBlock.Descriptor.Type.Equals(BlockType.Principale)) Drop(e.Touches.ElementAt(0));
-                else ShowEditPage(SelectedBlock, (sender, args) => {
+                _context.CanBeDropped(_SelectedBlock, e.Touches.ElementAt(0));
+                if (_SelectedBlock.Descriptor.Type.Equals(BlockType.Principale)) Drop(e.Touches.ElementAt(0));
+                else ShowEditPage(_SelectedBlock, (sender, args) => {
                     if ((sender as BlockEditPage)?.Flag == BlockEditPageFlag.CONFERMA)
                         Drop(e.Touches.ElementAt(0));
                     ResetBlockSelection();

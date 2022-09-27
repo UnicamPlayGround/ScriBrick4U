@@ -9,7 +9,8 @@ namespace Frontend.Views;
 public partial class BlockTypeView : ContentView
 {
     /// <summary> Variabile che rappresenta il BindingContext </summary>
-    private readonly BlockTypeViewModel context;
+    private readonly BlockTypeViewModel? _context;
+
 
     /// <summary>
     /// Costruttore di default
@@ -17,7 +18,7 @@ public partial class BlockTypeView : ContentView
     public BlockTypeView()
     {
         InitializeComponent();
-        BindingContext = context = new BlockTypeViewModel();
+        _context = BindingContext as BlockTypeViewModel;
     }
 
     /// <summary>
@@ -28,6 +29,6 @@ public partial class BlockTypeView : ContentView
     private void BlocksCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var blockCategory = (Tuple<BlockCategory, Color>)e.CurrentSelection.ElementAt(0);
-        context.SelectedCategory = blockCategory.Item1;
+        _context?.SetSelectedCategory(blockCategory.Item1);
     }
 }

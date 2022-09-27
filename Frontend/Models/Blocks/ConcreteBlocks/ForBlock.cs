@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco For
+    /// </summary>
     public class ForBlock : WithChildrenFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()
