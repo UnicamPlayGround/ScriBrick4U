@@ -10,12 +10,6 @@ namespace Frontend.Helpers.Builders
     public interface IBlockBuilder<T>
     {
         /// <summary>
-        /// Metodo che permette di aggiungere una casella di testo, di tipo <see cref="Editor"/>, al blocco
-        /// </summary>
-        /// <returns> l'oggetto corrente </returns>
-        public IBlockBuilder<T> AddInput();
-
-        /// <summary>
         /// Metodo che permette di aggiungere una <see cref="Label"/> al blocco, avente come testo la stringa passata come parametro
         /// </summary>
         /// <param name="text"> Testo della Label </param>
