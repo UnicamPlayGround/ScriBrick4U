@@ -20,18 +20,19 @@ namespace Backend.Blocks.Movement
         public override string GetCode()
         {
             string code = "";
-            code += $"Vector3 {Name} = new Vector3(1, 0, 0);\n";
-            code += "if(gameObject.GetComponent<CharacterController>() == null){\n";
-            code += "movementController = gameObject.AddComponent<CharacterController>();\n";
+            code += $"Vector2 {Name} = new Vector2(1, 0);\n";
+            code += "if(gameObject.GetComponent<Rigidbody2D>() == null){\n";
+            code += "movementController = gameObject.AddComponent<Rigidbody2D>();\n";
+            code += "movementController.gravityScale = 0;\n";
             code += "}\n";
-            code += $"movementController.Move( 0.01f * {Value} * {Name});\n";
+            code += $"movementController.MovePosition(movementController.position + 0.01f * {Value} * {Name});\n";
             return code;
         }
         public override Dictionary<string, string> GetVariables()
         {
             Dictionary<string, string> variables = new()
             {
-                { "movementController", "CharacterController" }
+                { "movementController", "Rigidbody2D" }
             };
             return variables;
         }
