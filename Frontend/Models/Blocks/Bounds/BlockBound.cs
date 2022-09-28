@@ -6,12 +6,11 @@
     public class BlockBound : IBlockBound
     {
         public float Width { get; set; }
-
         public float Height { get; set; }
 
         public PointF UpperLeft { get; set; }
-
         public PointF BottomRight => new(UpperLeft.X + Width, UpperLeft.Y + Height);
+
 
         /// <summary>
         /// Costruttore che imposta l'altezza, la larghezza e le coordinate del punto in alto a sinistra

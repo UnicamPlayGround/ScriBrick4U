@@ -2,14 +2,12 @@
 using Frontend.Models.Blocks.AbstractTypeBlocks;
 using Frontend.Models.QuestionItem;
 using Frontend.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco per impostare il valore di una variabile
+    /// </summary>
     public class SetVariableBlock : RectangleFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()

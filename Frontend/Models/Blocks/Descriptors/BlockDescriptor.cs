@@ -1,6 +1,4 @@
-﻿using Frontend.Models.Blocks;
-
-namespace Frontend.Models.Blocks.Descriptors
+﻿namespace Frontend.Models.Blocks.Descriptors
 {
     /// <summary>
     /// Classe concreta che rappresenta un descrittore di blocchi di default
@@ -9,10 +7,11 @@ namespace Frontend.Models.Blocks.Descriptors
     {
         public string Name { get; set; }
 
+        public BlockCategory Category { get; set; }
         public BlockType Type { get; set; }
 
         public Color BackgroundColor { get; set; }
-        public BlockCategory Category { get; set; }
+        
 
         /// <summary>
         /// Costruttore che imposta il nome e il tipo del blocco

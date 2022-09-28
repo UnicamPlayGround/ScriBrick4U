@@ -38,7 +38,6 @@ namespace Frontend.ViewModels
         /// che possono essere trascinati
         /// </summary>
         private List<IFrontEndBlock> _blocks = new();
-
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene tutti i blocchi
         /// </summary>
@@ -57,7 +56,6 @@ namespace Frontend.ViewModels
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene effettivamente i blocchi trascinati dall'utente
         /// </summary>
         private List<IFrontEndBlock> _droppedBlocks = new();
-
         /// <summary>
         /// Lista di tipo <see cref="List{IFrontEndBlock}"/> che contiene i blocchi trascinati dall'utente
         /// </summary>
@@ -140,6 +138,9 @@ namespace Frontend.ViewModels
             DroppedBlocks = DroppedBlocks.Append(dropped).OrderBy(b => b.Position.UpperLeft.Y).ToList();
         }
 
+        /// <summary>
+        /// Calcola la posizione iniziale di un blocco posizionato nel canvas
+        /// </summary>
         private PointF GetStartPosition(PointF originalPosition)
         {
             IFrontEndBlock? bl;
@@ -193,7 +194,13 @@ namespace Frontend.ViewModels
             dropped.Position.UpperLeft = originalPosition;
             return returnBlock ?? dropped.Next;
         }
-
+        /// <summary>
+        /// Ricalcola le dimensioni del blocco padre dopo l'inserimento/rimozione di un blocco figlio
+        /// </summary>
+        /// <param name="current">Blocco posizionato</param>
+        /// <param name="offset">Dimensioni del blocco</param>
+        /// <param name="heightSetter">Funzione per il calcolo delle nuove dimensioni</param>
+        /// <returns>Blocco ridimensionato</returns>
         private IFrontEndBlock? ResizeParent(IFrontEndBlock? current, float offset, Func<float, float, float> heightSetter)
         {
             while (current?.Shape.Type is ShapeType.WITH_CHILDREN)
@@ -206,6 +213,13 @@ namespace Frontend.ViewModels
 
             return current?.Next;
         }
+        /// <summary>
+        /// Calcola la posizione di un blocco figlio
+        /// </summary>
+        /// <param name="lastChildren">Ultimo figlio</param>
+        /// <param name="upperCorner">Posizione del padre</param>
+        /// <param name="originalPosition">Posizione iniziale del blocco</param>
+        /// <returns>Nuova posizione</returns>
         private PointF GetChildPosition(IFrontEndBlock? lastChildren, PointF upperCorner, PointF originalPosition)
         {
             if (lastChildren == null)
@@ -241,8 +255,13 @@ namespace Frontend.ViewModels
 
             if (deletedBlock.Descriptor.Type is BlockType.DefinizioneFunzione)
             {
-                var functionName = deletedBlock.Questions.ElementAt(0).Value;
+                var functionName = deletedBlock.Questions.ElementAt(2).Value;
                 RemoveFunctionUse(functionName);
+            }
+            if(deletedBlock.Descriptor.Type is BlockType.DefinizioneVariabile)
+            {
+                var varName = deletedBlock.Questions.ElementAt(2).Value;
+                RemoveVariableName(varName);
             }
 
             toBeRemoved.Add(deletedBlock);
@@ -253,14 +272,36 @@ namespace Frontend.ViewModels
             });
             DroppedBlocks = DroppedBlocks.Where(x => !x.Equals(deletedBlock)).ToList();
         }
-
+        /// <summary>
+        /// Metodo di utilità per la rimozione di blocchi funzione
+        /// </summary>
+        /// <param name="functionName">Nome della funzione da rimuovere</param>
         private void RemoveFunctionUse(string functionName)
         {
             FunctionNames.Remove(functionName);
-            IEnumerable<IFrontEndBlock> toRemove = DroppedBlocks.Where(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName));
+            DeleteCallBlock(block => block.Descriptor.Type.Equals(BlockType.ChiamaFunzione) && block.Questions.ElementAt(0).Value.Equals(functionName));
+        }
+        /// <summary>
+        /// Metodo di utilità per la rimozione di blocchi variabile
+        /// </summary>
+        /// <param name="varName">Nome della variabile da rimuovere</param>
+        private void RemoveVariableName(string varName)
+        {
+            VariableNames.Remove(varName);
+            DeleteCallBlock(b => b.Descriptor.Type.Equals(BlockType.ModificaVariabile) && b.Questions.ElementAt(0).Value.Equals(varName));
+        }
+
+        /// <summary>
+        /// Elimina tutti i blocchi che corrispondo ad un criterio di ricerca
+        /// </summary>
+        /// <param name="filter">Criterio di ricerca</param>
+        private void DeleteCallBlock(Func<IFrontEndBlock, bool> filter)
+        {
+            IEnumerable<IFrontEndBlock> toRemove = DroppedBlocks.Where(filter).ToList();
             foreach (var callBlock in toRemove)
             {
                 callBlock.Father?.Children.Remove(callBlock);
+                DroppedBlocks.Remove(callBlock);
             }
         }
 
@@ -328,7 +369,7 @@ namespace Frontend.ViewModels
         /// <param name="block"> Blocco con il quale effettuare la verifica </param>
         /// <param name="point"> Punto del quale verificare l'appartenenza al blocco </param>
         /// <returns> se il blocco contiene il punto passato come parametro, false altrimenti </returns>
-        public bool Contains(IFrontEndBlock block, PointF point)
+        private bool Contains(IFrontEndBlock block, PointF point)
         {
             return Contains(block.Position.UpperLeft, block.Position.BottomRight, point);
         }
@@ -339,7 +380,7 @@ namespace Frontend.ViewModels
         /// <param name="bottomCorner"> Secondo punto </param>
         /// <param name="point"> Punto su cui viene effettuata la verifica </param>
         /// <returns> true se il punto passato come parametro è compreso tra altri 2, false altrimenti </returns>
-        public bool Contains(PointF upperCorner, PointF bottomCorner, PointF point)
+        private bool Contains(PointF upperCorner, PointF bottomCorner, PointF point)
         {
             if (upperCorner.X > point.X || bottomCorner.X < point.X) return false;
             if (upperCorner.Y > point.Y || bottomCorner.Y < point.Y) return false;

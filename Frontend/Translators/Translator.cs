@@ -12,7 +12,7 @@ namespace Frontend.Translators
 {
     public class Translator : ITranslator
     {
-        private int Counter = 0;
+        private int _counter = 0;
 
         public IEnumerable<IBlock> Translate(IEnumerable<IFrontEndBlock> frontEndBlocks)
         {
@@ -65,19 +65,19 @@ namespace Frontend.Translators
                     switch (frontEndBlock.Descriptor.Name)
                     {
                         case "MovimentoAvanti":
-                            block = new ForwardBlock($"Forward{Counter++}", frontEndBlock.Questions[0].Value);
+                            block = new ForwardBlock($"Forward{_counter++}", frontEndBlock.Questions[0].Value);
                             break;
                         case "MovimentoIndietro":
-                            block = new BackwardBlock($"Backward{Counter++}", frontEndBlock.Questions[0].Value);
+                            block = new BackwardBlock($"Backward{_counter++}", frontEndBlock.Questions[0].Value);
                             break;
                         case "MovimentoSu":
-                            block = new UpBlock($"Up{Counter++}", frontEndBlock.Questions[0].Value);
+                            block = new UpBlock($"Up{_counter++}", frontEndBlock.Questions[0].Value);
                             break;
                         case "MovimentoGiu":
-                            block = new DownBlock($"Down{Counter++}", frontEndBlock.Questions[0].Value);
+                            block = new DownBlock($"Down{_counter++}", frontEndBlock.Questions[0].Value);
                             break;
                         case "Rotazione":
-                            block = new RotationBlock($"Rotation{Counter++}", frontEndBlock.Questions[0].Value);
+                            block = new RotationBlock($"Rotation{_counter++}", frontEndBlock.Questions[0].Value);
                             break;
                     }
                     break;
@@ -86,7 +86,7 @@ namespace Frontend.Translators
                     {
                         case "Operazione":
                             block = new OperationBlock(
-                                $"Addition{Counter++}",
+                                $"Addition{_counter++}",
                                 frontEndBlock.Questions[0].Value,
                                 frontEndBlock.Questions[1].Value,
                                 frontEndBlock.Questions[2].Value);
@@ -98,7 +98,7 @@ namespace Frontend.Translators
                     {
                         case "If":
                             block = new IfBlock(
-                                $"If{Counter++}",
+                                $"If{_counter++}",
                                 frontEndBlock.Questions[0].Value ?? frontEndBlock.Questions[1].Value,
                                 frontEndBlock.Questions[2].Value,
                                 frontEndBlock.Questions[3].Value ?? frontEndBlock.Questions[4].Value
@@ -106,7 +106,7 @@ namespace Frontend.Translators
                             break;
                         case "While":
                             block = new WhileBlock(
-                                $"While{Counter++}",
+                                $"While{_counter++}",
                                 frontEndBlock.Questions[0].Value ?? frontEndBlock.Questions[1].Value,
                                 frontEndBlock.Questions[2].Value,
                                 frontEndBlock.Questions[3].Value ?? frontEndBlock.Questions[4].Value
@@ -114,13 +114,13 @@ namespace Frontend.Translators
                             break;
                         case "For":
                             block = new ForBlock(
-                                $"For{Counter++}",
+                                $"For{_counter++}",
                                 frontEndBlock.Questions[0].Value
                             );
                             break;
                         case "CollisionWith":
                             block = new CollisionWithBlock(
-                                $"CollisionWith{Counter++}",
+                                $"CollisionWith{_counter++}",
                                 frontEndBlock.Questions[0].Value);
                             break;
                     }
@@ -130,7 +130,7 @@ namespace Frontend.Translators
                     {
                         case "KeyboardEvent":
                             block = new KeyboardEvent(
-                                $"Event{Counter++}",
+                                $"Event{_counter++}",
                                 frontEndBlock.Questions[0].Value
                             );
                             break;
@@ -138,33 +138,33 @@ namespace Frontend.Translators
                     break;
                 case BlockType.DefinizioneFunzione:
                     block = new FunctionDefinitionBlock(
-                        $"DefinitionFunction{Counter++}",
+                        $"DefinitionFunction{_counter++}",
                         frontEndBlock.Questions[0].Value,
                         frontEndBlock.Questions[1].Value,
                         frontEndBlock.Questions[2].Value);
                     break;
                 case BlockType.ChiamaFunzione:
                     block = new FunctionCallBlock(
-                        $"CallFunction{Counter++}",
+                        $"CallFunction{_counter++}",
                         frontEndBlock.Questions[0].Value,
                         frontEndBlock.Questions[1].Value);
                     break;
                 case BlockType.RitornaValore:
                     block = new ReturnBlock(
-                        $"ReturnBlock{Counter++}",
+                        $"ReturnBlock{_counter++}",
                         frontEndBlock.Questions[0].Value ?? frontEndBlock.Questions[1].Value
                     );
                     break;
                 case BlockType.DefinizioneVariabile:
                     block = new VariableBlock(
-                        $"Variable{Counter++}", 
+                        $"Variable{_counter++}", 
                         frontEndBlock.Questions[0].Value,
                         frontEndBlock.Questions[1].Value,
                         frontEndBlock.Questions[2].Value);
                     break;
                 case BlockType.ModificaVariabile:
                     block = new SetVariableBlock(
-                               $"SetVariable{Counter++}",
+                               $"SetVariable{_counter++}",
                                frontEndBlock.Questions[0].Value,
                                frontEndBlock.Questions[1].Value,
                                frontEndBlock.Questions[2].Value);

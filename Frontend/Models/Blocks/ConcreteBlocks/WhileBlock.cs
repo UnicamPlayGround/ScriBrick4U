@@ -5,6 +5,9 @@ using Frontend.ViewModels;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco While
+    /// </summary>
     public class WhileBlock : WithChildrenFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()

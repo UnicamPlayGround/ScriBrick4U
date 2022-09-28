@@ -1,15 +1,12 @@
 ﻿using Frontend.Helpers.Builders;
 using Frontend.Models.Blocks.AbstractTypeBlocks;
 using Frontend.Models.QuestionItem;
-using Frontend.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {
+    /// <summary>
+    /// Classe concreta che rappresenta un blocco per l'evento collisione in Unity
+    /// </summary>
     public class CollisionWithBlock : WithChildrenFrontEndBlock
     {
         public override IFrontEndBlock GetInfo()

@@ -1,7 +1,7 @@
 ﻿namespace Frontend.Models.Blocks
 {
     /// <summary>
-    /// Enum che descrive i tipi di blocco
+    /// Enum che descrive i tipi di blocco in base alla funzione ricoperta 
     /// </summary>
     public enum BlockType
     {
@@ -25,17 +25,14 @@
 
         /// <summary> Blocco che rappresenta un'operazione (ad esempio somma, sottrazione) </summary>
         Operazionale,
-        /// <summary>
-        /// Blocco che rappresenta la definizione di una variabile
-        /// </summary>
+        
+        /// <summary> Blocco che rappresenta la definizione di una variabile </summary>
         DefinizioneVariabile,
-        /// <summary>
-        /// Blocco che rappresenta la modifica di una variabile
-        /// </summary>
+
+        /// <summary> Blocco che rappresenta la modifica di una variabile </summary>
         ModificaVariabile,
-        /// <summary>
-        /// Blocco che rappresenta il ritorno di un valore
-        /// </summary>
+        
+        /// <summary> Blocco che rappresenta il ritorno di un valore </summary>
         RitornaValore
     }
 }

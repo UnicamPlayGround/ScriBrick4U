@@ -1,11 +1,6 @@
 ﻿using Frontend.Helpers.Builders;
 using Frontend.Models.Blocks.AbstractTypeBlocks;
 using Frontend.Models.QuestionItem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Frontend.Models.Blocks.ConcreteBlocks
 {

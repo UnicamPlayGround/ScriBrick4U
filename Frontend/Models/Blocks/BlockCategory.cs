@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Frontend.Models.Blocks
+﻿namespace Frontend.Models.Blocks
 {
+    /// <summary>
+    /// Enum che descrive le categorie di blocco
+    /// </summary>
     public enum BlockCategory
     {
         /// <summary> Categoria blocchi iniziali</summary>
@@ -23,12 +20,13 @@ namespace Frontend.Models.Blocks
         /// <summary> Categoria blocchi per il movimento </summary>
         Movimento,
 
-        /// <summary>
-        /// Categoria blocchi per le operazioni sulle variabili
-        /// </summary>
+        /// <summary> Categoria blocchi per le operazioni sulle variabili </summary>
         Variabile,
     }
 
+    /// <summary>
+    /// Classe statica che rappresenta un contenitore di metodi per operare sull'enum <see cref="BlockCategory"/>
+    /// </summary>
     static class BlockCategoryMethods
     {
         /// <summary>

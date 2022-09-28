@@ -16,7 +16,9 @@ namespace Frontend.Models.Blocks.Shapes
         /// <summary> Oggetto che rappresenta la forma dopo il parsing del <see cref="Path"/> </summary>
         public Geometry? SvgData { get; set; }
 
-        /// <summary>   </summary>
+        /// <summary>  
+        /// Distanza tra il blocco posizionato e il blocco precedente
+        /// </summary>
         public PointF BlockOffset { get; set; }
 
         /// <summary> Tipo di forma </summary>
@@ -24,6 +26,7 @@ namespace Frontend.Models.Blocks.Shapes
 
         /// <summary> Margini del contenuto del blocco </summary>
         public Thickness Margin { get; set; }
+
 
         /// <summary>
         /// Parsa il <see cref="PathTemplate"/> con la larghezza e l'altezza passate come parametro
