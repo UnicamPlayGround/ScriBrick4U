@@ -17,7 +17,8 @@ namespace Backend.Transpilers
             Dictionary<string, string> variables = new();
             foreach (IBlock block in blocks)
             {
-                variables = GetBlockVariables(block.Children);
+                var blockVariables = GetBlockVariables(block.Children);
+                blockVariables.ToList().ForEach(variable => variables.TryAdd(variable.Key, variable.Value));
             }
             code += DefineGlobalVariables(variables);
             foreach (IBlock block in blocks)
@@ -63,7 +64,9 @@ namespace Backend.Transpilers
 
         private static string DefineBaseImport()
         {
-            return "using UnityEngine; \n";
+            var code = "using UnityEngine; \n";
+            code += "using UnityEngine.UI;\n";
+            return code;
         }
     }
 }

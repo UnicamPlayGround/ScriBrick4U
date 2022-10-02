@@ -22,6 +22,8 @@
 
         /// <summary> Categoria blocchi per le operazioni sulle variabili </summary>
         Variabile,
+        /// <summary> Categoria blocchi per le operazioni sul testo </summary>
+        Testo
     }
 
     /// <summary>
@@ -39,6 +41,7 @@
             { BlockCategory.Evento, Color.FromRgb(204, 0, 102) },
             { BlockCategory.Movimento, Color.FromRgb(0, 102, 0) },
             { BlockCategory.Variabile, Color.FromRgb(0, 153, 153) },
+            { BlockCategory.Testo, Color.FromRgb(105, 105, 153) },
         };
 
         /// <summary>

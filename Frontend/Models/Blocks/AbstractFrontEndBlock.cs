@@ -18,18 +18,15 @@ namespace Frontend.Models.Blocks
     {
         public float Width { get; set; }
         public float Height { get; set; }
-
         public IBlockDescriptor Descriptor { get; set; } = null!;
         public IBlockShape Shape { get; set; } = null!;
         public IBlockBound Position { get; set; } = null!;
-
         public List<IBlockEditItem> Questions { get; set; } = null!;
         public Func<string> TextDropped { get; set; } = null!;
-
         public IFrontEndBlock? Father { get; set; }
         public IFrontEndBlock? Next { get; set; }
+        public int Order { get; set; }
         public List<IFrontEndBlock> Children { get; set; } = new();
-
         /// <summary> Lista privata che rappresenta gli elementi contenuti nel blocco </summary>
         private List<Element> _elements = new();
         public List<Element> Elements
@@ -37,12 +34,9 @@ namespace Frontend.Models.Blocks
             get => _elements;
             set => _elements = value;
         }
-
         public bool CanContainChildren => Shape.Type.Equals(ShapeType.WITH_CHILDREN);
         public bool IsStart => Descriptor.Type.Equals(BlockType.Principale) || Descriptor.Type.Equals(BlockType.DefinizioneFunzione);
-
         public abstract IFrontEndBlock GetInfo();
-
         public void Draw(ICanvas canvas)
         {
             canvas.FillColor = Descriptor.BackgroundColor;
@@ -69,7 +63,6 @@ namespace Frontend.Models.Blocks
             Width = defaultWidth;
             Height = defaultHeight;
         }
-
         /// <summary>
         /// Restituisce una lista contenente un'istanza per ogni classe che eredita da quella corrente
         /// </summary>

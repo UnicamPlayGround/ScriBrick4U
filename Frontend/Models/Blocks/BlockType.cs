@@ -33,6 +33,8 @@
         ModificaVariabile,
         
         /// <summary> Blocco che rappresenta il ritorno di un valore </summary>
-        RitornaValore
+        RitornaValore,
+        /// <summary> Blocco che rappresenta del testo </summary>
+        Text
     }
 }

@@ -12,6 +12,10 @@ namespace Frontend.Models.Blocks
     public interface IFrontEndBlock
     {
         /// <summary>
+        /// Numero del blocco
+        /// </summary>
+        public int Order { get; set; }
+        /// <summary>
         /// Larghezza iniziale del blocco
         /// </summary>
         public float Width { get; set; }

@@ -26,7 +26,6 @@ namespace Backend.Blocks.Movement
             code += $"Vector2 {Name} = new Vector2(0, -1);\n";
             code += "if(gameObject.GetComponent<Rigidbody2D>() == null){\n";
             code += "movementController = gameObject.AddComponent<Rigidbody2D>();\n";
-            code += "movementController.gravityScale = 0;\n";
             code += "}\n";
             code += $"movementController.MovePosition(movementController.position + 0.01f * {Value} * {Name});\n";
             return code;

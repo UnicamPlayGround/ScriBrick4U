@@ -92,7 +92,10 @@ namespace Frontend.ViewModels
                 _allBlocks.Add(block.GetInfo());
             Blocks = _allBlocks.OrderBy(block => block.Descriptor.Category).ToList();
         }
-
+        /// <summary>
+        /// Totale dei blocchi posizionati per il calcolo dell'ordine
+        /// </summary>
+        private int totalBlocksDropped = 0;
         /// <summary>
         /// Verifica se un blocco può essere rilasciato nel punto passato come parametro
         /// </summary>
@@ -123,7 +126,7 @@ namespace Frontend.ViewModels
         public void AddDroppedBlock(IFrontEndBlock dropped, PointF dropPoint)
         {
             var underBlock = DroppedBlocks.Where(block => Contains(block, dropPoint)).LastOrDefault();
-
+            dropped.Order = ++totalBlocksDropped;
             if (dropped.Descriptor.Type is BlockType.DefinizioneFunzione) FunctionNames.Add(dropped.Questions.ElementAt(2).Value);
             if (dropped.Descriptor.Type is BlockType.DefinizioneVariabile) VariableNames.Add(dropped.Questions.ElementAt(2).Value);
             if (dropped.Shape.Type is ShapeType.UPPER)
@@ -135,7 +138,7 @@ namespace Frontend.ViewModels
                 if (underBlock == null) return;
                 ShiftBlocksWhenDropped(dropped, SetUpperLeft(new(dropPoint.X, dropPoint.Y), dropped, underBlock));
             }
-            DroppedBlocks = DroppedBlocks.Append(dropped).OrderBy(b => b.Position.UpperLeft.Y).ToList();
+            DroppedBlocks = DroppedBlocks.Append(dropped).OrderBy(b => b.Order).ToList();
         }
 
         /// <summary>
@@ -176,7 +179,7 @@ namespace Frontend.ViewModels
                 }
 
                 under.Children.Add(dropped);
-                under.Children = under.Children.OrderBy(b => b.Position.UpperLeft.Y).ToList();
+                under.Children = under.Children.OrderBy(b => b.Order).ToList();
             }
             else
             {
@@ -188,7 +191,7 @@ namespace Frontend.ViewModels
                 dropped.Next = under.Next;
                 under.Next = dropped;
                 dropped.Father.Children.Add(dropped);
-                dropped.Father.Children = dropped.Father.Children.OrderBy(b => b.Position.UpperLeft.Y).ToList();
+                dropped.Father.Children = dropped.Father.Children.OrderBy(b => b.Order).ToList();
             }
 
             dropped.Position.UpperLeft = originalPosition;

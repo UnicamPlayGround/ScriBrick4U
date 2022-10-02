@@ -5,6 +5,7 @@ using Backend.Blocks.Function;
 using Backend.Blocks.Movement;
 using Backend.Blocks.Operation;
 using Backend.Blocks.Starts;
+using Backend.Blocks.Text;
 using Backend.Blocks.Variable;
 using Frontend.Models.Blocks;
 
@@ -79,6 +80,15 @@ namespace Frontend.Translators
                         case "Rotazione":
                             block = new RotationBlock($"Rotation{_counter++}", frontEndBlock.Questions[0].Value);
                             break;
+                        case "Gravita":
+                            block = new GravityBlock($"Gravity{_counter++}", frontEndBlock.Questions[0].Value);
+                            break;
+                        case "Velocita":
+                            block = new SpeedBlock($"Speed{_counter++}", frontEndBlock.Questions[0].Value);
+                            break;
+                        case "Posizione":
+                            block = new PositionBlock($"Position{_counter++}", frontEndBlock.Questions[0].Value, frontEndBlock.Questions[1].Value);
+                            break;
                     }
                     break;
                 case BlockType.Operazionale:
@@ -122,6 +132,9 @@ namespace Frontend.Translators
                             block = new CollisionWithBlock(
                                 $"CollisionWith{_counter++}",
                                 frontEndBlock.Questions[0].Value);
+                            break;
+                        case "Wait":
+                            block = new WaitBlock($"Wait{_counter++}", frontEndBlock.Questions[0].Value);
                             break;
                     }
                     break;
@@ -168,6 +181,23 @@ namespace Frontend.Translators
                                frontEndBlock.Questions[0].Value,
                                frontEndBlock.Questions[1].Value,
                                frontEndBlock.Questions[2].Value);
+                    break;
+                case BlockType.Text:
+                    switch (frontEndBlock.Descriptor.Name)
+                    {
+                        case "Testo":
+                            var text = frontEndBlock.Questions[1].Value;
+                            if (string.IsNullOrEmpty(text))
+                            {
+                                text = frontEndBlock.Questions[2].Value;
+                            }
+                            else
+                            {
+                                text = $"\"{text}\"";
+                            }
+                            block = new TextBlock($"Text{_counter++}", frontEndBlock.Questions[0].Value, text);
+                            break;
+                    }
                     break;
             }
             if (block == null)
