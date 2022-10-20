@@ -50,12 +50,7 @@ namespace Frontend
         /// <param name="e"> Parametri dell'evento click </param>
         private async void SaveScript_Clicked(object sender, EventArgs e)
         {
-            string? filename = await AcquireScriptName();
-            if (filename != null)
-            {
-                _context?.SaveScript(filename);
-                await DisplayAlert("File salvato", $"Il file {_context?.FileName} è stato salvato con successo.", "Ok");
-            }
+            await SaveFile();
         }
 
         /// <summary>
@@ -82,13 +77,28 @@ namespace Frontend
         /// <param name="e"> Parametri dell'evento click </param>
         private async void TranslateScript_Clicked(object sender, EventArgs e)
         {
-            string? filename = "";
-            if (_context?.FilePath == null) filename = await AcquireScriptName();
-            if (filename != null)
+            if (_context?.FilePath == null && (await SaveFile())) // filename = await AcquireScriptName();
             {
-                _context?.TranslateScript(filename);
+                _context?.TranslateScript(_context.FileName);
                 await DisplayAlert("Script tradotto", "Lo script è stato tradotto con successo.", "Ok");
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> SaveFile()
+        {
+            string? filename = await AcquireScriptName();
+            if (filename != null)
+            {
+                _context?.SaveScript(filename);
+                await DisplayAlert("File salvato", $"Il file {_context?.FileName}.json è stato salvato con successo.", "Ok");
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace Frontend.ViewModels
         /// <summary>
         /// Nome del file salvato o caricato dal file system
         /// </summary>
-        public string FileName { get => Path.GetFileName(FilePath); }
+        public string FileName { get => Path.GetFileNameWithoutExtension(FilePath); }
 
         /// <summary>
         /// Path del file salvato o caricato dal file system
